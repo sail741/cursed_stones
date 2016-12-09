@@ -7,12 +7,13 @@ const PORT = process.env.PORT || 8765;
 
 
 
-var app = express();
+var app = express(); // web server
+// Define a route for a whole path
 app.use('/static', express.static('../client/static'));
 app.set('view engine', 'ejs');
 app.set('views', '../client/');
 
-
+// define a http server with express
 var server = http.Server(app);
 
 require('./routes')(app);

@@ -1,0 +1,93 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+header{
+	height: 100px;
+	width: 100%;
+	display: flex;
+	
+	justify-content: space-around;
+	
+	#logo{
+		font-size: 3em;
+		text-decoration: none;
+	}
+	
+}
+body{
+	height: 100%;
+	overflow: hidden;
+}
+
+.container{
+	width: 80%;
+	margin: 0 auto;
+}
+
+#board{
+	perspective: 50em;
+	table{
+		border-top: 1px solid black;
+		margin: 0 auto;
+		transform: rotateX(50deg);
+		tr{
+			td {
+				border: 1px solid black;
+				width: 80px;
+				height: 80px;
+				
+				
+				&.self{
+					background: rgba(0, 0, 255, 0.1);
+				}
+				&.enemie{
+					background: rgba(255, 0, 0, 0.1);
+				}
+
+				&:hover{
+					background: rgba(255, 0, 255, 0.1);	
+				}
+
+			}
+			
+		}
+	
+	}
+	
+}
+
+.cards{
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	display: flex;
+	margin: 0 auto;
+	.card{
+		width: 200px;
+		height: 320px;
+		border: 1px solid black;
+		border-radius: 20px;
+		transition: .25s ease-in-out;
+		position: absolute;
+		bottom: 0;
+		background: gray;
+		// bottom: -100px;
+		
+		&.selected{
+
+		}
+
+		&:hover{
+			background: blue;
+		 	bottom: 80px;
+		 	tranform: translateY(100px);
+		 	z-index: 2;
+		}
+	}
+}
+
+
+

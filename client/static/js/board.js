@@ -10,9 +10,6 @@ function initBoard(hauteur, largeur){
 		var tr = document.createElement('tr');
 		tr.dataset.row = r;
 
-	
-		
-
 		for(var c = 0; c < hauteur; c++){
 			var td = document.createElement('td');
 			td.dataset.pos = r + '-' + c;
@@ -25,12 +22,43 @@ function initBoard(hauteur, largeur){
 				td.className += "enemie";
 			}
 
-
 			tr.appendChild(td);
+			td.addEventListener('click', clickOnCase);
 		}
 		table.appendChild(tr);
 	}
 	board.appendChild(table);
+}
+
+function placeOnBoard(pos, cards){
+
+	var boardCase = board.querySelector('td[data-pos="'+pos+'"]');
+	if(boardCase != null){
+		var img = document.createElement('img');
+		img.src = cards.img;
+
+		boardCase.appendChild(img);
+	}
+}
+
+function clickOnCase(){
+	var boardCasePos = this.dataset.pos;
+
+	if(card_selected){ //dans cards.js
+
+		placeOnBoard(boardCasePos, card_selected);
+		var cardDiv = removeCard(cardsSelf, card_selected);
+		if(cardDiv != null){
+			cardDiv.style.transform=  '';
+			cardDiv.className = 'card placing'
+			card_selected = null;
+
+			setInterval(function(){
+				cardDiv.remove()
+			}, 1900);
+		}
+	}
+
 }
 
 initBoard(HAUTEUR, LARGEUR);

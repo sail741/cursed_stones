@@ -1,8 +1,43 @@
-var WIDTH = 200;
+var WIDTH = 100;
 
+var card_selected = null;
 
 var cardsSelf = document.querySelector('.cards.self');
 
+var hand_cards = [
+	{
+		name: 'C1',
+		uid: 'C1', 
+		img: '/static/img/cards/board_c1.png'
+	},
+	{
+		name: 'C2',
+		uid: 'C2', 
+		img: '/static/img/cards/board_c1.png'
+	},
+	{
+		name: 'C3',
+		uid: 'C3', 
+		img: '/static/img/cards/board_c1.png'
+	},
+	{
+		name: 'C4',
+		uid: 'C4', 
+		img: '/static/img/cards/board_c1.png'
+	},
+	{
+		name: 'C5',
+		uid: 'C5', 
+		img: '/static/img/cards/board_c1.png'
+	},
+	{
+		name: 'C6',
+		uid: 'C6', 
+		img: '/static/img/cards/board_c1.png'
+	}
+];
+
+var timeoutIdPiocheRedraw = null;
 
 
 function drawsCards(elem, cards){
@@ -18,8 +53,11 @@ function drawsCards(elem, cards){
 
 	for(var i = 0; i < cards.length; i++){
 
-		var card = document.createElement('div');
-		card.className = "card";
+		var card = cards[i];
+		var divCard = document.createElement('div');
+		divCard.className = "card";
+		divCard.dataset.card_index = i;
+		divCard.dataset.uid = card.uid;
 
 		let move = translateStart;
 		translateStart += WIDTH;
@@ -27,24 +65,65 @@ function drawsCards(elem, cards){
 		let rotate = rotateStart;
 		rotateStart += rotate_angle;
 
-		card.style.transform = 'translateX(' + move + 'px) rotateZ('+rotate+'deg)'; 
-		card.style['transform-origin'] = (-move) + 'px';
+		divCard.style.transform = 'translateX(' + move + 'px) rotateZ('+rotate+'deg)'; 
+		divCard.style['transform-origin'] = (-move) + 'px';
 			
-		card.addEventListener('click', moveToBoardEvent);
+		divCard.addEventListener('click', selectCards);
 
-		elem.appendChild(card);
+		elem.appendChild(divCard);
 
 	}
+}
 
+function removeCard(cardsElem, card){
+	var index = indexOfCardFromHand(card);
+	if(index < 0){
+		console.error('Cards not found in hand');
+		return;
+	}
+
+	hand_cards.splice(index, 1);
+	var divCard = cardsElem.querySelector('div[data-uid="'+card.uid +'"]');
+	
+	board.appendChild(divCard)
+
+	drawsCards(cardsElem, hand_cards);
+	
+	return divCard;
+}
+
+function indexOfCardFromHand(card){
+	for(var i =0; i< hand_cards.length; i++){
+		if(hand_cards[i].uid == card.uid){
+			return i;
+		}
+	}
+	return -1;
 }
 
 /// Action click sur carte
-function moveToBoardEvent(e){
+function selectCards(e){
 	e.preventDefault();
+	
+	if(this.className.indexOf('selected') > -1){
+		return;
+	}	
+
+	var selectedCards = this.parentNode.querySelectorAll('.selected');
+	
+	for(var i = 0; i < selectedCards.length; i++){
+		selectedCards[i].className = selectedCards[i].className.replace('selected', '').trim();
+		selectedCards[i].className = selectedCards[i].className.replace('no-hover', '').trim();
+		selectedCards[i].style.transform = selectedCards[i].style.transform.replace('translateY(-100px)', ''); 
+		
+	}
 
 	this.className += " no-hover selected"
 	//On evite un second click sur la carte
-	this.removeEventListener('click', moveToBoardEvent);
+	
+	var card = hand_cards[parseInt(this.dataset.card_index)]
+
+	card_selected = card;
 
 	this.style.transform += 'translateY(-100px)'; 
 	
@@ -58,4 +137,39 @@ function moveToBoardEvent(e){
 	return false;
 }
 
-drawsCards(cardsSelf, [1, 2, 3, 4, 5, 6, 7]);
+function picocheCard(cardsElem, card){
+	hand_cards.push(card);
+
+	
+
+	var divCard = document.createElement('div')
+	divCard.dataset.uid = card.uid;
+	divCard.className = "card comming";
+	cardsElem.appendChild(divCard);
+
+	if(timeoutIdPiocheRedraw != null){
+		clearTimeout(timeoutIdPiocheRedraw);
+	}
+
+	timeoutIdPiocheRedraw = setTimeout(function(){
+		drawsCards(cardsElem, hand_cards);
+	}, 2000);
+
+
+}
+
+
+
+
+drawsCards(cardsSelf, hand_cards);
+
+
+
+
+var c7 = {
+		name: 'C7',
+		uid: 'C7', 
+		img: '/static/img/cards/board_c1.png'
+	};
+
+

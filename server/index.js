@@ -16,6 +16,7 @@ app.set('views', '../client/');
 // define a http server with express
 var server = http.Server(app);
 
+require('./model/model');
 require('./routes')(app);
 require('./sockets')(server);
 

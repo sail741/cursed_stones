@@ -1,0 +1,11 @@
+CARDS(id_card, type_card, cost)
+
+	CARDS_CHARA(id_card, attack, defence, hp, movement)
+
+	CARDS_MAGIC(id_card, type, power)
+
+USERS(id_user, email, password, points)
+
+DECKS (id_deck, id_card, qty_card, id_user)
+
+HISTO(date, id_user1, id_joueur2, result)

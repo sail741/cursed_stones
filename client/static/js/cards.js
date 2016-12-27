@@ -8,32 +8,32 @@ var hand_cards = [
 	{
 		name: 'C1',
 		uid: 'C1', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	},
 	{
 		name: 'C2',
 		uid: 'C2', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	},
 	{
 		name: 'C3',
 		uid: 'C3', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	},
 	{
 		name: 'C4',
 		uid: 'C4', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	},
 	{
 		name: 'C5',
 		uid: 'C5', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	},
 	{
 		name: 'C6',
 		uid: 'C6', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	}
 ];
 
@@ -169,7 +169,7 @@ drawsCards(cardsSelf, hand_cards);
 var c7 = {
 		name: 'C7',
 		uid: 'C7', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	};
 
 

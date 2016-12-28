@@ -10,15 +10,19 @@ const session      = require('express-session');
 
 const PORT = process.env.PORT || 8765;
 
+configBDD = require('./model/config')
 
 var app = express(); // web server
 
-app.use(flash()); 
+app.use(flash());
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
-app.use(session({ secret: 'eflkn65esr5834ktbf384zle348sju384ozehnfsejbf' })); // session secret
+app.use(session({ secret: 'eflkn65esr5834ktbf384zle348sju384ozehnfsejbf',
+									store: configBDD.sequelizeStore,
+									resave: false,
+})); // session secret
 
 // Define a route for a whole path
 app.use('/static', express.static('../client/static'));
@@ -32,7 +36,7 @@ var server = http.Server(app);
 
 require('./model/model');
 require('./routes')(app);
-require('./sockets')(server);
+require('./sockets')(server,configBDD.sequelizeStore);
 
 
 

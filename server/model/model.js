@@ -1,4 +1,4 @@
-var sequelize = require("./config");
+var sequelize = require("./config").sequelize;
 
 var users = sequelize.import("./users");
 var cards = sequelize.import("./cards");
@@ -19,7 +19,7 @@ function connect(email, pass_unhashed) {
     		email: email,
     		password: hash
 		}
-	}).then(function(users));
+	});
 }
 
 connect("test", "aaaaaaa");

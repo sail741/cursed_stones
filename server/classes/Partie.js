@@ -75,6 +75,10 @@ module.exports = class Partie {
         this.current_time = new Date().getTime();
     }
 
+    is_current_player(pseudo) {
+        return this.liste_player[this.current_player].pseudo == pseudo;
+    }
+
     change_current_player() {
         if (this.current_player < MAX_PLAYER - 1) {
             this.current_player++;
@@ -89,17 +93,22 @@ module.exports = class Partie {
         }
     }
 
-    resume_game(timer) {
+    resume_game(pseudo, timer) {
         if (this.game_status == STATUS_PAUSED) {
             var partie = this;
-            setTimeout(function() {
-                partie.start_partie();
-            }, timer);
+            if (this.is_current_player(pseudo)) {
+                setTimeout(function() {
+                    partie.start_partie();
+                }, timer);
+            }
         }
     }
 
-    pause_game() {
-        clearInterval(this.timer_tour);
+    pause_game(pseudo) {
+        if (this.is_current_player(pseudo)) {
+            this.game_status = STATUS_PAUSED;
+            clearInterval(this.timer_tour);
+        }
     }
 
     get_timer_tour() {

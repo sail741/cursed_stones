@@ -1,4 +1,4 @@
-const TIMER_RECONNEXION = 60000;
+const TIMER_RECONNEXION = 10000;
 
 module.exports = class Player {
 
@@ -31,10 +31,13 @@ module.exports = class Player {
 
         player.socket.on('disconnect', function() {
             console.log('joueur ' + player.pseudo + ' a deconnecte de la partie ' + player.partie.id_partie);
+            //on previens les autres joueurs de la deconnexion
             player.partie.global_socket.in(player.partie.id_partie).emit('deconnexion', {
                 player: player.pseudo,
             });
-            clearInterval(player.partie.pause_game());
+            //on met le jeu en pause
+            player.partie.pause_game(player.pseudo);
+            //on garde le temps restant au joueur dans son tour
             player.time_left_before_deconnexion = (player.partie.current_time + player.partie.get_timer_tour()) - new Date().getTime();
             //abandon si le joueur ne se reconnecte pas dans le temps imparti
             player.timer_reconnexion = setTimeout(function() {
@@ -47,6 +50,6 @@ module.exports = class Player {
         this.socket = player.socket;
         this.socket_function();
         clearTimeout(this.timer_reconnexion);
-        this.partie.resume_game(this.time_left_before_deconnexion);
+        this.partie.resume_game(this.pseudo, this.time_left_before_deconnexion);
     }
 }

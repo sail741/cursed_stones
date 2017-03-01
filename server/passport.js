@@ -17,7 +17,7 @@ passport.use(new LocalStrategy(
   function(email, password, done) {
     //a commenter lors de l'assemblage
     return done(null,{
-        name: 'jose',
+        name: email,
         mail: 'j@f.r'
       });
     model.connect(email,password,function(json) {

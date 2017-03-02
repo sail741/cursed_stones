@@ -96,16 +96,14 @@ module.exports = class Partie {
     resume_game(pseudo, timer) {
         if (this.game_status == STATUS_PAUSED) {
             var partie = this;
-            if (this.is_current_player(pseudo)) {
-                setTimeout(function() {
-                    partie.start_partie();
-                }, timer);
-            }
+            setTimeout(function() {
+                partie.start_partie();
+            }, timer);
         }
     }
 
     pause_game(pseudo) {
-        if (this.is_current_player(pseudo)) {
+        if (this.game_status == STATUS_START) {
             this.game_status = STATUS_PAUSED;
             clearInterval(this.timer_tour);
         }
@@ -113,5 +111,9 @@ module.exports = class Partie {
 
     get_timer_tour() {
         return TIMER_TOUR;
+    }
+
+    get_status() {
+        return this.game_status;
     }
 };

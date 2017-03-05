@@ -9,11 +9,11 @@ const STATUS_WAIT = "WAIT",
 module.exports = class Game {
 
     constructor(sio) {
-        this.current_classed = new Partie(shortid.generate(), sio);
         this.partie_perso_liste = [];
         this.player_liste = [];
         this.id_partie = 1;
         this.global_socket = sio;
+        this.current_classed = new Partie(shortid.generate(), this, false);
     }
 
     rejoindre_game(player) {
@@ -24,7 +24,7 @@ module.exports = class Game {
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
         } else {
-            this.current_classed = new Partie(shortid.generate(), this.global_socket);
+            this.current_classed = new Partie(shortid.generate(), this, false);
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
         }
@@ -48,7 +48,7 @@ module.exports = class Game {
         if (this.partie_perso_liste[id_partie] !== null) {
             throw "already exist";
         } else {
-            this.partie_perso_liste[id_partie] = new Partie(id_partie, this.global_socket);
+            this.partie_perso_liste[id_partie] = new Partie(id_partie, this, true);
         }
     }
 
@@ -64,5 +64,13 @@ module.exports = class Game {
         } else {
             return false;
         }
+    }
+
+    destroy_partie(id_partie) {
+        delete this.partie_perso_liste[id_partie];
+    }
+
+    delete_player(pseudo) {
+        delete this.player_liste[pseudo];
     }
 };

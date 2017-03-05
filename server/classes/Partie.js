@@ -6,22 +6,26 @@ const MAX_PLAYER = 2,
     MAX_MANA = 9,
     STATUS_WAIT = "WAIT",
     STATUS_PAUSED = "PAUSED",
-    STATUS_START = "START";
+    STATUS_START = "START",
+    STATUS_END = "END";
 
 module.exports = class Partie {
 
-    constructor(id_partie, global_socket) {
-        this.global_socket = global_socket;
-        this.game_status = STATUS_WAIT;
+    constructor(id_partie, game_manager, partie_perso) {
+        this.partie_perso = partie_perso;
+        this.game_manager = game_manager;
+        this.global_socket = game_manager.global_socket;
+        this.partie_status = STATUS_WAIT;
         this.id_partie = id_partie;
         this.nb_player = 0;
+        this.nb_deco = 0;
         this.liste_player = [];
         this.num_tour = 1;
         this.mana = 1;
         this.timer_tour = null;
         this.current_time = null;
         this.current_player = Math.floor((Math.random() * MAX_PLAYER));
-        this.chat = new Chat(id_partie, global_socket);
+        this.chat = new Chat(id_partie, game_manager.global_socket);
     }
 
     is_full() {
@@ -54,7 +58,7 @@ module.exports = class Partie {
 
     start_partie() {
         var partie = this;
-        this.game_status = STATUS_START;
+        this.partie_status = STATUS_START;
         this.nouveauTour();
         this.timer_tour = setInterval(function() {
             partie.nouveauTour();
@@ -93,8 +97,9 @@ module.exports = class Partie {
         }
     }
 
-    resume_game(pseudo, timer) {
-        if (this.game_status == STATUS_PAUSED) {
+    resume_game(timer) {
+        this.nb_deco--;
+        if (this.partie_status == STATUS_PAUSED) {
             var partie = this;
             setTimeout(function() {
                 partie.start_partie();
@@ -102,10 +107,40 @@ module.exports = class Partie {
         }
     }
 
-    pause_game(pseudo) {
-        if (this.game_status == STATUS_START) {
-            this.game_status = STATUS_PAUSED;
+    pause_game() {
+        if (this.partie_status == STATUS_START) {
+            this.partie_status = STATUS_PAUSED;
             clearInterval(this.timer_tour);
+        }
+    }
+
+    deconnexion_player(pseudo) {
+        //on met le jeu en pause
+        if (this.partie_status == STATUS_START) {
+            this.pause_game();
+        }
+        if (this.partie_status == STATUS_WAIT) {
+            this.delete_player(pseudo);
+        }
+        if (this.partie_status == STATUS_PAUSED) {
+            this.nb_deco++;
+        }
+        return this.partie_status;
+    }
+
+    delete_player(pseudo) {
+        for (var i = 0; i < this.liste_player.length; i++) {
+            if (this.liste_player[i].pseudo == pseudo) {
+                this.liste_player[i].delete_game();
+                this.game_manager.delete_player(this.liste_player[i].pseudo);
+                this.liste_player.splice(i, 1);
+            }
+        }
+        this.nb_player--;
+
+        if(this.nb_player === 0){
+            this.partie_status = STATUS_END;
+            this.game_manager.destroy_partie(this.id_partie);
         }
     }
 
@@ -114,6 +149,6 @@ module.exports = class Partie {
     }
 
     get_status() {
-        return this.game_status;
+        return this.partie_status;
     }
 };

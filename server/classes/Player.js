@@ -1,4 +1,5 @@
-const TIMER_RECONNEXION = 10000;
+const TIMER_RECONNEXION = 10000,
+    STATUS_PAUSED = "PAUSED";
 
 module.exports = class Player {
 
@@ -21,6 +22,10 @@ module.exports = class Player {
         this.socket_function();
     }
 
+    delete_game() {
+        this.partie = null;
+    }
+
     socket_function() {
         var player = this;
 
@@ -35,14 +40,17 @@ module.exports = class Player {
             player.partie.global_socket.in(player.partie.id_partie).emit('deconnexion', {
                 player: player.pseudo,
             });
-            //on met le jeu en pause
-            player.partie.pause_game(player.pseudo);
-            //on garde le temps restant au joueur dans son tour
-            player.time_left_before_deconnexion = (player.partie.current_time + player.partie.get_timer_tour()) - new Date().getTime();
-            //abandon si le joueur ne se reconnecte pas dans le temps imparti
-            player.timer_reconnexion = setTimeout(function() {
-                console.log("fin de partie");
-            }, TIMER_RECONNEXION);
+            //deconnexion du joueur
+            var status = player.partie.deconnexion_player(player.pseudo);
+
+            if (status === STATUS_PAUSED) {
+                //on garde le temps restant au joueur dans son tour
+                player.time_left_before_deconnexion = (player.partie.current_time + player.partie.get_timer_tour()) - new Date().getTime();
+                //abandon si le joueur ne se reconnecte pas dans le temps imparti
+                player.timer_reconnexion = setTimeout(function() {
+                    console.log("fin de partie");
+                }, TIMER_RECONNEXION);
+            }
         });
     }
 
@@ -50,6 +58,6 @@ module.exports = class Player {
         this.socket = player.socket;
         this.socket_function();
         clearTimeout(this.timer_reconnexion);
-        this.partie.resume_game(this.pseudo, this.time_left_before_deconnexion);
+        this.partie.resume_game(this.time_left_before_deconnexion);
     }
-}
+};

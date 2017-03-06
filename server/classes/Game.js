@@ -1,10 +1,7 @@
 const Partie = require('./Partie');
 const Player = require('./Player');
 var shortid = require('shortid');
-
-const STATUS_WAIT = "WAIT",
-    STATUS_PAUSED = "PAUSED",
-    STATUS_START = "START";
+const Constant = require('./Constant');
 
 module.exports = class Game {
 
@@ -58,7 +55,7 @@ module.exports = class Game {
 
     check_is_in_game(new_version_player) {
         var old_version_player = this.player_liste[new_version_player.pseudo];
-        if (old_version_player !== undefined && old_version_player.game !== null && old_version_player.partie.get_status() !== STATUS_WAIT) {
+        if (old_version_player !== undefined && old_version_player.game !== null && old_version_player.partie.get_status() !== Constant.STATUS_WAIT) {
             old_version_player.reconnection(new_version_player);
             return true;
         } else {

@@ -1,5 +1,4 @@
-const TIMER_RECONNEXION = 10000,
-    STATUS_PAUSED = "PAUSED";
+const Constant = require('./Constant');
 
 module.exports = class Player {
 
@@ -43,13 +42,14 @@ module.exports = class Player {
             //deconnexion du joueur
             var status = player.partie.deconnexion_player(player.pseudo);
 
-            if (status === STATUS_PAUSED) {
+            console.log(status)
+            if (status === Constant.STATUS_PAUSED) {
                 //on garde le temps restant au joueur dans son tour
-                player.time_left_before_deconnexion = (player.partie.current_time + player.partie.get_timer_tour()) - new Date().getTime();
+                player.time_left_before_deconnexion = (player.partie.current_time + Constant.TIMER_TOUR) - new Date().getTime();
                 //abandon si le joueur ne se reconnecte pas dans le temps imparti
                 player.timer_reconnexion = setTimeout(function() {
                     console.log("fin de partie");
-                }, TIMER_RECONNEXION);
+                }, Constant.TIMER_RECONNEXION);
             }
         });
     }

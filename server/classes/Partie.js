@@ -1,13 +1,6 @@
 const Chat = require('./Chat');
 require('timers');
-
-const MAX_PLAYER = 2,
-    TIMER_TOUR = 10000,
-    MAX_MANA = 9,
-    STATUS_WAIT = "WAIT",
-    STATUS_PAUSED = "PAUSED",
-    STATUS_START = "START",
-    STATUS_END = "END";
+const Constant = require('./Constant');
 
 module.exports = class Partie {
 
@@ -15,7 +8,7 @@ module.exports = class Partie {
         this.partie_perso = partie_perso;
         this.game_manager = game_manager;
         this.global_socket = game_manager.global_socket;
-        this.partie_status = STATUS_WAIT;
+        this.partie_status = Constant.STATUS_WAIT;
         this.id_partie = id_partie;
         this.nb_player = 0;
         this.nb_deco = 0;
@@ -24,12 +17,12 @@ module.exports = class Partie {
         this.mana = 1;
         this.timer_tour = null;
         this.current_time = null;
-        this.current_player = Math.floor((Math.random() * MAX_PLAYER));
+        this.current_player = Math.floor((Math.random() * Constant.MAX_PLAYER));
         this.chat = new Chat(id_partie, game_manager.global_socket);
     }
 
     is_full() {
-        return this.nb_player == MAX_PLAYER;
+        return this.nb_player == Constant.MAX_PLAYER;
     }
 
     add_player(player) {
@@ -58,11 +51,11 @@ module.exports = class Partie {
 
     start_partie() {
         var partie = this;
-        this.partie_status = STATUS_START;
+        this.partie_status = Constant.STATUS_START;
         this.nouveauTour();
         this.timer_tour = setInterval(function() {
             partie.nouveauTour();
-        }, TIMER_TOUR);
+        }, Constant.TIMER_TOUR);
     }
 
     nouveauTour() {
@@ -84,7 +77,7 @@ module.exports = class Partie {
     }
 
     change_current_player() {
-        if (this.current_player < MAX_PLAYER - 1) {
+        if (this.current_player < Constant.MAX_PLAYER - 1) {
             this.current_player++;
         } else {
             this.current_player = 0;
@@ -92,14 +85,14 @@ module.exports = class Partie {
     }
 
     add_mana() {
-        if (this.mana < MAX_MANA) {
+        if (this.mana < Constant.MAX_MANA) {
             this.mana++;
         }
     }
 
     resume_game(timer) {
         this.nb_deco--;
-        if (this.partie_status == STATUS_PAUSED) {
+        if (this.partie_status == Constant.STATUS_PAUSED) {
             var partie = this;
             setTimeout(function() {
                 partie.start_partie();
@@ -108,21 +101,21 @@ module.exports = class Partie {
     }
 
     pause_game() {
-        if (this.partie_status == STATUS_START) {
-            this.partie_status = STATUS_PAUSED;
+        if (this.partie_status == Constant.STATUS_START) {
+            this.partie_status = Constant.STATUS_PAUSED;
             clearInterval(this.timer_tour);
         }
     }
 
     deconnexion_player(pseudo) {
         //on met le jeu en pause
-        if (this.partie_status == STATUS_START) {
+        if (this.partie_status == Constant.STATUS_START) {
             this.pause_game();
         }
-        if (this.partie_status == STATUS_WAIT) {
+        if (this.partie_status == Constant.STATUS_WAIT) {
             this.delete_player(pseudo);
         }
-        if (this.partie_status == STATUS_PAUSED) {
+        if (this.partie_status == Constant.STATUS_PAUSED) {
             this.nb_deco++;
         }
         return this.partie_status;
@@ -138,14 +131,10 @@ module.exports = class Partie {
         }
         this.nb_player--;
 
-        if(this.nb_player === 0){
-            this.partie_status = STATUS_END;
+        if (this.nb_player === 0) {
+            this.partie_status = Constant.STATUS_END;
             this.game_manager.destroy_partie(this.id_partie);
         }
-    }
-
-    get_timer_tour() {
-        return TIMER_TOUR;
     }
 
     get_status() {

@@ -8,6 +8,7 @@ module.exports = class Player {
         this.partie = null;
         this.time_left_before_deconnexion = null;
         this.timer_reconnexion = null;
+        this.deck = null;
     }
 
     toJson() {
@@ -19,6 +20,10 @@ module.exports = class Player {
     add_to_game(partie) {
         this.partie = partie;
         this.socket_function();
+    }
+
+    add_deck(deck){
+        this.deck = deck ;
     }
 
     delete_game() {

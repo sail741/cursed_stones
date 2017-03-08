@@ -50,9 +50,21 @@ module.exports = class Partie {
     }
 
     start_partie() {
-        var partie = this;
         this.partie_status = Constant.STATUS_START;
         this.nouveauTour();
+        this.add_deck();
+    }
+
+    add_deck() {
+        for (var i = 0; i < this.liste_player.length; i++) {
+            //aller chercher un deck en base de donnees
+            var deck = {};
+            this.liste_player[i].add_deck(deck);
+        }
+    }
+
+    run_timer_tour() {
+        var partie = this;
         this.timer_tour = setInterval(function() {
             partie.nouveauTour();
         }, Constant.TIMER_TOUR);

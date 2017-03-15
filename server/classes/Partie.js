@@ -1,6 +1,8 @@
 const Chat = require('./Chat');
 require('timers');
 const Constant = require('./Constant');
+const Utils = require('./Utils');
+const Test = require('./Test');
 
 module.exports = class Partie {
 
@@ -59,7 +61,9 @@ module.exports = class Partie {
     add_deck() {
         for (var i = 0; i < this.liste_player.length; i++) {
             //aller chercher un deck en base de donnees
-            var deck = {};
+            var json_deck = Test.json_deck;
+            var deck = Utils.convertJSONToDeck(json_deck);
+            deck.shuffle_deck();
             this.liste_player[i].add_deck(deck);
         }
     }
@@ -160,7 +164,7 @@ module.exports = class Partie {
         }
     }
 
-    abandon(pseudo){
+    abandon(pseudo) {
         //gestion des points ici
         //notifier fin de partie
         clearInterval(this.timer_tour);

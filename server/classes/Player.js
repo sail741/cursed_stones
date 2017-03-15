@@ -27,6 +27,7 @@ module.exports = class Player {
     }
 
     delete_game() {
+        clearInterval(this.timer_reconnexion);
         this.partie = null;
     }
 
@@ -53,7 +54,7 @@ module.exports = class Player {
                 player.time_left_before_deconnexion = (player.partie.current_time + Constant.TIMER_TOUR) - new Date().getTime();
                 //abandon si le joueur ne se reconnecte pas dans le temps imparti
                 player.timer_reconnexion = setTimeout(function() {
-                    console.log("fin de partie");
+                    player.partie.abandon(player.pseudo);
                 }, Constant.TIMER_RECONNEXION);
             }
         });

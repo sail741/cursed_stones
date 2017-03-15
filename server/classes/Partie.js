@@ -53,6 +53,7 @@ module.exports = class Partie {
         this.partie_status = Constant.STATUS_START;
         this.nouveauTour();
         this.add_deck();
+        this.run_timer_tour();
     }
 
     add_deck() {
@@ -129,6 +130,10 @@ module.exports = class Partie {
         }
         if (this.partie_status == Constant.STATUS_PAUSED) {
             this.nb_deco++;
+            if (this.nb_deco == Constant.MAX_PLAYER) {
+                this.delete_all_player();
+                this.destroy_partie();
+            }
         }
         return this.partie_status;
     }
@@ -142,11 +147,30 @@ module.exports = class Partie {
             }
         }
         this.nb_player--;
-
         if (this.nb_player === 0) {
-            this.partie_status = Constant.STATUS_END;
-            this.game_manager.destroy_partie(this.id_partie);
+            this.destroy_partie();
         }
+    }
+
+    delete_all_player() {
+        //faire la gestion des points ici
+        for (var i = 0; i < this.liste_player.length; i++) {
+            this.liste_player[i].delete_game();
+            this.game_manager.delete_player(this.liste_player[i].pseudo);
+        }
+    }
+
+    abandon(pseudo){
+        //gestion des points ici
+        //notifier fin de partie
+        clearInterval(this.timer_tour);
+        this.delete_all_player();
+        this.destroy_partie();
+    }
+
+    destroy_partie() {
+        this.partie_status = Constant.STATUS_END;
+        this.game_manager.destroy_partie(this.id_partie);
     }
 
     get_status() {

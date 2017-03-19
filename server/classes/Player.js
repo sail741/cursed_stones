@@ -9,6 +9,8 @@ module.exports = class Player {
         this.time_left_before_deconnexion = null;
         this.timer_reconnexion = null;
         this.deck = null;
+        this.hand = null;
+        this.etat = null;
     }
 
     toJson() {
@@ -22,8 +24,13 @@ module.exports = class Player {
         this.socket_function();
     }
 
-    add_deck(deck){
-        this.deck = deck ;
+    add_deck(deck, first_player) {
+        this.deck = deck;
+        this.hand = deck.get_hand(first_player);
+        var hand = this.hand;
+        this.socket.emit('FirstHand', {
+            hand: hand
+        });
     }
 
     delete_game() {
@@ -36,6 +43,21 @@ module.exports = class Player {
 
         player.socket.on('message', function(message) {
             player.partie.chat.add_message(player.pseudo, message);
+        });
+
+        //on ne pioche qu'une fois en debut de tours
+        player.socket.on('piocheCarte', function() {
+            if (player.etat === Constant.ETAT_PIOCHE) {
+                var card = player.deck.piocher_carte();
+                player.hand.push(card);
+                player.etat = Constant.ETAT_PLAYING;
+
+                //on renvoie la main du joueur + la nouvelle carte
+                player.socket.emit('piocheCarte', {
+                    hand: player.hand,
+                    new_card: card
+                });
+            }
         });
 
 

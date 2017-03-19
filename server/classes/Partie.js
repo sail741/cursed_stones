@@ -53,39 +53,40 @@ module.exports = class Partie {
 
     start_partie() {
         this.partie_status = Constant.STATUS_START;
+        this.init_player();
         this.nouveauTour();
-        this.add_deck();
         this.run_timer_tour();
     }
 
-    add_deck() {
+    init_player() {
         for (var i = 0; i < this.liste_player.length; i++) {
             //aller chercher un deck en base de donnees
             var json_deck = Test.json_deck;
             var deck = Utils.convertJSONToDeck(json_deck);
             deck.shuffle_deck();
-            this.liste_player[i].add_deck(deck);
+            this.liste_player[i].add_deck(deck, i == this.current_player);
         }
     }
 
     run_timer_tour() {
         var partie = this;
         this.timer_tour = setInterval(function() {
+            partie.change_current_player();
+            partie.num_tour++;
+            partie.add_mana();
             partie.nouveauTour();
         }, Constant.TIMER_TOUR);
     }
 
     nouveauTour() {
         for (var i = 0; i < this.liste_player.length; i++) {
+            this.liste_player[i].etat = (i == this.current_player ? Constant.ETAT_PIOCHE : Constant.ETAT_STAY);
             this.liste_player[i].socket.emit('nouveauTour', {
                 Self: i === this.current_player,
                 Num_tour: this.num_tour,
                 Mana: this.mana
             });
         }
-        this.change_current_player();
-        this.num_tour++;
-        this.add_mana();
         this.current_time = new Date().getTime();
     }
 

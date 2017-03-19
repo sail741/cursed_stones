@@ -47,16 +47,20 @@ module.exports = class Player {
 
         //on ne pioche qu'une fois en debut de tours
         player.socket.on('piocheCarte', function() {
-            if (player.etat === Constant.ETAT_PIOCHE) {
-                var card = player.deck.piocher_carte();
-                player.hand.push(card);
-                player.etat = Constant.ETAT_PLAYING;
+            try {
+                if (player.etat === Constant.ETAT_PIOCHE) {
+                    var card = player.deck.piocher_carte();
+                    player.hand.push(card);
+                    player.etat = Constant.ETAT_PLAYING;
 
-                //on renvoie la main du joueur + la nouvelle carte
-                player.socket.emit('piocheCarte', {
-                    hand: player.hand,
-                    new_card: card
-                });
+                    //on renvoie la main du joueur + la nouvelle carte
+                    player.socket.emit('piocheCarte', {
+                        hand: player.hand,
+                        new_card: card
+                    });
+                }
+            } catch (exception) {
+                player.socket.emit('information',exception.message);
             }
         });
 

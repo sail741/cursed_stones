@@ -29,9 +29,8 @@ module.exports = class Deck {
     piocher_carte() {
         if (this.card_list.length !== 0) {
             return this.card_list.pop();
-        }
-        else {
-            return null;
+        } else {
+            throw new Error("plus de carte");
         }
     }
 

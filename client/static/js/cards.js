@@ -5,36 +5,7 @@ var card_selected = null;
 var cardsSelf = document.querySelector('.cards.self');
 
 var hand_cards = [
-	{
-		name: 'C1',
-		uid: 'C1', 
-		img: '/static/img/cards/board_c1.png'
-	},
-	{
-		name: 'C2',
-		uid: 'C2', 
-		img: '/static/img/cards/board_c1.png'
-	},
-	{
-		name: 'C3',
-		uid: 'C3', 
-		img: '/static/img/cards/board_c1.png'
-	},
-	{
-		name: 'C4',
-		uid: 'C4', 
-		img: '/static/img/cards/board_c1.png'
-	},
-	{
-		name: 'C5',
-		uid: 'C5', 
-		img: '/static/img/cards/board_c1.png'
-	},
-	{
-		name: 'C6',
-		uid: 'C6', 
-		img: '/static/img/cards/board_c1.png'
-	}
+
 ];
 
 var timeoutIdPiocheRedraw = null;
@@ -103,9 +74,15 @@ function indexOfCardFromHand(card){
 
 /// Action click sur carte
 function selectCards(e){
+
+	var translateYN100 = 'translateY(-100px)';
+
 	e.preventDefault();
 	
 	if(this.className.indexOf('selected') > -1){
+		this.className = this.className.replace('selected', '');
+		this.style.transform = this.style.transform.replace('translateY(-100px)', '');
+		card_selected = null;
 		return;
 	}	
 
@@ -114,7 +91,7 @@ function selectCards(e){
 	for(var i = 0; i < selectedCards.length; i++){
 		selectedCards[i].className = selectedCards[i].className.replace('selected', '').trim();
 		selectedCards[i].className = selectedCards[i].className.replace('no-hover', '').trim();
-		selectedCards[i].style.transform = selectedCards[i].style.transform.replace('translateY(-100px)', ''); 
+		selectedCards[i].style.transform = selectedCards[i].style.transform.replace(translateYN100, ''); 
 		
 	}
 
@@ -125,7 +102,7 @@ function selectCards(e){
 
 	card_selected = card;
 
-	this.style.transform += 'translateY(-100px)'; 
+	this.style.transform += translateYN100; 
 	
 	var that = this;
 
@@ -137,11 +114,10 @@ function selectCards(e){
 	return false;
 }
 
-function picocheCard(cardsElem, card){
+function piocheCard(cardsElem, card){
 	hand_cards.push(card);
 
 	
-
 	var divCard = document.createElement('div')
 	divCard.dataset.uid = card.uid;
 	divCard.className = "card comming";
@@ -154,9 +130,8 @@ function picocheCard(cardsElem, card){
 	timeoutIdPiocheRedraw = setTimeout(function(){
 		drawsCards(cardsElem, hand_cards);
 	}, 2000);
-
-
 }
+
 
 
 
@@ -169,7 +144,7 @@ drawsCards(cardsSelf, hand_cards);
 var c7 = {
 		name: 'C7',
 		uid: 'C7', 
-		img: '/static/img/cards/board_c1.png'
+		img: 'board_c1.png'
 	};
 
 

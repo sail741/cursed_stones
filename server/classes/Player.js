@@ -75,9 +75,12 @@ module.exports = class Player {
                 //on garde le temps restant au joueur dans son tour
                 player.time_left_before_deconnexion = (player.partie.current_time + Constant.TIMER_TOUR) - new Date().getTime();
                 //abandon si le joueur ne se reconnecte pas dans le temps imparti
-                player.timer_reconnexion = setTimeout(function() {
-                    player.partie.abandon(player.pseudo);
-                }, Constant.TIMER_RECONNEXION);
+                if(player.partie){ //WORKAROUND temporaire pour issue #2
+                    player.timer_reconnexion = setTimeout(function() {
+                        player.partie.abandon(player.pseudo);
+                    }, Constant.TIMER_RECONNEXION);    
+                }
+                
             }
         });
     }

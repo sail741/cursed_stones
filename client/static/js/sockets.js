@@ -1,4 +1,4 @@
-var sio = io();
+var sio = io({reconnection: false});
 
 sio.on('connect', function(){
 	console.log('Connected');

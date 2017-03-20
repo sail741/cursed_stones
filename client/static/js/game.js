@@ -1,4 +1,4 @@
-var TOUR_TIME = 1000 * 90; // 1min30
+var TOUR_TIME = 1000 * 120; // 2 min
 
 var tourTimerId = null;
 

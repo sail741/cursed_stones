@@ -68,27 +68,26 @@ function convertPosStrToObj(str){
 	return pos;
 }
 
-function convertPosToStr(pos){
-	return pos.x + '-' + pos.y;
-}
-
 function clickOnCase(){
 	var boardCasePos = this.dataset.pos;
 
 	if(card_selected){ //dans cards.js
+		requestCards(card_selected, boardCasePos);
+	}
+}
 
-		placeOnBoard(boardCasePos, card_selected);
-		var cardDiv = removeCard(cardsSelf, card_selected);
+function doPlaceCard(card, boardCasePos){
+	placeOnBoard(boardCasePos, card);
+		var cardDiv = removeCard(cardsSelf, card);
 		if(cardDiv != null){
 			cardDiv.style.transform=  '';
 			cardDiv.className = 'card placing'
-			card_selected = null;
+			unSelectCards();
 
 			setInterval(function(){
 				cardDiv.remove()
 			}, 1900);
 		}
-	}
 }
 
 function listAllEntitiesForPlayer(selfEntity){

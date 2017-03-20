@@ -18,11 +18,56 @@ sio.on('nouveauTour', function(data){
 
 sio.on('FirstHand', function(data){
 	console.log('first hand receive');
-	hand_cards = data.hand;
-	drawsCards(cardsSelf, hand_cards);
-})
+	setSelfHand(data.hand);
+});
+
+sio.on('placeCard', function(data){ 
+	/*
+{
+	sucess: Boolean,
+	error?: String,
+	mana_left: int,
+	hand:  Card[],
+
+}
+	*/
+
+	if(data.sucess){
+		setManaSelf(data.mana_left);
+		setHand(data.hand);
+
+	}else{
+		console.error(data.error);
+	}
+
+});
+
+sio.on('editBoard', function(data){
+/*
+{
+	position: {
+		row: Int,
+		column: Int
+	},
+	entity?: Entity
+
+}
+*/
+	if(entity){
+		drawEntity(entiy);	
+	}else{
+		removeEntity(convertPositionServerToClient(pos));
+	}
+	
+
+});
+
 
 function requestCards(){
 	sio.emit('piocheCarte');
+}
+
+function requestPlaceCard(card, pos){
+	sio.emit('placeCard', {card: card, position: convertPositionClientToServer(pos)})
 }
 

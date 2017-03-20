@@ -25,6 +25,16 @@ function buildEntityDiv(entity){
 	return div;
 }
 
+function removeEntity(pos){
+	var posStr = convertPosToStr(entity.pos);
+	var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
+	if(boardCase != null){
+		while (boardCase.firstChild) {
+		    boardCase.removeChild(boardCase.firstChild);
+		}
+	}
+}
+
 function drawEntity(entity){
 	console.log('.entity[data-entity="'+entity.uid+'"]');
 	var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');

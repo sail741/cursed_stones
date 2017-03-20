@@ -1,7 +1,9 @@
 var sio = io();
 
 sio.on('connect', function(){
-	console.log('ok?');
+	console.log('Connected');
+	console.log('send join game');
+	joinGame();
 });
 
 sio.on('error', function(){

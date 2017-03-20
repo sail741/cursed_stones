@@ -25,10 +25,11 @@ function drawsCards(elem, cards){
 	for(var i = 0; i < cards.length; i++){
 
 		var card = cards[i];
-		var divCard = document.createElement('div');
-		divCard.className = "card";
+		if(card == null){
+			continue; //WORKAROUND because Kevin... 
+		}
+		var divCard = buildDOMCard(card);
 		divCard.dataset.card_index = i;
-		divCard.dataset.uid = card.uid;
 
 		let move = translateStart;
 		translateStart += WIDTH;
@@ -44,6 +45,11 @@ function drawsCards(elem, cards){
 		elem.appendChild(divCard);
 
 	}
+}
+
+function setSelfHand(hand){
+	hand_cards = hand;
+	drawsCards(cardsSelf, hand_cards);
 }
 
 function removeCard(cardsElem, card){
@@ -117,9 +123,9 @@ function selectCards(e){
 function piocheCard(cardsElem, card){
 	hand_cards.push(card);
 
+	console.log("piocheCard", card);
 	
-	var divCard = document.createElement('div')
-	divCard.dataset.uid = card.uid;
+	var divCard = buildDOMCard(card);
 	divCard.className = "card comming";
 	cardsElem.appendChild(divCard);
 
@@ -133,18 +139,36 @@ function piocheCard(cardsElem, card){
 }
 
 
+function buildDOMCard(card){
+	var divCard = document.createElement('div');
+	divCard.className = "card";
+	
+	divCard.dataset.uid = card.uid;
+
+	var titleSpan = document.createElement('span');
+	titleSpan.className = "title";
+	titleSpan.textContent = card.name;
+
+	divCard.appendChild(titleSpan);
+
+	return divCard;
+	
+}
+
+function unSelectCards(){
+	//TODO
+}
+
+
+//drawsCards(cardsSelf, hand_cards);
 
 
 
-drawsCards(cardsSelf, hand_cards);
 
-
-
-
-var c7 = {
-		name: 'C7',
-		uid: 'C7', 
-		img: 'board_c1.png'
-	};
+// var c7 = {
+// 		name: 'C7',
+// 		uid: 'C7', 
+// 		img: 'board_c1.png'
+// 	};
 
 

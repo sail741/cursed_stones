@@ -20,6 +20,7 @@ module.exports = class Partie {
         this.timer_tour = null;
         this.current_time = null;
         this.current_player = Math.floor((Math.random() * Constant.MAX_PLAYER));
+        this.id_first_player = this.current_player;
         this.chat = new Chat(id_partie, game_manager.global_socket);
     }
 
@@ -72,8 +73,10 @@ module.exports = class Partie {
         var partie = this;
         this.timer_tour = setInterval(function() {
             partie.change_current_player();
-            partie.num_tour++;
-            partie.add_mana();
+            if (partie.current_player == partie.id_first_player) {
+                partie.num_tour++;
+                partie.add_mana();
+            }
             partie.nouveauTour();
         }, Constant.TIMER_TOUR);
     }

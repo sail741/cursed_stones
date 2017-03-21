@@ -4,7 +4,8 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 sequelize = new Sequelize('cursed_stones', 'cursed_stones', 'cursed_stones', {
 		host: '164.132.96.202',
-		dialect: 'mysql'
+		dialect: 'mysql', 
+		logging: false
 });
 
 exports.sequelizeStore = new SequelizeStore({

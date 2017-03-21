@@ -10,7 +10,7 @@ sio.on('piocheCarte', function(data){
 
 sio.on('nouveauTour', function(data){
 	console.log('nouveau tour', data);
-	setTourData(data.Self, data.Num_tour, data.mana);
+	setTourData(data.Self, data.Num_tour, data.Mana);
 	if(data.Self){
 		startSelfTour();
 	}

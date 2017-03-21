@@ -35,6 +35,7 @@ module.exports = class Player {
 
     delete_game() {
         clearTimeout(this.timer_reconnexion);
+        this.socket.disconnect();
         this.partie = null;
     }
 

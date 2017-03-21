@@ -11,6 +11,7 @@ module.exports = class Player {
         this.deck = null;
         this.hand = null;
         this.etat = null;
+        this.mana = 0;
     }
 
     toJson() {
@@ -85,6 +86,52 @@ module.exports = class Player {
                 }, Constant.TIMER_RECONNEXION);
             }
         });
+
+        player.socket.on('placeCard', function(json) {
+            try {
+                var card = player.get_card(json.card.uid);
+                if (card === null) {
+                    throw new Error(Constant.UID_NOT_EXIST_IN_HAND);
+                }
+                if (card.mana > player.mana) {
+                    throw new Error(Constant.NEED_MORE_MANA);
+                }
+                player.delete_card_in_hand(card);
+                if (player.partie.board.put_card(player.pseudo, card, json.position)) {
+                    player.mana = player.mana - card.mana;
+                }
+                return {
+                    hand: hand,
+                    sucess: true,
+                    mana_left: player.mana
+                };
+            } catch (exception) {
+                return {
+                    hand: hand,
+                    error: exception.message,
+                    sucess: false,
+                    mana_left: player.mana
+                };
+            }
+        });
+    }
+
+    get_card(uid) {
+        for (var card in hand) {
+            if (card.uid == uid) {
+                return card;
+            }
+        }
+        return null;
+    }
+
+    delete_card_in_hand(card) {
+        var index = hand.indexOf(card);
+        if (index > -1) {
+            array.splice(index, 1);
+        } else {
+            throw new Error(Constant.IMPOSSIBLE_DELETE_CARD_IN_HAND);
+        }
     }
 
     reconnection(player) {

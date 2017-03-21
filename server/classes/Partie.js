@@ -2,6 +2,7 @@ const Chat = require('./Chat');
 require('timers');
 const Constant = require('./Constant');
 const Utils = require('./Utils');
+const Board = require('./Board');
 const Test = require('./Test');
 
 module.exports = class Partie {
@@ -19,6 +20,7 @@ module.exports = class Partie {
         this.mana = 1;
         this.timer_tour = null;
         this.current_time = null;
+        this.board = null;
         this.current_player = Math.floor((Math.random() * Constant.MAX_PLAYER));
         this.id_first_player = this.current_player;
         this.chat = new Chat(id_partie, game_manager.global_socket);
@@ -54,6 +56,7 @@ module.exports = class Partie {
 
     start_partie() {
         this.partie_status = Constant.STATUS_START;
+        this.board = new Board(this.liste_player[0].pseudo, this.liste_player[1].pseudo)
         this.init_player();
         this.nouveauTour();
         this.run_timer_tour();
@@ -84,6 +87,7 @@ module.exports = class Partie {
     nouveauTour() {
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].etat = (i == this.current_player ? Constant.ETAT_PIOCHE : Constant.ETAT_STAY);
+            this.liste_player[i].mana = this.mana;
             this.liste_player[i].socket.emit('nouveauTour', {
                 Self: i === this.current_player,
                 Num_tour: this.num_tour,

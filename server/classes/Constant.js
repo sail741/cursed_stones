@@ -11,3 +11,13 @@ exports.ETAT_PLAYING = "playing";
 exports.ETAT_STAY = "stay";
 exports.NB_CARD_START_FIRST_PLAYER = 4;
 exports.NB_CARD_START_SECOND_PLAYER = 5;
+exports.WIDTH_SIZE = 16;
+exports.HEIGHT_SIZE = 8;
+exports.WIDTH_PLAYER_ZONE = 3;
+
+exports.ERROR_NOT_IN_GOOD_ZONE = "Vous ne pouvez pas placer de carte ici";
+exports.ERROR_ENTITY_ALREADY_HERE = "Un personnage est déjà présent sur cette case";
+exports.UID_NOT_EXIST_IN_HAND = "La carte a été altérée";
+exports.NEED_MORE_MANA = "Vous avez besoin de plus de mana";
+exports.IMPOSSIBLE_DELETE_CARD_IN_HAND = "Impossible de supprimé la carte de votre main, elle n'existe plus";
+exports.POSITION_INVALID = "La position demandé est invalide";

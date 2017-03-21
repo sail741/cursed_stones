@@ -29,7 +29,7 @@ module.exports = class Player {
         this.deck = deck;
         this.hand = deck.get_hand(first_player);
         var hand = this.hand;
-        this.socket.emit('FirstHand', {
+        this.socket.emit(Constant.SOCKET_FIRST_HAND, {
             hand: hand
         });
     }
@@ -43,12 +43,12 @@ module.exports = class Player {
     socket_function() {
         var player = this;
 
-        player.socket.on('message', function(message) {
+        player.socket.on(Constant.SOCKET_MESSAGE, function(message) {
             player.partie.chat.add_message(player.pseudo, message);
         });
 
         //on ne pioche qu'une fois en debut de tours
-        player.socket.on('piocheCarte', function() {
+        player.socket.on(Constant.SOCKET_GET_CARD, function() {
             try {
                 if (player.etat === Constant.ETAT_PIOCHE) {
                     var card = player.deck.piocher_carte();
@@ -56,21 +56,21 @@ module.exports = class Player {
                     player.etat = Constant.ETAT_PLAYING;
 
                     //on renvoie la main du joueur + la nouvelle carte
-                    player.socket.emit('piocheCarte', {
+                    player.socket.emit(Constant.SOCKET_GET_CARD, {
                         hand: player.hand,
                         new_card: card
                     });
                 }
             } catch (exception) {
-                player.socket.emit('information', exception.message);
+                player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });
 
 
-        player.socket.on('disconnect', function() {
+        player.socket.on(Constant.SOCKET_DISCONNECT, function() {
             console.log('joueur ' + player.pseudo + ' a deconnecte de la partie ' + player.partie.id_partie);
             //on previens les autres joueurs de la deconnexion
-            player.partie.global_socket.in(player.partie.id_partie).emit('deconnexion', {
+            player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_SIGNAL_DISCONNECT, {
                 player: player.pseudo,
             });
             //deconnexion du joueur
@@ -87,7 +87,7 @@ module.exports = class Player {
             }
         });
 
-        player.socket.on('placeCard', function(json) {
+        player.socket.on(Constant.SOCKET_PLACE_CARD, function(json) {
             try {
                 var card = player.get_card(json.card.uid);
                 if (card === null) {

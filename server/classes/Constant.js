@@ -21,3 +21,16 @@ exports.UID_NOT_EXIST_IN_HAND = "La carte a été altérée";
 exports.NEED_MORE_MANA = "Vous avez besoin de plus de mana";
 exports.IMPOSSIBLE_DELETE_CARD_IN_HAND = "Impossible de supprimé la carte de votre main, elle n'existe plus";
 exports.POSITION_INVALID = "La position demandé est invalide";
+exports.EMPTY_DECK = "plus de carte";
+exports.GAME_NAME_ALREADY_EXIST = "le nom de partie est déja utilisé";
+exports.GAME_FULL = "la partie est complète";
+
+exports.SOCKET_DISCONNECT = "disconnect";
+exports.SOCKET_SIGNAL_DISCONNECT = "signalDisconnect";
+exports.SOCKET_CHAT = "chat";
+exports.SOCKET_NEW_TOUR = "nouveauTour";
+exports.SOCKET_FIRST_HAND = "FirstHand";
+exports.SOCKET_MESSAGE = "message";
+exports.SOCKET_GET_CARD = "piocheCarte";
+exports.SOCKET_INFORMATION = "information";
+exports.SOCKET_PLACE_CARD = "placeCard";

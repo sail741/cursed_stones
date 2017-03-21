@@ -30,7 +30,7 @@ module.exports = class Deck {
         if (this.card_list.length !== 0) {
             return this.card_list.pop();
         } else {
-            throw new Error("plus de carte");
+            throw new Error(Constant.EMPTY_DECK);
         }
     }
 

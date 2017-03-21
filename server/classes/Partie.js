@@ -32,7 +32,7 @@ module.exports = class Partie {
 
     add_player(player) {
         if (this.is_full()) {
-            throw "is_full";
+            throw new Error(Constant.GAME_FULL);
         }
         this.liste_player.push(player);
         player.add_to_game(this);
@@ -88,7 +88,7 @@ module.exports = class Partie {
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].etat = (i == this.current_player ? Constant.ETAT_PIOCHE : Constant.ETAT_STAY);
             this.liste_player[i].mana = this.mana;
-            this.liste_player[i].socket.emit('nouveauTour', {
+            this.liste_player[i].socket.emit(Constant.SOCKET_NEW_TOUR, {
                 Self: i === this.current_player,
                 Num_tour: this.num_tour,
                 Mana: this.mana

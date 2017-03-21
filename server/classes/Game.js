@@ -43,7 +43,7 @@ module.exports = class Game {
 
     create_perso(id_partie) {
         if (this.partie_perso_liste[id_partie] !== null) {
-            throw "already exist";
+            throw new Error(Constant.GAME_NAME_ALREADY_EXIST);
         } else {
             this.partie_perso_liste[id_partie] = new Partie(id_partie, this, true);
         }

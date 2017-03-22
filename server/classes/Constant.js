@@ -13,7 +13,7 @@ exports.NB_CARD_START_FIRST_PLAYER = 4;
 exports.NB_CARD_START_SECOND_PLAYER = 5;
 exports.WIDTH_SIZE = 16;
 exports.HEIGHT_SIZE = 8;
-exports.WIDTH_PLAYER_ZONE = 3;
+exports.WIDTH_PLAYER_ZONE = 5;
 
 exports.ERROR_NOT_IN_GOOD_ZONE = "Vous ne pouvez pas placer de carte ici";
 exports.ERROR_ENTITY_ALREADY_HERE = "Un personnage est déjà présent sur cette case";
@@ -34,3 +34,5 @@ exports.SOCKET_MESSAGE = "message";
 exports.SOCKET_GET_CARD = "piocheCarte";
 exports.SOCKET_INFORMATION = "information";
 exports.SOCKET_PLACE_CARD = "placeCard";
+exports.SOCKET_OPPENENT_NOTIFY_CHANGE = "adversaireChange";
+exports.SOCKET_EDIT_BOARD = "editBoard";

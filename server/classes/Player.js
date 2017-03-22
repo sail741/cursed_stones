@@ -97,13 +97,20 @@ module.exports = class Player {
                 if (card === null) {
                     throw new Error(Constant.UID_NOT_EXIST_IN_HAND);
                 }
-                if (card.mana > player.mana) {
+                if (card.cost > player.mana) {
                     throw new Error(Constant.NEED_MORE_MANA);
                 }
+                var entity = player.partie.board.put_card(player.pseudo, card, json.position);
                 player.delete_card_in_hand(card);
-                if (player.partie.board.put_card(player.pseudo, card, json.position)) {
-                    player.mana = player.mana - card.mana;
-                }
+                player.mana = player.mana - card.mana;
+                player.socket.broadcast.to(player.partie.id_partie).emit(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
+                    mana_left: player.mana,
+                    cards_change: -1
+                });
+                player.partie.global_socket.sockets.in(player.partie.id_partie).emit(Constant.SOCKET_EDIT_BOARD, {
+                    position: json.position,
+                    entity: entity
+                });
                 player.socket.emit(Constant.SOCKET_PLACE_CARD, {
                     hand: player.hand,
                     sucess: true,

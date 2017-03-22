@@ -21,7 +21,6 @@ module.exports = class Game {
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
         } else {
-            console.log("new classed game");
             this.current_classed = new Partie(shortid.generate(), this, false);
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;

@@ -32,8 +32,9 @@ module.exports = class Board {
         if (!this.no_entity_in_position(position)) {
             throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
         }
-        this.board[position.row][position.column] = convert_card_to_entity(pseudo, card);
-        return true;
+        var entity = this.convert_card_to_entity(pseudo, card);
+        this.board[position.row][position.column] = entity;
+        return entity;
     }
 
     is_in_left_zone(position) {
@@ -53,5 +54,9 @@ module.exports = class Board {
             return true;
         }
         throw new Error(Constant.POSITION_INVALID);
+    }
+
+    no_entity_in_position(position){
+      return this.board[position.row][position.column] === null;
     }
 };

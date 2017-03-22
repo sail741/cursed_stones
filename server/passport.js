@@ -14,19 +14,15 @@ passport.deserializeUser(function(user, done) {
 //strategie de connection avec passport
 passport.use(new LocalStrategy(
   //fonction de retour de la base de donnees
-  function(email, password, done) {
+  function(username, password, done) {
     //a commenter lors de l'assemblage
-    return done(null,{
-        name: email,
-        mail: 'j@f.r'
-      });
-    model.connect(email,password,function(json) {
+    model.users.connect(username,password,function(json) {
       //si l'user n'existe pas on renvoie une erreur
-      if(json.statut == 0){
+      if(json.status == 0){
         done(null,false, { message: json.error })
       }
       //sinon on retourne l'user
-      return done(null, json.json_user);
+      return done(null, json.user);
     });
   }
 ));

@@ -4,7 +4,8 @@ module.exports = class Player {
 
     constructor(socket) {
         this.socket = socket;
-        this.pseudo = socket.request.user.name;
+        this.pseudo = socket.request.user.username;
+        this.id_user = socket.request.user.id_user;
         this.partie = null;
         this.time_left_before_deconnexion = null;
         this.timer_reconnexion = null;

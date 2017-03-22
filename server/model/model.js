@@ -7,19 +7,9 @@ var cards_magic = sequelize.import("./cards_magic");
 var decks = sequelize.import("./decks");
 var histo = sequelize.import("./histo");
 
-
-function connect(email, pass_unhashed) {
-	var crypto = require('crypto');
-	var grain = 'easy';
-	var sel = 'hash';
-	var hash = crypto.createHash('sha256').update(grain + pass_unhashed + sel).digest('base64');
-	users.findAll({
-		attributes: ['id_user'],
-		where: {
-    		email: email,
-    		password: hash
-		}
-	});
-}
-
-connect("test", "aaaaaaa");
+exports.users = users;
+exports.cards = cards;
+exports.cards_chara = cards_chara;
+exports.cards_magic = cards_magic;
+exports.decks = decks;
+exports.histo = histo;

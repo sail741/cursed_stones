@@ -20,7 +20,7 @@ module.exports = function(server, storeSquelize) {
         console.log('Un client est connecté !');
 
         socket.on('joinGame', function(id_user) {
-            console.log(socket.request.user.name);
+            console.log(socket.request.user.username);
             game.rejoindre_game(new Player(socket));
         });
     });

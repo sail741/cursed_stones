@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    email: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -23,6 +23,28 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'users'
+    tableName: 'users',
+    classMethods: {
+    	connect: function(username, pass_unhashed, callback) {
+			var crypto = require('crypto');
+			var grain = 'easy';
+			var sel = 'hash';
+			var hash = crypto.createHash('sha256').update(grain + pass_unhashed + sel).digest('base64');
+			this.findAll({
+				attributes: ['id_user', 'username'],
+				where: {
+		    		username: username,
+		    		password: hash
+				}
+			}).then(function(res) {
+				if(res.length == 0) {
+					callback({"status":0, "error":"NOT_FOUND"});
+				} else {
+					var user = {"id_user":res[0].get("id_user"), "username":res[0].get("username")}
+					callback({"status":1, "user":user});
+				}
+			});
+      },
+    }
   });
 };

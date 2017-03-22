@@ -13,6 +13,7 @@ module.exports = class Player {
         this.hand = null;
         this.etat = null;
         this.mana = 0;
+        this.is_disconnected = false;
     }
 
     toJson() {
@@ -70,6 +71,8 @@ module.exports = class Player {
 
         player.socket.on(Constant.SOCKET_DISCONNECT, function() {
             console.log('joueur ' + player.pseudo + ' a deconnecte de la partie ' + player.partie.id_partie);
+
+            player.is_disconnected = true;
             //on previens les autres joueurs de la deconnexion
             player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_SIGNAL_DISCONNECT, {
                 player: player.pseudo,

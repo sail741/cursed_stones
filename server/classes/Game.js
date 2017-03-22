@@ -17,10 +17,11 @@ module.exports = class Game {
         if (this.check_is_in_game(player)) {
             return true;
         }
-        if (!this.current_classed.is_full()) {
+        if (!this.current_classed.is_full() && this.current_classed.status === Constant.STATUS_WAIT) {
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
         } else {
+            console.log("new classed game");
             this.current_classed = new Partie(shortid.generate(), this, false);
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
@@ -55,12 +56,19 @@ module.exports = class Game {
 
     check_is_in_game(new_version_player) {
         var old_version_player = this.player_liste[new_version_player.pseudo];
-        if (old_version_player !== undefined && old_version_player.game !== null && old_version_player.partie.get_status() !== Constant.STATUS_WAIT) {
-            old_version_player.reconnection(new_version_player);
-            return true;
-        } else {
-            return false;
+
+        if (old_version_player !== undefined) {
+            if (!old_version_player.is_disconnected) {
+                old_version_player.socket.disconnect();
+                return false;
+            } else {
+                if (old_version_player.partie !== null && old_version_player.partie.get_status() !== Constant.STATUS_WAIT) {
+                    old_version_player.reconnection(new_version_player);
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     destroy_partie(id_partie) {

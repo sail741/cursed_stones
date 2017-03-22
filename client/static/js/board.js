@@ -70,9 +70,9 @@ function convertPosStrToObj(str){
 
 function clickOnCase(){
 	var boardCasePos = this.dataset.pos;
-
+	console.log("Click on case", boardCasePos, card_selected);
 	if(card_selected){ //dans cards.js
-		requestCards(card_selected, boardCasePos);
+		requestPlaceCard(card_selected, boardCasePos);
 	}
 }
 

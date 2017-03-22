@@ -68,6 +68,9 @@ function requestCards(){
 }
 
 function requestPlaceCard(card, pos){
+	if(typeof(pos) === "string"){
+		pos = convertPosStrToObj(pos); 
+	}
 	sio.emit('placeCard', {card: card, position: convertPositionClientToServer(pos)})
 }
 

@@ -59,14 +59,7 @@ function placeOnBoard(posStr, card){
 	}
 }
 
-function convertPosStrToObj(str){
-	var split = str.split('-');
-	var pos = {
-		x:  parseInt(split[0]),
-		y:  parseInt(split[1])
-	}
-	return pos;
-}
+
 
 function clickOnCase(){
 	var boardCasePos = this.dataset.pos;

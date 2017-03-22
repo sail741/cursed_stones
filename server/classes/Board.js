@@ -19,17 +19,17 @@ module.exports = class Board {
     }
 
     put_card(pseudo, card, position) {
-        is_good_position(position);
+        this.is_good_position(position);
         if (pseudo == this.left_player) {
-            if (!is_in_left_zone(position)) {
+            if (!this.is_in_left_zone(position)) {
                 throw new Error(Constant.ERROR_NOT_IN_GOOD_ZONE);
             }
         } else {
-            if (!is_in_right_zone(position)) {
+            if (!this.is_in_right_zone(position)) {
                 throw new Error(Constant.ERROR_NOT_IN_GOOD_ZONE);
             }
         }
-        if (!no_entity_in_position(position)) {
+        if (!this.no_entity_in_position(position)) {
             throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
         }
         this.board[position.row][position.column] = convert_card_to_entity(pseudo, card);

@@ -100,24 +100,28 @@ module.exports = class Player {
                 if (player.partie.board.put_card(player.pseudo, card, json.position)) {
                     player.mana = player.mana - card.mana;
                 }
-                return {
-                    hand: hand,
+                player.socket.emit(Constant.SOCKET_PLACE_CARD, {
+                    hand: player.hand,
                     sucess: true,
                     mana_left: player.mana
-                };
+                });
             } catch (exception) {
-                return {
-                    hand: hand,
+                console.error(exception);
+                player.socket.emit(Constant.SOCKET_PLACE_CARD, {
+                    hand: player.hand,
                     error: exception.message,
                     sucess: false,
                     mana_left: player.mana
-                };
+                });
             }
         });
     }
 
     get_card(uid) {
-        for (var card in hand) {
+        //console.log(this.hand);
+        for (var i = 0; i < this.hand.length; i++) {
+            var card = this.hand[i];
+            //console.log('compare', card.uid, uid);
             if (card.uid == uid) {
                 return card;
             }
@@ -126,9 +130,9 @@ module.exports = class Player {
     }
 
     delete_card_in_hand(card) {
-        var index = hand.indexOf(card);
+        var index = this.hand.indexOf(card, this);
         if (index > -1) {
-            array.splice(index, 1);
+            this.hand.splice(index, 1);
         } else {
             throw new Error(Constant.IMPOSSIBLE_DELETE_CARD_IN_HAND);
         }

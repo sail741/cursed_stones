@@ -17,7 +17,7 @@ module.exports = class Game {
         if (this.check_is_in_game(player)) {
             return true;
         }
-        if (!this.current_classed.is_full() && this.current_classed.status === Constant.STATUS_WAIT) {
+        if (!this.current_classed.is_full() && this.current_classed.partie_status === Constant.STATUS_WAIT) {
             this.current_classed.add_player(player);
             this.player_liste[player.pseudo] = player;
         } else {

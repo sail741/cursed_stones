@@ -36,3 +36,4 @@ exports.SOCKET_INFORMATION = "information";
 exports.SOCKET_PLACE_CARD = "placeCard";
 exports.SOCKET_OPPENENT_NOTIFY_CHANGE = "adversaireChange";
 exports.SOCKET_EDIT_BOARD = "editBoard";
+exports.SOCKET_SYNC_BOARD = "syncTerrain";

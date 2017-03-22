@@ -56,7 +56,8 @@ module.exports = class Partie {
 
     start_partie() {
         this.partie_status = Constant.STATUS_START;
-        this.board = new Board(this.liste_player[0].pseudo, this.liste_player[1].pseudo)
+        this.board = new Board(this.liste_player[0].pseudo, this.liste_player[1].pseudo);
+        this.sync_board();
         this.init_player();
         this.nouveauTour();
         this.run_timer_tour();
@@ -76,12 +77,20 @@ module.exports = class Partie {
         var partie = this;
         this.timer_tour = setInterval(function() {
             partie.change_current_player();
+            partie.sync_board();
             if (partie.current_player == partie.id_first_player) {
                 partie.num_tour++;
                 partie.add_mana();
             }
             partie.nouveauTour();
         }, Constant.TIMER_TOUR);
+    }
+
+    sync_board() {
+        var partie = this;
+        this.global_socket.sockets.in(this.id_partie).emit(Constant.SOCKET_SYNC_BOARD, {
+            board: partie.board.to_json()
+        });
     }
 
     nouveauTour() {

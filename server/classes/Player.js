@@ -80,7 +80,6 @@ module.exports = class Player {
             //deconnexion du joueur
             var status = player.partie.deconnexion_player(player.pseudo);
 
-            console.log(status)
             if (status === Constant.STATUS_PAUSED) {
                 //on garde le temps restant au joueur dans son tour
                 player.time_left_before_deconnexion = (player.partie.current_time + Constant.TIMER_TOUR) - new Date().getTime();

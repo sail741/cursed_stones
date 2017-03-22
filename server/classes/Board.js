@@ -56,7 +56,32 @@ module.exports = class Board {
         throw new Error(Constant.POSITION_INVALID);
     }
 
-    no_entity_in_position(position){
-      return this.board[position.row][position.column] === null;
+    no_entity_in_position(position) {
+        return this.board[position.row][position.column] === null;
+    }
+
+    to_json() {
+        var json = []
+        for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
+            for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
+                if (this.board[i][x] === null) {
+                    json.push({
+                        position: {
+                            row: i,
+                            column: x
+                        }
+                    });
+                } else {
+                    json.push({
+                        position: {
+                            row: i,
+                            column: x
+                        },
+                        entity: this.board[i][x]
+                    });
+                }
+            }
+        }
+        return json;
     }
 };

@@ -9,8 +9,8 @@ function buildEntityDiv(entity){
 	div.dataset.entity = entity.uid;
 
 	var img = document.createElement('img');
-	img.src = getEntityImage(entity);
-	img.alt = entity.card.name;
+	img.src = '/static/img/cards/board_c1.png';//getEntityImage(entity);
+	img.alt = entity.name;
 
 	div.appendChild(img);
 

@@ -60,5 +60,15 @@ function finTour(){
 
 }
 
+function setManaSelf(mana){
+	mana_self = mana;
+}
+
+function setManaAdv(mana){
+	mana_adv = mana;
+
+	
+}
+
 
 

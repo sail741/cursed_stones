@@ -31,11 +31,9 @@ sio.on('placeCard', function(data){
 
 }
 	*/
-
+	setManaSelf(data.mana_left);
+	setSelfHand(data.hand);
 	if(data.sucess){
-		setManaSelf(data.mana_left);
-		setHand(data.hand);
-
 	}else{
 		console.error(data.error);
 	}
@@ -52,9 +50,11 @@ sio.on('editBoard', function(data){
 	entity?: Entity
 
 }
-*/
+*/	
+	var entity = data.entity;
+	var pos = data.position;
 	if(entity){
-		drawEntity(entiy);	
+		drawEntity(entity);	
 	}else{
 		removeEntity(convertPositionServerToClient(pos));
 	}

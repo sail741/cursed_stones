@@ -82,24 +82,18 @@ module.exports = class Board {
         }
     }
 
-    to_json() {
+    to_json(pseudo) {
         var json = []
         for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
             for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
-                if (this.board[i][x] === null) {
+                if (this.board[i][x] !== null) {
+                    var pos = {
+                        row: i,
+                        column: x
+                    }
                     json.push({
-                        position: {
-                            row: i,
-                            column: x
-                        }
-                    });
-                } else {
-                    json.push({
-                        position: {
-                            row: i,
-                            column: x
-                        },
-                        entity: this.board[i][x]
+                        position: pos,
+                        entity: this.board[i][x].to_json(pseudo, pos)
                     });
                 }
             }

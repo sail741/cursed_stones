@@ -57,7 +57,6 @@ module.exports = class Partie {
     start_partie() {
         this.partie_status = Constant.STATUS_START;
         this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
-        this.sync_board();
         this.init_player();
         this.nouveauTour();
         this.run_timer_tour();
@@ -77,7 +76,6 @@ module.exports = class Partie {
         var partie = this;
         this.timer_tour = setInterval(function() {
             partie.change_current_player();
-            partie.sync_board();
             if (partie.current_player == partie.id_first_player) {
                 partie.num_tour++;
                 partie.add_mana();
@@ -86,17 +84,17 @@ module.exports = class Partie {
         }, Constant.TIMER_TOUR);
     }
 
-    sync_board() {
-        var partie = this;
-        this.global_socket.sockets.in(this.id_partie).emit(Constant.SOCKET_SYNC_BOARD, {
-            board: partie.board.to_json()
-        });
+    sync_board(player) {
+        player.socket.emit(Constant.SOCKET_SYNC_BOARD, this.board.to_json(player.pseudo));
     }
 
     nouveauTour() {
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].etat = (i == this.current_player ? Constant.ETAT_PIOCHE : Constant.ETAT_STAY);
             this.liste_player[i].mana = this.mana;
+            //on met a jour le plateau des joueurs
+            this.sync_board(this.liste_player[i]);
+            //on signale le nouveau tour
             this.liste_player[i].socket.emit(Constant.SOCKET_NEW_TOUR, {
                 Self: i === this.current_player,
                 Num_tour: this.num_tour,

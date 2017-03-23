@@ -19,7 +19,7 @@ passport.use(new LocalStrategy(
     model.users.connect(username,password,function(json) {
       //si l'user n'existe pas on renvoie une erreur
       if(json.status == 0){
-        done(null,false, { message: json.error })
+        return done(null,false, json.error);
       }
       //sinon on retourne l'user
       return done(null, json.user);

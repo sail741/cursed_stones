@@ -65,8 +65,14 @@ module.exports = class Board {
     is_good_position(position) {
         if (position.hasOwnProperty('row') && position.hasOwnProperty('column')) {
             return true;
+        } else {
+            throw new Error(Constant.POSITION_INVALID);
         }
-        throw new Error(Constant.POSITION_INVALID);
+        if (position.row >= 0 || position.row < Constant.HEIGHT_SIZE || position.column >= 0 || position.column < Constant.WIDTH_SIZE) {
+            return true;
+        } else {
+            throw new Error(Constant.POSITION_OUT_OF_BAND);
+        }
     }
 
     no_entity_in_position(position) {
@@ -82,15 +88,70 @@ module.exports = class Board {
         }
     }
 
+    notify_delete_entity(position) {
+        for (var i = 0; i < this.partie.liste_player.length; i++) {
+            this.partie.liste_player[i].socket.emit(Constant.SOCKET_EDIT_BOARD, {
+                position: position,
+                entity: null
+            });
+        }
+    }
+
+    move_entity(entity, origin, destination) {
+        this.is_good_position(origin);
+        this.is_good_position(destination);
+        this.is_good_entity(entity);
+        var board_entity = this.board[origin.row][origin.column];
+        if (!this.no_entity_in_position(destination)) {
+            throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
+        }
+        var distance = this.distance_pos(origin, destination);
+        if(distance > board_entity.left_movement){
+            throw new Error(Constant.NEED_MORE_MOVEMENT);
+        }
+        //TODO : @defrapide path finding à faire algo A*
+        board_entity.position = destination;
+        this.board[destination.row][destination.column] = board_entity;
+        this.notify_new_entity(board_entity, position);
+        this.board[origin.row][origin.column] = null;
+        this.notify_delete_entity(position);
+    }
+
+    is_good_entity(entity, origin) {
+        if (!position.hasOwnProperty('position') || !position.hasOwnProperty('uid')) {
+            throw new Error(Constant.CARD_ALTERED);
+        }
+        this.is_good_position(entity.position);
+        if (!this.position_same(entity.position, origin)) {
+            throw new Error(Constant.CARD_ALTERED);
+        }
+        var board_entity = this.board[entity.position.row][entity.position.column];
+        if (board_entity === null) {
+            throw new Error(Constant.NO_ENTITY_IN_POSITION);
+        }
+        if (board_entity.uid !== entity.uid) {
+            throw new Error(Constant.CARD_ALTERED);
+        }
+        return true;
+    }
+
+    position_same(pos1, pos2) {
+        return pos1.row == pos2.row && pos1.column == pos2.column;
+    }
+
+    distance_pos(pos1, pos2) {
+        return Math.abs(pos1.row - pos2.row) + Math.abs(pos1.column - pos2.column);
+    }
+
     to_json(pseudo) {
-        var json = []
+        var json = [];
         for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
             for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
                 if (this.board[i][x] !== null) {
                     var pos = {
                         row: i,
                         column: x
-                    }
+                    };
                     json.push({
                         position: pos,
                         entity: this.board[i][x].to_json(pseudo, pos)

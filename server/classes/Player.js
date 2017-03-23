@@ -121,6 +121,21 @@ module.exports = class Player {
                 });
             }
         });
+
+        player.socket.on(Constant.SOCKET_MOVE_ENTITY, function(json) {
+            try {
+                player.partie.board.move_entity(json);
+                player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
+                    success : true
+                });
+            } catch (exception) {
+                console.error(exception);
+                player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
+                    success : false,
+                    error : exception.message
+                });
+            }
+        });
     }
 
     get_card(uid) {

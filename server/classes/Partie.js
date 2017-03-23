@@ -56,7 +56,7 @@ module.exports = class Partie {
 
     start_partie() {
         this.partie_status = Constant.STATUS_START;
-        this.board = new Board(this.liste_player[0].pseudo, this.liste_player[1].pseudo);
+        this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
         this.sync_board();
         this.init_player();
         this.nouveauTour();

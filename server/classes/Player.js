@@ -106,10 +106,6 @@ module.exports = class Player {
                     mana_left: player.mana,
                     cards_change: -1
                 });
-                player.partie.global_socket.sockets.in(player.partie.id_partie).emit(Constant.SOCKET_EDIT_BOARD, {
-                    position: json.position,
-                    entity: entity
-                });
                 player.socket.emit(Constant.SOCKET_PLACE_CARD, {
                     hand: player.hand,
                     sucess: true,

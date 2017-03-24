@@ -24,6 +24,9 @@ function convertPosStrToObj(str){
 }
 
 function convertPosToStr(pos){
+	if(pos.x == null && pos.row != null){
+		pos = convertPositionServerToClient(pos);
+	}
 	return pos.x + '-' + pos.y;
 }
 

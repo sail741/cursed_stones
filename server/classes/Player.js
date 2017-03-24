@@ -101,7 +101,7 @@ module.exports = class Player {
                 }
                 var entity = player.partie.board.put_card(player.pseudo, card, json.position);
                 player.delete_card_in_hand(card);
-                player.mana = player.mana - card.mana;
+                player.mana = player.mana - card.cost;
                 player.socket.broadcast.to(player.partie.id_partie).emit(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
                     mana_left: player.mana,
                     cards_change: -1

@@ -31,6 +31,7 @@ sio.on('placeCard', function(data){
 
 }
 	*/
+
 	setManaSelf(data.mana_left);
 	setSelfHand(data.hand);
 	if(data.sucess){
@@ -62,6 +63,13 @@ sio.on('editBoard', function(data){
 
 });
 
+sio.on('syncBoard', function(packet){
+
+})
+
+sio.on('fintour', function(){
+	doFinTour();
+});
 
 function requestCards(){
 	sio.emit('piocheCarte');
@@ -74,3 +82,6 @@ function requestPlaceCard(card, pos){
 	sio.emit('placeCard', {card: card, position: convertPositionClientToServer(pos)})
 }
 
+function sendFinTour(){
+	sio.emit('fintour');
+}

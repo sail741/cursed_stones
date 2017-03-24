@@ -53,21 +53,24 @@ function forceFinTour(){
 }
 
 function finTour(){
-	
+		doFinTour();
+		sendFinTour();
+}
+function doFinTour(){
 	if(tourTimerId != null){
 		clearTimeout(tourTimerId);
 	}
-
 }
 
 function setManaSelf(mana){
-	mana_self = mana;
+	localSelfMana = mana;
+	console.log("set mana");
+	renderStatusBar();
 }
 
 function setManaAdv(mana){
-	mana_adv = mana;
-
-	
+	localAdvMana = mana;
+	renderStatusBar();
 }
 
 

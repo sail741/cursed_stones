@@ -43,7 +43,7 @@ function drawEntity(entity){
 	if(actualDiv != null){
 		actualDiv.outerHTML =  newDiv.outerHTML;
 	}else{
-		var posStr = convertPosToStr(entity.pos);
+		var posStr = convertPosToStr(entity.position);
 		var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
 		if(boardCase != null){
 			boardCase.appendChild(newDiv);

@@ -49,6 +49,7 @@ function drawsCards(elem, cards){
 
 function setSelfHand(hand){
 	hand_cards = hand;
+	card_selected = null;
 	drawsCards(cardsSelf, hand_cards);
 }
 
@@ -156,7 +157,7 @@ function buildDOMCard(card){
 }
 
 function unSelectCards(){
-	//TODO
+	card_selected = null;
 }
 
 

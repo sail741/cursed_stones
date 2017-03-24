@@ -13,7 +13,7 @@ exports.NB_CARD_START_FIRST_PLAYER = 4;
 exports.NB_CARD_START_SECOND_PLAYER = 5;
 exports.WIDTH_SIZE = 16;
 exports.HEIGHT_SIZE = 8;
-exports.WIDTH_PLAYER_ZONE = 5;
+exports.WIDTH_PLAYER_ZONE = 4;
 
 exports.LEFT = 'left';
 exports.RIGHT = 'right';

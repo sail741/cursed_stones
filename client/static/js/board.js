@@ -1,9 +1,11 @@
 var board = document.querySelector("#board");
 var LARGEUR = 16;
 var HAUTEUR = 8;
-var LARGEUR_SIDE = 5;
+var LARGEUR_SIDE = 4;
 var currentSlide = null;
 var entities = null; 
+
+var entity_selected = null;
 
 function setSlide(slide){
 	currentSlide = slide;
@@ -17,7 +19,7 @@ function setSlide(slide){
 			}else{
 				td.className = 'enemie';
 			}
-		}else if(pos.y > (LARGEUR - LARGEUR_SIDE)){
+		}else if(pos.y >= (LARGEUR - LARGEUR_SIDE)){
 			if(currentSlide == 'right'){
 				td.className = 'self';
 			}else{
@@ -28,14 +30,11 @@ function setSlide(slide){
 }
 
 function initBoard(largeur, hauteur){
-	entities = [];
 	var table = document.createElement("table");
 	for(var r = 0; r < hauteur; r++){
 		var tr = document.createElement('tr');
 		tr.dataset.row = r;
-		var rowEntities = [];
 		for(var c = 0; c < largeur; c++){
-			rowEntities.push(null);
 			var td = document.createElement('td');
 			td.dataset.pos = r + '-' + c;
 			td.dataset.column = c;
@@ -50,7 +49,6 @@ function initBoard(largeur, hauteur){
 			tr.appendChild(td);
 			td.addEventListener('click', clickOnCase);
 		}
-		entities.push(rowEntities);
 		table.appendChild(tr);
 	}
 	board.appendChild(table);
@@ -83,10 +81,68 @@ function placeOnBoard(posStr, card){
 
 function clickOnCase(){
 	var boardCasePos = this.dataset.pos;
+	var pos = convertPosStrToObj(boardCasePos);
 	console.log("Click on case", boardCasePos, card_selected);
 	if(card_selected){ //dans cards.js
 		requestPlaceCard(card_selected, boardCasePos);
+	}else if (entity_selected){
+		if(isEquivalent(convertPositionServerToClient(entity_selected.position), pos)){
+			console.log("unselect entity", entity_selected);
+			entity_selected = null;
+            displayOverlayBoard();
+		}else {
+			//TODO : Attaque
+		}
+	}else{
+		var entity = getEntity(pos);
+		if(entity && entity.Self == true){
+			console.log('selection entity', entity);
+			entity_selected = entity;
+			displayOverlayBoard();
+
+		}
 	}
+}
+
+function displayOverlayBoard(){
+	var allOverlay = board.querySelectorAll(".overlay");
+	for(var i = 0; i < allOverlay.length; i++){
+		allOverlay[i].remove();
+	}
+
+	if(entity_selected == null){ return; }
+
+	var movement = entity_selected.movement;
+	var pos = convertPositionServerToClient(entity_selected.position)
+	/*for(var x = Math.max(0, pos.x - movement); x < Math.min(pos.x + movement, HAUTEUR); x++){
+        for(var y = Math.max(0, pos.y - movement); y < Math.min(pos.y + movement, HAUTEUR); y++){
+			var entityOnCase = getEntity({x, y});
+			if(entityOnCase == null){
+				var caseDom = board.querySelector('td[data-pos="'+convertPosToStr({x,y})+'"]');
+				if(caseDom){
+					var div = document.createElement('div');
+					div.className = 'overlay move';
+					caseDom.appendChild(div);
+				}
+			}
+        }
+	}*/
+	var cases = board.querySelectorAll("td");
+	for(var i = 0; i < cases.length; i++){
+		var caseDom = cases[i];
+		var strPos = caseDom.dataset.pos;
+		var posC = convertPosStrToObj(strPos);
+		var dist = distance(posC, pos);
+		if(dist <= movement){
+			var entityOnCase = getEntity(posC);
+			if(entityOnCase == null){
+                var div = document.createElement('div');
+                div.className = 'overlay move';
+                caseDom.appendChild(div);
+			}
+		}
+	}
+
 }
 
 function doPlaceCard(card, boardCasePos){
@@ -119,6 +175,15 @@ function listAllEntitiesForPlayer(selfEntity){
 	return res;
 }
 
+function getEntity(pos){
+	for(var i = 0; i < entities.length; i++){
+		if(isEquivalent(convertPositionServerToClient(entities[i].position), pos)){
+			return entities[i];
+		}
+	}
+	return null;
+}
+
 function setEntities(a_entities){
 	entities = a_entities;
 	redrawBoard();
@@ -132,7 +197,7 @@ function redrawBoard(){
 	}
 
 	for(var i = 0; i < entities.length; i++){
-		drawEntity(entities[i].entity);
+		drawEntity(entities[i]);
 	}
 
 }

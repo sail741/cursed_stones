@@ -55,7 +55,8 @@ sio.on('editBoard', function(data){
 	var entity = data.entity;
 	var pos = data.position;
 	if(entity){
-		drawEntity(entity);	
+		drawEntity(entity);
+		entities.push(entity);
 	}else{
 		removeEntity(convertPositionServerToClient(pos));
 	}
@@ -63,8 +64,12 @@ sio.on('editBoard', function(data){
 
 });
 
-sio.on('syncBoard', function(entities){
+sio.on('syncBoard', function(p_entities){
 	console.log(entities)
+	var entities = [];
+	for(var i  =0; i < p_entities.length; i++){
+		entities.push(p_entities[i].entity);
+	}
 	setEntities(entities)
 })
 

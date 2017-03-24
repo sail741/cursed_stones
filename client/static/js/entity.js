@@ -33,6 +33,16 @@ function removeEntity(pos){
 		    boardCase.removeChild(boardCase.firstChild);
 		}
 	}
+	removeEntityOnArray(pos);
+
+}
+
+function removeEntityOnArray(pos){
+    var entity = getEntity(pos);
+    if(entity){
+        var index = entities.indexOf(entity);
+        entities = entities.splice(index, 1);
+    }
 }
 
 function drawEntity(entity){
@@ -42,6 +52,7 @@ function drawEntity(entity){
 	var newDiv = buildEntityDiv(entity);
 	//console.log(actualDiv);
 	if(actualDiv != null){
+        removeEntityOnArray(pos);
 		actualDiv.outerHTML =  newDiv.outerHTML;
 	}else{
 		var posStr = convertPosToStr(entity.position);
@@ -51,4 +62,5 @@ function drawEntity(entity){
 			boardCase.appendChild(newDiv);
 		}
 	}
+
 }

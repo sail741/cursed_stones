@@ -59,8 +59,6 @@ function placeOnBoard(posStr, card){
 	}
 }
 
-
-
 function clickOnCase(){
 	var boardCasePos = this.dataset.pos;
 	console.log("Click on case", boardCasePos, card_selected);
@@ -99,5 +97,21 @@ function listAllEntitiesForPlayer(selfEntity){
 	return res;
 }
 
+function setEntities(a_entities){
+	entities = a_entities;
+	redrawBoard();
+}
 
+function redrawBoard(){
+	//Selections de toutes les entités pour les clear;
+	var entitiesOnBoardsDiv = board.querySelectorAll('.entity');
+	for(var i = 0; i < entitiesOnBoardsDiv.length; i++){
+		entitiesOnBoardsDiv[i].remove();
+	}
+
+	for(var i = 0; i < entities.length; i++){
+		drawEntity(entities[i]);
+	}
+
+}
 initBoard(HAUTEUR, LARGEUR);

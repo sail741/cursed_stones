@@ -63,8 +63,9 @@ sio.on('editBoard', function(data){
 
 });
 
-sio.on('syncBoard', function(packet){
-
+sio.on('syncBoard', function(entities){
+	console.log(entities)
+	setEntities(entities)
 })
 
 sio.on('fintour', function(){

@@ -36,14 +36,16 @@ function removeEntity(pos){
 }
 
 function drawEntity(entity){
-	console.log('.entity[data-entity="'+entity.uid+'"]');
+	//console.log('request draw', entity);
+	//console.log('.entity[data-entity="'+entity.uid+'"]');
 	var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');
 	var newDiv = buildEntityDiv(entity);
-	console.log(actualDiv);
+	//console.log(actualDiv);
 	if(actualDiv != null){
 		actualDiv.outerHTML =  newDiv.outerHTML;
 	}else{
 		var posStr = convertPosToStr(entity.position);
+		//console.log('draw', posStr, entity);
 		var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
 		if(boardCase != null){
 			boardCase.appendChild(newDiv);

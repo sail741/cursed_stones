@@ -72,6 +72,11 @@ sio.on('fintour', function(){
 	doFinTour();
 });
 
+sio.on('setSlide', function(slide){
+	console.log('setSlide', slide);
+	setSlide(slide);
+})
+
 function requestCards(){
 	sio.emit('piocheCarte');
 }

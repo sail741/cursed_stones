@@ -68,7 +68,9 @@ module.exports = class Partie {
             var json_deck = Test.json_deck;
             var deck = Utils.convertJSONToDeck(json_deck);
             deck.shuffle_deck();
-            this.liste_player[i].add_deck(deck, i == this.current_player);
+            var player = this.liste_player[i];
+            player.add_deck(deck, i == this.current_player);
+            player.socket.emit(Constant.SOCKET_SET_SLIDE, i == this.id_first_player ? Constant.LEFT : Constant.RIGHT);
         }
     }
 

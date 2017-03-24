@@ -15,6 +15,9 @@ exports.WIDTH_SIZE = 16;
 exports.HEIGHT_SIZE = 8;
 exports.WIDTH_PLAYER_ZONE = 5;
 
+exports.LEFT = 'left';
+exports.RIGHT = 'right';
+
 exports.ERROR_NOT_IN_GOOD_ZONE = "Vous ne pouvez pas placer de carte ici";
 exports.ERROR_ENTITY_ALREADY_HERE = "Un personnage est déjà présent sur cette case";
 exports.UID_NOT_EXIST_IN_HAND = "La carte a été altérée";
@@ -29,6 +32,8 @@ exports.GAME_FULL = "la partie est complète";
 exports.NO_ENTITY_IN_POSITION = "pas d'entité sur cette case";
 exports.NEED_MORE_MOVEMENT = "vous n'avez pas assez de point de mouvement";
 
+
+
 exports.SOCKET_DISCONNECT = "disconnect";
 exports.SOCKET_SIGNAL_DISCONNECT = "signalDisconnect";
 exports.SOCKET_CHAT = "chat";
@@ -42,3 +47,4 @@ exports.SOCKET_OPPENENT_NOTIFY_CHANGE = "adversaireChange";
 exports.SOCKET_EDIT_BOARD = "editBoard";
 exports.SOCKET_SYNC_BOARD = "syncBoard";
 exports.SOCKET_MOVE_ENTITY = "moveEntity";
+exports.SOCKET_SET_SLIDE = "setSlide";

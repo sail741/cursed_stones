@@ -1,29 +1,51 @@
 var board = document.querySelector("#board");
-var HAUTEUR = 16;
-var LARGEUR = 8;
+var LARGEUR = 16;
+var HAUTEUR = 8;
 var LARGEUR_SIDE = 5;
-
+var currentSlide = null;
 var entities = null; 
 
-function initBoard(hauteur, largeur){
+function setSlide(slide){
+	currentSlide = slide;
+	var tds = board.querySelectorAll('td');
+	for(var i = 0; i < tds.length; i++){
+		var td = tds[i];
+		var pos = convertPosStrToObj(td.dataset.pos);
+		if(pos.y < LARGEUR_SIDE){
+			if(currentSlide == 'left'){
+				td.className = 'self';
+			}else{
+				td.className = 'enemie';
+			}
+		}else if(pos.y > (LARGEUR - LARGEUR_SIDE)){
+			if(currentSlide == 'right'){
+				td.className = 'self';
+			}else{
+				td.className = 'enemie';
+			}
+		}
+	}
+}
+
+function initBoard(largeur, hauteur){
 	entities = [];
 	var table = document.createElement("table");
-	for(var r = 0; r < largeur; r++){
+	for(var r = 0; r < hauteur; r++){
 		var tr = document.createElement('tr');
 		tr.dataset.row = r;
 		var rowEntities = [];
-		for(var c = 0; c < hauteur; c++){
+		for(var c = 0; c < largeur; c++){
 			rowEntities.push(null);
 			var td = document.createElement('td');
 			td.dataset.pos = r + '-' + c;
 			td.dataset.column = c;
 
-			if(c < LARGEUR_SIDE){
-				td.className += "self ";
-			}
-			if(c >= (HAUTEUR - LARGEUR_SIDE)){
-				td.className += "enemie";
-			}
+			// if(c < LARGEUR_SIDE){
+			// 	td.className += "self ";
+			// }
+			// if(c >= (HAUTEUR - LARGEUR_SIDE)){
+			// 	td.className += "enemie";
+			// }
 
 			tr.appendChild(td);
 			td.addEventListener('click', clickOnCase);
@@ -110,8 +132,8 @@ function redrawBoard(){
 	}
 
 	for(var i = 0; i < entities.length; i++){
-		drawEntity(entities[i]);
+		drawEntity(entities[i].entity);
 	}
 
 }
-initBoard(HAUTEUR, LARGEUR);
+initBoard(LARGEUR, HAUTEUR);

@@ -70,7 +70,7 @@ module.exports = class Partie {
             deck.shuffle_deck();
             var player = this.liste_player[i];
             player.add_deck(deck, i == this.current_player);
-            player.socket.emit(Constant.SOCKET_SET_SLIDE, i == this.id_first_player ? Constant.LEFT : Constant.RIGHT);
+            player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
         }
     }
 

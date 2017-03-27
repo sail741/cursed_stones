@@ -27,13 +27,7 @@ module.exports = class Entity {
         board.notify_delete_entity(origin);
     }
 
-    distance_pos(pos1, pos2) {
-        return Math.abs(pos1.row - pos2.row) + Math.abs(pos1.column - pos2.column);
-    }
-
     plus_court_chemin(board, origin, destination, profondeur) {
-        console.log(origin);
-        console.log(profondeur);
         if (origin.row == destination.row && origin.column == destination.column) {
             return true;
         }
@@ -57,7 +51,7 @@ module.exports = class Entity {
                 }, destination, profondeur - 1);
             }
         }
-        if (origin.column < Constant.WIDTH_SIZE && !is_in) {
+        if (origin.column < Constant.WIDTH_SIZE-1 && !is_in) {
             if (board[origin.row][origin.column + 1] === null) {
                 is_in = this.plus_court_chemin(board, {
                     row: origin.row,
@@ -65,7 +59,7 @@ module.exports = class Entity {
                 }, destination, profondeur - 1);
             }
         }
-        if (origin.row < Constant.HEIGHT_SIZE && !is_in) {
+        if (origin.row < Constant.HEIGHT_SIZE-1 && !is_in) {
             if (board[origin.row + 1][origin.column] === null) {
                 is_in = this.plus_court_chemin(board, {
                     row: origin.row + 1,

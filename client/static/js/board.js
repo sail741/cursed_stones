@@ -91,7 +91,15 @@ function clickOnCase(){
 			entity_selected = null;
             displayOverlayBoard();
 		}else {
-			//TODO : Attaque
+			
+			var entity = getEntity(pos);
+			if(entity != null){
+				//TODO : Attaque
+			}else{
+				requestMove(entity_selected, pos);
+				entity_selected = null;
+            	displayOverlayBoard();
+			}
 		}
 	}else{
 		var entity = getEntity(pos);

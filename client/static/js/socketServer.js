@@ -51,12 +51,14 @@ sio.on('editBoard', function(data){
 	entity?: Entity
 
 }
-*/	
+*/	console.log('editBoard', data);
 	var entity = data.entity;
 	var pos = data.position;
 	if(entity){
 		drawEntity(entity);
+		console.log(entities);
 		entities.push(entity);
+		console.log(entities);
 	}else{
 		removeEntity(convertPositionServerToClient(pos));
 	}
@@ -95,4 +97,13 @@ function requestPlaceCard(card, pos){
 
 function sendFinTour(){
 	sio.emit('fintour');
+}
+
+function requestMove(entity, pos){
+	console.log(entity);
+	sio.emit('moveEntity', {
+		entity: entity, 
+		origin: entity.position,
+		dest: convertPositionClientToServer(pos)
+	});
 }

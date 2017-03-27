@@ -41,7 +41,7 @@ module.exports = class Entity {
             return false;
         }
         var is_in = false;
-        if (origin.row > 1 && !is_in) {
+        if (origin.row >= 1 && !is_in) {
             if (board[origin.row - 1][origin.column] === null) {
                 is_in = this.plus_court_chemin(board, {
                     row: origin.row - 1,
@@ -49,7 +49,7 @@ module.exports = class Entity {
                 }, destination, profondeur - 1);
             }
         }
-        if (origin.column > 1 && !is_in) {
+        if (origin.column >= 1 && !is_in) {
             if (board[origin.row][origin.column - 1] === null) {
                 is_in = this.plus_court_chemin(board, {
                     row: origin.row,

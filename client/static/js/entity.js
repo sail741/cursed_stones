@@ -26,7 +26,7 @@ function buildEntityDiv(entity){
 }
 
 function removeEntity(pos){
-	var posStr = convertPosToStr(entity.pos);
+	var posStr = convertPosToStr(pos);
 	var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
 	if(boardCase != null){
 		while (boardCase.firstChild) {
@@ -40,27 +40,23 @@ function removeEntity(pos){
 function removeEntityOnArray(pos){
     var entity = getEntity(pos);
     if(entity){
-        var index = entities.indexOf(entity);
-        entities = entities.splice(index, 1);
+    	var index = entities.indexOf(entity);
+        entities.splice(index, 1);
     }
 }
 
 function drawEntity(entity){
-	//console.log('request draw', entity);
-	//console.log('.entity[data-entity="'+entity.uid+'"]');
 	var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');
 	var newDiv = buildEntityDiv(entity);
-	//console.log(actualDiv);
 	if(actualDiv != null){
-        removeEntityOnArray(pos);
-		actualDiv.outerHTML =  newDiv.outerHTML;
-	}else{
-		var posStr = convertPosToStr(entity.position);
-		//console.log('draw', posStr, entity);
-		var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
-		if(boardCase != null){
-			boardCase.appendChild(newDiv);
-		}
+        removeEntityOnArray(convertPositionServerToClient(entity.position));
+		actualDiv.remove();
 	}
+	var posStr = convertPosToStr(entity.position);
+	var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
+	if(boardCase != null){
+		boardCase.appendChild(newDiv);
+	}
+
 
 }

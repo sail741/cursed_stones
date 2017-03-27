@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Add card</title>
+    </head>
+    <body>
+        <form action="/add_card" method="post">
+            <div>
+                <label>name:</label>
+                <input type="text" name="name" required/>
+            </div>
+            <div>
+                <label>description:</label>
+                <input type="text" name="description"required/>
+            </div>
+            <div>
+                <label>type_card:</label>
+                <input type="radio" name="type_card" value="chara" id="chara" onchange="change_type(this)" checked> <label for="chara">chara</label>
+                <input type="radio" name="type_card" value="magic" id="magic" onchange="change_type(this)"> <label for="magic">magic</label><br>
+            </div>
+            <div>
+                <label>cost:</label>
+                <input type="number" name="cost" value=1 required/>
+            </div>
+            <div>
+                <label>img:</label>
+                <input type="text" name="img" value="/images/" required/>
+            </div>
+            <div id="chara_div">
+                <div>
+                    <label>attack:</label>
+                    <input type="number" name="attack" value=1/>
+                </div>
+                <div>
+                    <label>defence:</label>
+                    <input type="number" name="defence" value=1/>
+                </div>
+                <div>
+                    <label>life:</label>
+                    <input type="number" name="life" value=1/>
+                </div>
+                <div>
+                    <label>movement:</label>
+                    <input type="number" name="movement" value=1/>
+                </div>
+            </div>
+            <div id="magic_div">
+                <div>
+                    <label>type_spell:</label>
+                    <input type="number" name="type_spell" value=1/>
+                </div>
+                <div>
+                    <label>power_spell:</label>
+                    <select name="power_spell">
+                        <option value="1">attack</option>
+                        <option value="1">heal</option>
+                    </select>
+                </div>
+                <div>
+                    <label>range_spell:</label>
+                    <input type="number" name="range_spell" value=1/>
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Add"/>
+            </div>
+        </form>
+    </body>
+</html>
+
+<script type="text/javascript">
+    if(document.querySelector("#chara").checked) {
+        document.querySelector("#magic_div").style.display = "none";
+        set_chara_required();
+    } else {
+        document.querySelector("#chara_div").style.display = "none";
+        set_magic_required();
+    }
+
+    function change_type(radio) {
+        if(radio.value == "chara") {
+            document.querySelector("#chara_div").style.display = "block";
+            document.querySelector("#magic_div").style.display = "none";
+            set_chara_required();
+        } else {
+            document.querySelector("#chara_div").style.display = "none";
+            document.querySelector("#magic_div").style.display = "block";
+            set_magic_required();
+        }
+    }
+
+    function set_chara_required() {
+        var tab = document.querySelectorAll("#chara_div input");
+        for (var i = 0; i < tab.length; i++) {
+            tab[i].required = true;
+        }
+
+        tab = document.querySelectorAll("#magic_div input");
+        for (var i = 0; i < tab.length; i++) {
+            tab[i].required = false;
+        }
+
+        document.querySelector("#magic_div select").required = false;
+    }
+
+    function set_magic_required() {
+        var tab = document.querySelectorAll("#chara_div input");
+        for (var i = 0; i < tab.length; i++) {
+            tab[i].required = false;
+        }
+
+        tab = document.querySelectorAll("#magic_div input");
+        for (var i = 0; i < tab.length; i++) {
+            tab[i].required = true;
+        }
+
+        document.querySelector("#magic_div select").required = true;
+    }
+</script>

@@ -5,29 +5,29 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
-    },
-    id_user: {
+  },
+  id_user: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       references: {
         model: 'users',
         key: 'id_user'
-      }
-    },
-    id_card: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'cards',
-        key: 'id_card'
-      }
-    },
-    qty_card: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
     }
-  }, {
+},
+id_card: {
+  type: DataTypes.INTEGER(11),
+  allowNull: false,
+  references: {
+    model: 'cards',
+    key: 'id_card'
+}
+},
+qty_card: {
+  type: DataTypes.INTEGER(11),
+  allowNull: false
+}
+}, {
     tableName: 'decks'
-  });
+});
 };

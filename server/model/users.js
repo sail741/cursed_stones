@@ -38,13 +38,13 @@ module.exports = function(sequelize, DataTypes) {
 				}
 			}).then(function(res) {
 				if(res.length == 0) {
-					callback({"status":0, "error":"NOT_FOUND"});
+					callback({"status":0, "error":"NOT_FOUND", "user":null});
 				} else {
 					var user = {"id_user":res[0].get("id_user"), "username":res[0].get("username")}
-					callback({"status":1, "user":user});
+					callback({"status":1, "error":null, "user":user});
 				}
 			});
-      },
+      	},
     }
   });
 };

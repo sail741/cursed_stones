@@ -27,6 +27,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'cards'
+    tableName: 'cards',
+    classMethods: {
+
+    }
   });
 };

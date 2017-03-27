@@ -31,7 +31,7 @@ exports.GAME_NAME_ALREADY_EXIST = "le nom de partie est déja utilisé";
 exports.GAME_FULL = "la partie est complète";
 exports.NO_ENTITY_IN_POSITION = "pas d'entité sur cette case";
 exports.NEED_MORE_MOVEMENT = "vous n'avez pas assez de point de mouvement";
-
+exports.IS_NOT_YOUR_TURN = "ce n'est pas à votre tour";
 
 
 exports.SOCKET_DISCONNECT = "disconnect";

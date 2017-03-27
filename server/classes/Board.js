@@ -18,8 +18,7 @@ module.exports = class Board {
         }
         var middle = Math.round(Constant.HEIGHT_SIZE / 2);
         this.board[middle][0] = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle][Constant.WIDTH_SIZE-1] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        //console.log(this.board);
+        this.board[middle][Constant.WIDTH_SIZE - 1] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
     }
 
     generate_uid() {
@@ -56,7 +55,7 @@ module.exports = class Board {
     }
 
     is_in_right_zone(position) {
-        return position.column > (Constant.WIDTH_SIZE - Constant.WIDTH_PLAYER_ZONE);
+        return position.column >= (Constant.WIDTH_SIZE - Constant.WIDTH_PLAYER_ZONE);
     }
 
     convert_card_to_entity(pseudo, card) {
@@ -101,25 +100,16 @@ module.exports = class Board {
     move_entity(entity, origin, destination) {
         this.is_good_position(origin);
         this.is_good_position(destination);
-        this.is_good_entity(entity);
+        this.is_good_entity(entity, origin);
         var board_entity = this.board[origin.row][origin.column];
         if (!this.no_entity_in_position(destination)) {
             throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
         }
-        var distance = this.distance_pos(origin, destination);
-        if(distance > board_entity.left_movement){
-            throw new Error(Constant.NEED_MORE_MOVEMENT);
-        }
-        //TODO : @defrapide path finding à faire algo A*
-        board_entity.position = destination;
-        this.board[destination.row][destination.column] = board_entity;
-        this.notify_new_entity(board_entity, position);
-        this.board[origin.row][origin.column] = null;
-        this.notify_delete_entity(position);
+        board_entity.move_entity(this, origin, destination);
     }
 
     is_good_entity(entity, origin) {
-        if (!position.hasOwnProperty('position') || !position.hasOwnProperty('uid')) {
+        if (!entity.hasOwnProperty('position') || !entity.hasOwnProperty('uid')) {
             throw new Error(Constant.CARD_ALTERED);
         }
         this.is_good_position(entity.position);
@@ -138,10 +128,6 @@ module.exports = class Board {
 
     position_same(pos1, pos2) {
         return pos1.row == pos2.row && pos1.column == pos2.column;
-    }
-
-    distance_pos(pos1, pos2) {
-        return Math.abs(pos1.row - pos2.row) + Math.abs(pos1.column - pos2.column);
     }
 
     to_json(pseudo) {

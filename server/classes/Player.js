@@ -52,6 +52,9 @@ module.exports = class Player {
         //on ne pioche qu'une fois en debut de tours
         player.socket.on(Constant.SOCKET_GET_CARD, function() {
             try {
+                if(!player.partie.is_current_player(player.pseudo)){
+                  throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
                 if (player.etat === Constant.ETAT_PIOCHE) {
                     var card = player.deck.piocher_carte();
                     player.hand.push(card);
@@ -92,6 +95,9 @@ module.exports = class Player {
 
         player.socket.on(Constant.SOCKET_PLACE_CARD, function(json) {
             try {
+                if(!player.partie.is_current_player(player.pseudo)){
+                  throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
                 var card = player.get_card(json.card.uid);
                 if (card === null) {
                     throw new Error(Constant.UID_NOT_EXIST_IN_HAND);
@@ -112,7 +118,6 @@ module.exports = class Player {
                     mana_left: player.mana
                 });
             } catch (exception) {
-                console.error(exception);
                 player.socket.emit(Constant.SOCKET_PLACE_CARD, {
                     hand: player.hand,
                     error: exception.message,
@@ -124,7 +129,11 @@ module.exports = class Player {
 
         player.socket.on(Constant.SOCKET_MOVE_ENTITY, function(json) {
             try {
-                player.partie.board.move_entity(json);
+                // if(!player.partie.is_current_player(player.pseudo)){
+                //   throw new Error(Constant.IS_NOT_YOUR_TURN);
+                // }
+                console.log(json);
+                player.partie.board.move_entity(json.entity,json.origin,json.dest);
                 player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
                     success : true
                 });

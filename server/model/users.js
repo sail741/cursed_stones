@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 }).then(function(res) {
                     if(res.length != 0) {
-                        callback({"status":0, "error":"USER_ALREADY_EXIST"});
+                        callback({"status":0, "error":"USER_ALREADY_EXIST", "user":null});
                     } else {
                         var hash = that.hash_pass(pass_unhashed);
 
@@ -50,8 +50,12 @@ module.exports = function(sequelize, DataTypes) {
                             password: hash,
                             points: 0,
                             country:country
+                        }).then(function(user_object) {
+                            var user = {"id_user":user_object.get("id_user"), "username":user_object.get("username")};
+                            callback({"status":1, "error":null, "user":user});
+                        }).catch(function(err){
+                            callback({"status":0, "error":err, "user":null});
                         })
-                        callback({"status":1, "error":null});
                     }
                 });
             },

@@ -20,7 +20,9 @@ module.exports = class Partie {
         this.mana = 1;
         this.timer_tour = null;
         this.current_time = null;
+        this.paused_time = null;
         this.board = null;
+        this.resume_game_timer = null;
         this.current_player = Math.floor((Math.random() * Constant.MAX_PLAYER));
         this.id_first_player = this.current_player;
         this.chat = new Chat(id_partie, game_manager.global_socket);
@@ -59,7 +61,7 @@ module.exports = class Partie {
         this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
         this.init_player();
         this.nouveauTour();
-        this.run_timer_tour();
+        this.run_timer_tour(Constant.TIMER_TOUR);
     }
 
     init_player() {
@@ -74,16 +76,16 @@ module.exports = class Partie {
         }
     }
 
-    run_timer_tour() {
+    run_timer_tour(timer) {
         var partie = this;
-        this.timer_tour = setInterval(function() {
+        this.timer_tour = setInterval(function () {
             partie.change_current_player();
             if (partie.current_player == partie.id_first_player) {
                 partie.num_tour++;
                 partie.add_mana();
             }
             partie.nouveauTour();
-        }, Constant.TIMER_TOUR);
+        }, timer);
     }
 
     sync_board(player) {
@@ -124,20 +126,26 @@ module.exports = class Partie {
         }
     }
 
-    resume_game(timer) {
+    resume_game(player) {
         this.nb_deco--;
-        if (this.partie_status == Constant.STATUS_PAUSED) {
-            var partie = this;
-            setTimeout(function() {
-                partie.start_partie();
-            }, timer);
+        player.socket.emit(Constant.SOCKET_SET_SLIDE, this.liste_player[0].pseudo === player.pseudo ? Constant.LEFT : Constant.RIGHT);
+        this.sync_board(player);
+
+        if (this.partie_status == Constant.STATUS_PAUSED && this.nb_deco == 0) {
+            var partie = this ;
+            this.partie_status = Constant.STATUS_START;
+            this.resume_game_timer = setTimeout(function () {
+                partie.run_timer_tour(Constant.TIMER_TOUR);
+            }, this.paused_time);
         }
     }
 
     pause_game() {
         if (this.partie_status == Constant.STATUS_START) {
             this.partie_status = Constant.STATUS_PAUSED;
+            this.paused_time = (this.current_time + Constant.TIMER_TOUR) - new Date().getTime();
             clearInterval(this.timer_tour);
+            clearTimeout(this.resume_game_timer);
         }
     }
 
@@ -185,6 +193,7 @@ module.exports = class Partie {
         //gestion des points ici
         //notifier fin de partie
         clearInterval(this.timer_tour);
+        clearTimeout(this.resume_game_timer);
         this.delete_all_player();
         this.destroy_partie();
     }
@@ -192,6 +201,17 @@ module.exports = class Partie {
     destroy_partie() {
         this.partie_status = Constant.STATUS_END;
         this.game_manager.destroy_partie(this.id_partie);
+    }
+
+    fin_tour() {
+        clearInterval(this.timer_tour);
+        this.change_current_player();
+        if (this.current_player == this.id_first_player) {
+            this.num_tour++;
+            this.add_mana();
+        }
+        this.nouveauTour();
+        this.run_timer_tour(Constant.TIMER_TOUR);
     }
 
     get_status() {

@@ -1,8 +1,11 @@
 const Constant = require('./Constant');
+const APied = require('./APied');
+const Utils = require('./Utils');
 
 module.exports = class Entity {
 
     constructor(uid, pseudo, name, life, img, attack, defense, movement) {
+        this.move_class = new APied();
         this.uid = uid;
         this.pseudo = pseudo;
         this.name = name;
@@ -10,14 +13,15 @@ module.exports = class Entity {
         this.img = img;
         this.attack = attack;
         this.defense = defense;
-        this.defenseMode = false;
-        this.canDoAction = false;
+        this.defense_mode = false;
+        this.can_do_action = true;
         this.movement = movement;
-        this.left_movement = 0;
+        this.can_move = true;
     }
 
     move_entity(board, origin, destination) {
-        if (!this.plus_court_chemin(board.board, origin, destination, this.movement)) {
+        let casesCanMove = this.move_class.move(board.board, origin, this.movement);
+        if (!Utils.containsInArray(casesCanMove,destination)) {
             throw new Error(Constant.NEED_MORE_MOVEMENT);
         }
         this.position = destination;
@@ -27,47 +31,8 @@ module.exports = class Entity {
         board.notify_delete_entity(origin);
     }
 
-    plus_court_chemin(board, origin, destination, profondeur) {
-        if (origin.row == destination.row && origin.column == destination.column) {
-            return true;
-        }
-        if (profondeur === 0) {
-            return false;
-        }
-        var is_in = false;
-        if (origin.row >= 1 && !is_in) {
-            if (board[origin.row - 1][origin.column] === null) {
-                is_in = this.plus_court_chemin(board, {
-                    row: origin.row - 1,
-                    column: origin.column
-                }, destination, profondeur - 1);
-            }
-        }
-        if (origin.column >= 1 && !is_in) {
-            if (board[origin.row][origin.column - 1] === null) {
-                is_in = this.plus_court_chemin(board, {
-                    row: origin.row,
-                    column: origin.column - 1
-                }, destination, profondeur - 1);
-            }
-        }
-        if (origin.column < Constant.WIDTH_SIZE-1 && !is_in) {
-            if (board[origin.row][origin.column + 1] === null) {
-                is_in = this.plus_court_chemin(board, {
-                    row: origin.row,
-                    column: origin.column + 1
-                }, destination, profondeur - 1);
-            }
-        }
-        if (origin.row < Constant.HEIGHT_SIZE-1 && !is_in) {
-            if (board[origin.row + 1][origin.column] === null) {
-                is_in = this.plus_court_chemin(board, {
-                    row: origin.row + 1,
-                    column: origin.column
-                }, destination, profondeur - 1);
-            }
-        }
-        return is_in;
+    request_overlay(board, origin) {
+        return this.move_class.move(board, origin, this.movement);
     }
 
     to_json(pseudo, position) {
@@ -79,8 +44,8 @@ module.exports = class Entity {
             attack: this.attack,
             defense: this.defense,
             movement: this.movement,
-            defenseMode: this.defenseMode,
-            canDoAction: this.canDoAction
+            defenseMode: this.defense_mode,
+            canDoAction: this.can_do_action
         }
     }
 

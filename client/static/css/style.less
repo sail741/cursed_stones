@@ -127,6 +127,12 @@ body{
 	position: relative;
 	width: 100%;
 	height: 100%;
+	&.self{
+		background: rgba(0, 0, 255, 0.1);
+	}
+	&.enemie{
+		background: rgba(255, 0, 0, 0.1);
+	}
 	.shield{
 		position: absolute;
 		top: 1px;
@@ -202,4 +208,36 @@ body{
 	}
 }
 
+.btn{
+	padding: 5px;
+	background: #538eff;
+	color: white;
+	cursor: pointer;
+	&:hover{
+		box-shadow: 5px 5px 10px #656565;;
+	}
 
+	&[data-disabled="1"]{
+		background: #c6c3cf;
+	}
+}
+
+#contextMenu{
+	display: none;
+	position: absolute;
+	justify-content: flex-start;
+	flex-direction: column;
+	background: #eaeaea;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid #d6d6d6;
+
+	span{
+		min-width: 100px;
+		cursor: pointer;
+		&:hover{
+			background-color: #b2b2b2;
+		}
+	}
+
+}

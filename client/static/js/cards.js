@@ -121,7 +121,7 @@ function selectCards(e){
 	return false;
 }
 
-function piocheCard(cardsElem, card){
+function piocheCard(cardsElem, card, cb){
 	hand_cards.push(card);
 
 	console.log("piocheCard", card);
@@ -135,7 +135,12 @@ function piocheCard(cardsElem, card){
 	}
 
 	timeoutIdPiocheRedraw = setTimeout(function(){
-		drawsCards(cardsElem, hand_cards);
+		if(cb != null){
+			cb();
+		}else{
+            drawsCards(cardsElem, hand_cards);
+		}
+
 	}, 2000);
 }
 

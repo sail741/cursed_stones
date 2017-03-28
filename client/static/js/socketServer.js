@@ -3,16 +3,21 @@
 sio.on('piocheCarte', function(data){
 	console.log('evt: piocheCarte', data);
 	if(data.new_card != null){
-		piocheCard(cardsSelf, data.new_card);	
+		piocheCard(cardsSelf, data.new_card, function(){
+            setSelfHand(data.hand);
+		});
 	}
-	drawsCards(cardsSelf, data.hand);
 });
 
 sio.on('nouveauTour', function(data){
 	console.log('nouveau tour', data);
 	setTourData(data.Self, data.Num_tour, data.Mana);
+	boardResetSelect();
 	if(data.Self){
+        requestOverlay("off");
 		startSelfTour();
+	}else{
+        startAdvTour();
 	}
 });
 
@@ -73,7 +78,7 @@ sio.on('syncBoard', function(p_entities){
 		entities.push(p_entities[i].entity);
 	}
 	setEntities(entities)
-})
+});
 
 sio.on('fintour', function(){
 	doFinTour();
@@ -82,6 +87,10 @@ sio.on('fintour', function(){
 sio.on('setSlide', function(slide){
 	console.log('setSlide', slide);
 	setSlide(slide);
+});
+
+sio.on('displayOverlay', function(data){
+	displayOverlayBoard(data);
 })
 
 function requestCards(){
@@ -106,4 +115,11 @@ function requestMove(entity, pos){
 		origin: entity.position,
 		dest: convertPositionClientToServer(pos)
 	});
+}
+
+function requestOverlay(type, entity){
+	sio.emit('requestOverlay', {
+		type: type,
+		entity: entity
+	})
 }

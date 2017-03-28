@@ -56,6 +56,10 @@ module.exports = function(sequelize, DataTypes) {
                 });
             },
             connect: function(username, pass_unhashed, callback) {
+                /**
+                *  connect : regarde si un user existe en combinaison username / password.
+                *  return : {"status":1, "error":null, "user":user}
+                **/
                 var hash = this.hash_pass(pass_unhashed);
                 this.findAll({
                     attributes: ['id_user', 'username'],

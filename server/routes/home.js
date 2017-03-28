@@ -20,6 +20,12 @@ module.exports = function(app){
 		})
 		*/
 
+		/*
+		model.users.update_password(2, "azerty", "test", function(res){
+			console.log(res);
+		})
+		*/
+
 		res.render('index.ejs')
 	});
 }

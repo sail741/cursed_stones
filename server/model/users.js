@@ -43,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
                     if(res.length != 0) {
                         callback({"status":0, "error":"USER_ALREADY_EXIST"});
                     } else {
-                        var hash = that.hash_pass(old_pass_unhashed);
+                        var hash = that.hash_pass(pass_unhashed);
 
                         that.create({
                             username: username,
@@ -56,7 +56,7 @@ module.exports = function(sequelize, DataTypes) {
                 });
             },
             connect: function(username, pass_unhashed, callback) {
-                var hash = this.hash_pass(old_pass_unhashed);
+                var hash = this.hash_pass(pass_unhashed);
                 this.findAll({
                     attributes: ['id_user', 'username'],
                     where: {

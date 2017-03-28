@@ -92,7 +92,7 @@ function clickOnCase(){
 			entity_selected = null;
             action_entity_selected = null;
             hideContextMenu();
-            displayOverlayBoard();
+            requestOverlay("off");
 		}else {
 			
 			var entity = getEntity(pos);
@@ -103,11 +103,11 @@ function clickOnCase(){
 				entity_selected = null;
 				action_entity_selected = null;
 				hideContextMenu();
-            	displayOverlayBoard();
+            	requestOverlay("off");
 			}else{
                 entity_selected = null;
                 action_entity_selected = null;
-                displayOverlayBoard();
+                requestOverlay("off");
 			}
 		}
 	}else{
@@ -119,12 +119,13 @@ function clickOnCase(){
 			clearContextMenuActions();
 			if(entity.movement > 0){
 				declareContextMenuAction("Deplacement", function(){
-					displayOverlayBoard();
+					requestOverlay("move", entity);
 					action_entity_selected = "move";
 				});
 			}
 			if(entity.attack > 0){
                 declareContextMenuAction("Attaque", function(){
+                    requestOverlay("attack", entity);
                     console.log('TODO attaque');
                     action_entity_selected = "attack";
                 });
@@ -147,44 +148,26 @@ function clickOnCase(){
 	}
 }
 
-function displayOverlayBoard(){
+function displayOverlayBoard(cases){
 	var allOverlay = board.querySelectorAll(".overlay");
 	for(var i = 0; i < allOverlay.length; i++){
 		allOverlay[i].remove();
 	}
 
-	if(entity_selected == null){ return; }
-
-	var movement = entity_selected.movement;
-	var pos = convertPositionServerToClient(entity_selected.position)
-	/*for(var x = Math.max(0, pos.x - movement); x < Math.min(pos.x + movement, HAUTEUR); x++){
-        for(var y = Math.max(0, pos.y - movement); y < Math.min(pos.y + movement, HAUTEUR); y++){
-			var entityOnCase = getEntity({x, y});
-			if(entityOnCase == null){
-				var caseDom = board.querySelector('td[data-pos="'+convertPosToStr({x,y})+'"]');
-				if(caseDom){
-					var div = document.createElement('div');
-					div.className = 'overlay move';
-					caseDom.appendChild(div);
-				}
-			}
-        }
-	}*/
-	var cases = board.querySelectorAll("td");
 	for(var i = 0; i < cases.length; i++){
-		var caseDom = cases[i];
-		var strPos = caseDom.dataset.pos;
-		var posC = convertPosStrToObj(strPos);
-		var dist = distance(posC, pos);
-		if(dist <= movement){
-			var entityOnCase = getEntity(posC);
-			if(entityOnCase == null){
-                var div = document.createElement('div');
-                div.className = 'overlay move';
-                caseDom.appendChild(div);
-			}
+		var caseDraw = cases[i];
+		var pos = convertPositionServerToClient(caseDraw.position);
+		var type = caseDraw.type;
+		if(type == "off") continue;
+        var caseDom = board.querySelector('td[data-pos="'+convertPosToStr(pos)+'"]');
+		if(caseDom){
+			var div = document.createElement('div');
+			div.className = 'overlay ' + type;
+			caseDom.appendChild(div);
 		}
 	}
+
+
 
 }
 

@@ -76,7 +76,7 @@ sio.on('syncBoard', function(p_entities){
 		entities.push(p_entities[i].entity);
 	}
 	setEntities(entities)
-})
+});
 
 sio.on('fintour', function(){
 	doFinTour();
@@ -85,6 +85,10 @@ sio.on('fintour', function(){
 sio.on('setSlide', function(slide){
 	console.log('setSlide', slide);
 	setSlide(slide);
+});
+
+sio.on('displayOverlay', function(data){
+	displayOverlayBoard(data);
 })
 
 function requestCards(){
@@ -109,4 +113,11 @@ function requestMove(entity, pos){
 		origin: entity.position,
 		dest: convertPositionClientToServer(pos)
 	});
+}
+
+function requestOverlay(mode, entity){
+	sio.emit('requestOverlay', {
+		mode: mode,
+		entity: entity
+	})
 }

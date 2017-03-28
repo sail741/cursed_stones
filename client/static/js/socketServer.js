@@ -14,6 +14,8 @@ sio.on('nouveauTour', function(data){
 	setTourData(data.Self, data.Num_tour, data.Mana);
 	if(data.Self){
 		startSelfTour();
+	}else{
+        startAdvTour();
 	}
 });
 

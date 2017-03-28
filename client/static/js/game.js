@@ -9,6 +9,8 @@ var localTourWho = "...";
 
 var localTourNum = 0;
 
+var btnFinTour = document.querySelector("#finTour");
+
 //On envoie l'event de joinGame
 function joinGame(){
 	sio.emit('joinGame');
@@ -18,7 +20,12 @@ function joinGame(){
 function startSelfTour(){
 	tourTimerId = setTimeout(forceFinTour, TOUR_TIME);
 	requestCards(); //On demande une carte pour le nouveau tour
+	btnFinTour.dataset.disabled = 0;
 	
+}
+
+function startAdvTour(){
+    btnFinTour.dataset.disabled = 1;
 }
 
 function setTourData(isMine, numTour, mana){
@@ -73,7 +80,7 @@ function setManaAdv(mana){
 	renderStatusBar();
 }
 
-document.querySelector("#finTour").addEventListener("click", function(){
+btnFinTour.addEventListener("click", function(){
 	finTour();
 });
 

@@ -3,9 +3,10 @@ var LARGEUR = 16;
 var HAUTEUR = 8;
 var LARGEUR_SIDE = 4;
 var currentSlide = null;
-var entities = null; 
+var entities = [];
 
 var entity_selected = null;
+var action_entity_selected = null;
 
 function setSlide(slide){
 	currentSlide = slide;
@@ -89,16 +90,24 @@ function clickOnCase(){
 		if(isEquivalent(convertPositionServerToClient(entity_selected.position), pos)){
 			console.log("unselect entity", entity_selected);
 			entity_selected = null;
+            action_entity_selected = null;
+            hideContextMenu();
             displayOverlayBoard();
 		}else {
 			
 			var entity = getEntity(pos);
-			if(entity != null){
+			if(entity != null && action_entity_selected == "attack"){
 				//TODO : Attaque
-			}else{
+			}else if(action_entity_selected == "move"){
 				requestMove(entity_selected, pos);
 				entity_selected = null;
+				action_entity_selected = null;
+				hideContextMenu();
             	displayOverlayBoard();
+			}else{
+                entity_selected = null;
+                action_entity_selected = null;
+                displayOverlayBoard();
 			}
 		}
 	}else{
@@ -106,7 +115,33 @@ function clickOnCase(){
 		if(entity && entity.Self == true){
 			console.log('selection entity', entity);
 			entity_selected = entity;
-			displayOverlayBoard();
+
+			clearContextMenuActions();
+			if(entity.movement > 0){
+				declareContextMenuAction("Deplacement", function(){
+					displayOverlayBoard();
+					action_entity_selected = "move";
+				});
+			}
+			if(entity.attack > 0){
+                declareContextMenuAction("Attaque", function(){
+                    console.log('TODO attaque');
+                    action_entity_selected = "attack";
+                });
+			}
+			else if(entity.defense > 0){
+				if(entity.defenseMode){
+                    declareContextMenuAction("Désactiver le mode défense", function(){
+                        console.log('TODO desac def');
+                    });
+				}else{
+                    declareContextMenuAction("Activer le mode défense", function(){
+                        console.log('TODO activ def');
+                    });
+				}
+			}
+
+			displayContextMenu();
 
 		}
 	}

@@ -3,9 +3,10 @@
 sio.on('piocheCarte', function(data){
 	console.log('evt: piocheCarte', data);
 	if(data.new_card != null){
-		piocheCard(cardsSelf, data.new_card);	
+		piocheCard(cardsSelf, data.new_card, function(){
+            setSelfHand(data.hand);
+		});
 	}
-	//drawsCards(cardsSelf, data.hand);
 });
 
 sio.on('nouveauTour', function(data){

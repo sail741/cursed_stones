@@ -7,7 +7,6 @@ module.exports = class Player {
         this.pseudo = socket.request.user.username;
         this.id_user = socket.request.user.id_user;
         this.partie = null;
-        this.time_left_before_deconnexion = null;
         this.timer_reconnexion = null;
         this.deck = null;
         this.hand = null;
@@ -45,15 +44,15 @@ module.exports = class Player {
     socket_function() {
         var player = this;
 
-        player.socket.on(Constant.SOCKET_MESSAGE, function(message) {
+        player.socket.on(Constant.SOCKET_MESSAGE, function (message) {
             player.partie.chat.add_message(player.pseudo, message);
         });
 
         //on ne pioche qu'une fois en debut de tours
-        player.socket.on(Constant.SOCKET_GET_CARD, function() {
+        player.socket.on(Constant.SOCKET_GET_CARD, function () {
             try {
-                if(!player.partie.is_current_player(player.pseudo)){
-                  throw new Error(Constant.IS_NOT_YOUR_TURN);
+                if (!player.partie.is_current_player(player.pseudo)) {
+                    throw new Error(Constant.IS_NOT_YOUR_TURN);
                 }
                 if (player.etat === Constant.ETAT_PIOCHE) {
                     var card = player.deck.piocher_carte();
@@ -72,7 +71,7 @@ module.exports = class Player {
         });
 
 
-        player.socket.on(Constant.SOCKET_DISCONNECT, function() {
+        player.socket.on(Constant.SOCKET_DISCONNECT, function () {
             console.log('joueur ' + player.pseudo + ' a deconnecte de la partie ' + player.partie.id_partie);
 
             player.is_disconnected = true;
@@ -84,19 +83,17 @@ module.exports = class Player {
             var status = player.partie.deconnexion_player(player.pseudo);
 
             if (status === Constant.STATUS_PAUSED) {
-                //on garde le temps restant au joueur dans son tour
-                player.time_left_before_deconnexion = (player.partie.current_time + Constant.TIMER_TOUR) - new Date().getTime();
                 //abandon si le joueur ne se reconnecte pas dans le temps imparti
-                player.timer_reconnexion = setTimeout(function() {
+                player.timer_reconnexion = setTimeout(function () {
                     player.partie.abandon(player.pseudo);
                 }, Constant.TIMER_RECONNEXION);
             }
         });
 
-        player.socket.on(Constant.SOCKET_PLACE_CARD, function(json) {
+        player.socket.on(Constant.SOCKET_PLACE_CARD, function (json) {
             try {
-                if(!player.partie.is_current_player(player.pseudo)){
-                  throw new Error(Constant.IS_NOT_YOUR_TURN);
+                if (!player.partie.is_current_player(player.pseudo)) {
+                    throw new Error(Constant.IS_NOT_YOUR_TURN);
                 }
                 var card = player.get_card(json.card.uid);
                 if (card === null) {
@@ -127,24 +124,35 @@ module.exports = class Player {
             }
         });
 
-        player.socket.on(Constant.SOCKET_MOVE_ENTITY, function(json) {
+        player.socket.on(Constant.SOCKET_MOVE_ENTITY, function (json) {
             try {
                 // if(!player.partie.is_current_player(player.pseudo)){
                 //   throw new Error(Constant.IS_NOT_YOUR_TURN);
                 // }
-                console.log(json);
-                player.partie.board.move_entity(json.entity,json.origin,json.dest);
+                player.partie.board.move_entity(json.entity, json.origin, json.dest);
                 player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
-                    success : true
+                    success: true
                 });
             } catch (exception) {
                 console.error(exception);
                 player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
-                    success : false,
-                    error : exception.message
+                    success: false,
+                    error: exception.message
                 });
             }
         });
+
+        player.socket.on(Constant.SOCKET_END_TURN, function () {
+            try {
+                if (!player.partie.is_current_player(player.pseudo)) {
+                    throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
+                player.partie.fin_tour();
+            } catch(exception){
+                player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
+            }
+        });
+
     }
 
     get_card(uid) {
@@ -172,6 +180,10 @@ module.exports = class Player {
         this.socket = player.socket;
         this.socket_function();
         clearTimeout(this.timer_reconnexion);
-        this.partie.resume_game(this.time_left_before_deconnexion);
+        this.partie.resume_game(this);
+        this.socket.emit(Constant.SOCKET_FIRST_HAND, {
+            hand: this.hand
+        });
     }
-};
+}
+;

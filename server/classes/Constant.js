@@ -48,3 +48,6 @@ exports.SOCKET_EDIT_BOARD = "editBoard";
 exports.SOCKET_SYNC_BOARD = "syncBoard";
 exports.SOCKET_MOVE_ENTITY = "moveEntity";
 exports.SOCKET_SET_SLIDE = "setSlide";
+exports.SOCKET_REQUEST_OVERLAY = "requestOverlay";
+exports.SOCKET_DISPLAY_OVERLAY = "displayOverlay";
+exports.SOCKET_END_TURN = "fintour";

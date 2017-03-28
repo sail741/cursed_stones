@@ -1,14 +1,19 @@
 var passport = require('passport');
-
 module.exports = function(app){
-	//route d'affichage de la page login
-	app.get('/login', function(req, res){
-		res.render('login.ejs')
-	});
+
 	//post pour la connection
-	app.post('/login',
-	  passport.authenticate('local', { successRedirect: '/',
-	                                   failureRedirect: '/login',
-	                                   failureFlash: true })
+	app.post('/login', passport.authenticate('local', {
+			successRedirect: '/loginOK',
+			failureRedirect: '/loginFAIL'
+		})
 	);
+
+	app.get('/loginOK', function(req, res){
+		return res.json({status: "success"});
+	})
+
+	app.get('/loginFAIL', function(req, res){
+		return res.json({status: "error"});
+	})
+
 }

@@ -38,8 +38,6 @@ require('./model/model');
 require('./routes')(app);
 require('./sockets')(server,configBDD.sequelizeStore);
 
-
-
 server.listen(PORT, function(){
 	console.log("Server listen on ", PORT);
 })

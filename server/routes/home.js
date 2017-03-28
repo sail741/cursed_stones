@@ -17,6 +17,11 @@ module.exports = function(app){
 		/*
 		model.decks.create_deck(1, {"deck":[37,37, 37]}, function(res) {
 			console.log(res);
+			var id_deck = res.id_deck;
+
+			model.decks.update_deck(1, id_deck, {"deck":[37,37]}, function(res) {
+				console.log(res);
+			})
 		})
 		*/
 

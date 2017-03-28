@@ -96,7 +96,54 @@ module.exports = function(sequelize, DataTypes) {
                         next();
                     })
                 }
-            }
+            },
+            update_deck: function(id_user, id_deck, json_deck, callback) {
+                var that = this;
+
+                var tab_deck = json_deck.deck;
+                if(tab_deck.length == 0) {
+                    callback({"status":0, "error":"NO_CARD", "id_deck":null});
+                } else {
+                    this.destroy({
+                        where: {
+                            id_user: id_user,
+                            id_deck: id_deck
+                        }
+                    }).then(function() {
+                        // for each id_card, we count how many time we got it. 
+                        // ex : for cards 1 1 1 2 3 will give tab : [1, 2, 3] then [3, 1, 1]
+                        var tab_id_card = [], tab_qty_card = [], prev;
+                        tab_deck.sort();
+                        for ( var i = 0; i < tab_deck.length; i++ ) {
+                            if ( tab_deck[i] !== prev ) {
+                                tab_id_card.push(tab_deck[i]);
+                                tab_qty_card.push(1);
+                            } else {
+                                tab_qty_card[tab_qty_card.length-1]++;
+                            }
+                            prev = tab_deck[i];
+                        }
+
+                        var cur_id,cur_qty;
+                        var next = function() {
+                            cur_id = tab_id_card.pop();
+                            cur_qty = tab_qty_card.pop();
+                            if(cur_id == null){
+                                callback({"status":1, "error":null, "id_deck":id_deck});
+                                return;
+                            } 
+                            that.create({
+                                id_deck: id_deck,
+                                id_user: id_user,
+                                id_card: cur_id,
+                                qty_card: cur_qty
+                            }).then(next);
+                            
+                        }
+                        next();
+                    })
+                }
+            },
         }
 });
 };

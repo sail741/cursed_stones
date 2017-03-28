@@ -26,7 +26,7 @@ range_spell: {
 }, {
     tableName: 'cards_magic',
     classMethods: {
-            add: function(name, description, type_card, cost, img, type_spell, power_spell, range_spell) {
+            add: function(name, description, type_card, cost, img, type_spell, power_spell, range_spell, callback) {
                 var that = this;
                 cards.create({
                     name: name,
@@ -41,6 +41,8 @@ range_spell: {
                         type_spell: type_spell,
                         power_spell:power_spell,
                         range_spell: range_spell
+                    }).then(function() {
+                        callback({"status":1, "error":null, "id_card":id_card})
                     })
                 })
             },

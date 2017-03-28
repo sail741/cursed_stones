@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'cards_chara',
         classMethods: {
-            add: function(name, description, type_card, cost, img, attack, defence, life, movement) {
+            add: function(name, description, type_card, cost, img, attack, defence, life, movement, callback) {
                 var cards = this.sequelize.import('./cards');
                 var that = this;
 
@@ -46,6 +46,8 @@ module.exports = function(sequelize, DataTypes) {
                         defence: defence,
                         life:life,
                         movement: movement
+                    }).then(function() {
+                        callback({"status":1, "error":null, "id_card":id_card})
                     })
                 })
             },

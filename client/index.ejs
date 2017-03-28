@@ -28,7 +28,7 @@
 
 	<div id="connected">
 		<div class="command">
-			<button class="full">Play</button>
+			<button class="full" onclick="window.open('/game');">Play</button>
 			<div class="clear"></div>
 		</div>
 	</div>
@@ -43,19 +43,23 @@
 
 	<div id="login">
 		<div class="command">
-				<input type="text" name="user_name" placeholder="Pseudo" id="user_name_login">
-				<input type="password" name="password" placeholder="Mot de passe" id="password_login">
+			<form onsubmit="return index.login();">
+				<input type="text" required name="user_name" placeholder="Pseudo" id="user_name_login">
+				<input type="password" required name="password" placeholder="Mot de passe" id="password_login">
 				<button class="full">S'authentifier</button>
+			</form>
 		</div>
 		<div class="clear"></div>
 	</div>
 
 	<div id="register">
 		<div class="command">
-			<input class="full" type="text" name="user_name" placeholder="Pseudo" id="user_name_register">
-			<input type="password" name="password" placeholder="Mot de passe" id="password_register">
-			<input type="password" name="password" placeholder="Confirmer le mot de passe" id="password_register">
-			<button class="full">S'enregistrer</button>
+			<form onsubmit="return index.register();">
+				<input class="full" required type="text" name="user_name" placeholder="Pseudo" id="user_name_register">
+				<input type="password" required name="password" placeholder="Mot de passe" id="password_register">
+				<input type="password" required name="password" placeholder="Confirmer le mot de passe" id="password_confirm_register">
+				<button class="full">S'enregistrer</button>
+			</form>
 		</div>
 		<div class="clear"></div>
 	</div>

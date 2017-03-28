@@ -100,7 +100,8 @@ module.exports = class Board {
     move_entity(entity, origin, destination) {
         this.is_good_position(origin);
         this.is_good_position(destination);
-        this.is_good_entity(entity, origin);
+        this.is_good_entity(entity);
+        this.entity_position_same(entity, origin);
         var board_entity = this.board[origin.row][origin.column];
         if (!this.no_entity_in_position(destination)) {
             throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
@@ -108,14 +109,26 @@ module.exports = class Board {
         board_entity.move_entity(this, origin, destination);
     }
 
-    is_good_entity(entity, origin) {
+    request_overlay(entity, type) {
+        this.is_good_entity(entity);
+        switch (type){
+            case "move" : return this.board[entity.position.row][entity.position.column].request_overlay(this.board,entity.position) ;
+            default : throw new Error('pas content');
+        }
+    }
+
+    entity_position_same(entity, origin){
+        if (!this.position_same(entity.position, origin)) {
+            throw new Error(Constant.CARD_ALTERED);
+        }
+    }
+
+    is_good_entity(entity) {
         if (!entity.hasOwnProperty('position') || !entity.hasOwnProperty('uid')) {
             throw new Error(Constant.CARD_ALTERED);
         }
         this.is_good_position(entity.position);
-        if (!this.position_same(entity.position, origin)) {
-            throw new Error(Constant.CARD_ALTERED);
-        }
+
         var board_entity = this.board[entity.position.row][entity.position.column];
         if (board_entity === null) {
             throw new Error(Constant.NO_ENTITY_IN_POSITION);

@@ -126,9 +126,9 @@ module.exports = class Player {
 
         player.socket.on(Constant.SOCKET_MOVE_ENTITY, function (json) {
             try {
-                // if(!player.partie.is_current_player(player.pseudo)){
-                //   throw new Error(Constant.IS_NOT_YOUR_TURN);
-                // }
+                if(!player.partie.is_current_player(player.pseudo)){
+                  throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
                 player.partie.board.move_entity(json.entity, json.origin, json.dest);
                 player.socket.emit(Constant.SOCKET_MOVE_ENTITY, {
                     success: true
@@ -139,6 +139,17 @@ module.exports = class Player {
                     success: false,
                     error: exception.message
                 });
+            }
+        });
+
+        player.socket.on(Constant.SOCKET_REQUEST_OVERLAY, function (json) {
+            try {
+                if(!player.partie.is_current_player(player.pseudo)){
+                   throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
+                player.partie.board.request_overlay(json.entity, json.type);
+            } catch (exception) {1
+                player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });
 

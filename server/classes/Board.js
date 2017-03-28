@@ -46,7 +46,7 @@ module.exports = class Board {
         }
         var entity = this.convert_card_to_entity(pseudo, card);
         this.board[position.row][position.column] = entity;
-        this.notify_new_entity(entity, position);
+        this.notify_entity(entity, position);
         return entity;
     }
 
@@ -79,7 +79,7 @@ module.exports = class Board {
         return this.board[position.row][position.column] === null;
     }
 
-    notify_new_entity(entity, position) {
+    notify_entity(entity, position) {
         for (var i = 0; i < this.partie.liste_player.length; i++) {
             this.partie.liste_player[i].socket.emit(Constant.SOCKET_EDIT_BOARD, {
                 position: position,
@@ -87,6 +87,7 @@ module.exports = class Board {
             });
         }
     }
+
 
     notify_delete_entity(position) {
         for (var i = 0; i < this.partie.liste_player.length; i++) {
@@ -109,18 +110,34 @@ module.exports = class Board {
         board_entity.move_entity(this, origin, destination);
     }
 
+    attack_entity(entity, origin, destination) {
+        this.is_good_position(origin);
+        this.is_good_position(destination);
+        this.is_good_entity(entity);
+        this.entity_position_same(entity, origin);
+        var board_entity = this.board[origin.row][origin.column];
+        if (this.no_entity_in_position(destination)) {
+            throw new Error(Constant.NO_ENTITY_IN_POSITION);
+        }
+        board_entity.attack_entity(this, origin, destination);
+    }
+
     request_overlay(entity, type) {
-        if(entity != null){
+        if (entity != null) {
             this.is_good_entity(entity);
         }
 
-        switch (type){
-            case "move" : return this.board[entity.position.row][entity.position.column].request_overlay(this.board,entity.position) ;
-            default : return [];
+        switch (type) {
+            case Constant.TYPE_OVERLAY_MOVE :
+                return this.board[entity.position.row][entity.position.column].request_overlay_move(this.board, entity.position);
+            case Constant.TYPE_OVERLAY_ATTACK :
+                return this.board[entity.position.row][entity.position.column].request_overlay_attack(this.board, entity.position);
+            default :
+                return [];
         }
     }
 
-    entity_position_same(entity, origin){
+    entity_position_same(entity, origin) {
         if (!this.position_same(entity.position, origin)) {
             throw new Error(Constant.CARD_ALTERED);
         }
@@ -144,6 +161,16 @@ module.exports = class Board {
 
     position_same(pos1, pos2) {
         return pos1.row == pos2.row && pos1.column == pos2.column;
+    }
+
+    reset_etat(pseudo){
+        for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
+            for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
+                if (this.board[i][x] !== null && this.board[i][x].pseudo == pseudo) {
+                    this.board[i][x].reset_etat();
+                }
+            }
+        }
     }
 
     to_json(pseudo) {

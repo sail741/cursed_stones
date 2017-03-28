@@ -227,4 +227,12 @@ function redrawBoard(){
 	}
 
 }
+
+function boardResetSelect(){
+	entity_selected = null;
+	card_selected = null;
+	action_entity_selected = null;
+	requestOverlay("off");
+}
+
 initBoard(LARGEUR, HAUTEUR);

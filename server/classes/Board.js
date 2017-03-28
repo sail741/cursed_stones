@@ -110,10 +110,13 @@ module.exports = class Board {
     }
 
     request_overlay(entity, type) {
-        this.is_good_entity(entity);
+        if(entity != null){
+            this.is_good_entity(entity);
+        }
+
         switch (type){
             case "move" : return this.board[entity.position.row][entity.position.column].request_overlay(this.board,entity.position) ;
-            default : throw new Error('pas content');
+            default : return [];
         }
     }
 

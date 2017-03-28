@@ -72,6 +72,7 @@ module.exports = class APied {
                 prof--;
             }
         }
+        deja_visite.splice(0, 1); //On retire la 1er case qui est la case de départ enfin normalement
         return deja_visite;
     }
 }

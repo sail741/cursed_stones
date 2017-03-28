@@ -147,8 +147,23 @@ module.exports = class Player {
                 if(!player.partie.is_current_player(player.pseudo)){
                    throw new Error(Constant.IS_NOT_YOUR_TURN);
                 }
-                player.partie.board.request_overlay(json.entity, json.type);
-            } catch (exception) {1
+
+
+                let positions = player.partie.board.request_overlay(json.entity, json.type);
+                let arrayToSend = [];
+                for(let position of positions){
+                    arrayToSend.push({
+                        type: json.type,
+                        position: position
+                    });
+
+                }
+                player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_DISPLAY_OVERLAY, arrayToSend);
+
+
+
+            } catch (exception) {
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });

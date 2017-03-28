@@ -12,6 +12,7 @@ sio.on('piocheCarte', function(data){
 sio.on('nouveauTour', function(data){
 	console.log('nouveau tour', data);
 	setTourData(data.Self, data.Num_tour, data.Mana);
+	boardResetSelect();
 	if(data.Self){
 		startSelfTour();
 	}else{
@@ -115,9 +116,9 @@ function requestMove(entity, pos){
 	});
 }
 
-function requestOverlay(mode, entity){
+function requestOverlay(type, entity){
 	sio.emit('requestOverlay', {
-		mode: mode,
+		type: type,
 		entity: entity
 	})
 }

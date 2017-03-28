@@ -20,8 +20,8 @@ module.exports = class Entity {
     }
 
     move_entity(board, origin, destination) {
-        console.log(this.move_class.move(board.board, origin, this.movement));
-        if (Utils.containsInArray(this.move_class.move(board.board, origin, this.movement),destination)) {
+        let casesCanMove = this.move_class.move(board.board, origin, this.movement);
+        if (!Utils.containsInArray(casesCanMove,destination)) {
             throw new Error(Constant.NEED_MORE_MOVEMENT);
         }
         this.position = destination;
@@ -32,7 +32,7 @@ module.exports = class Entity {
     }
 
     request_overlay(board, origin) {
-        return this.move_class.move(board.board, origin, this.movement);
+        return this.move_class.move(board, origin, this.movement);
     }
 
     to_json(pseudo, position) {

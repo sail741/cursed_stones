@@ -33,6 +33,9 @@ exports.NO_ENTITY_IN_POSITION = "pas d'entité sur cette case";
 exports.NEED_MORE_MOVEMENT = "vous n'avez pas assez de point de mouvement";
 exports.IS_NOT_YOUR_TURN = "ce n'est pas à votre tour";
 
+exports.TYPE_OVERLAY_MOVE = "move";
+exports.TYPE_OVERLAY_ATTACK = "attack";
+exports.TYPE_OVERLAY_OFF = "off";
 
 exports.SOCKET_DISCONNECT = "disconnect";
 exports.SOCKET_SIGNAL_DISCONNECT = "signalDisconnect";

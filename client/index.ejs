@@ -2,15 +2,17 @@
 <html>
 <head>
 	<title>Cursed stones</title>
-	<link rel="stylesheet" type="text/css" href="static/css/index.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
 </head>
 <body>
 
+<div id="loading">
+	<h1>LOADING</h1>
+</div>
 
-
-<nav>
+<nav id="nav">
 	<ul>
-		<li>Home</li>
+		<li onclick="index.showIndex()">Home</li>
 		<li>A propos</li>
 		<li>Classement</li>
 		<li>Contact</li>
@@ -18,61 +20,58 @@
 	<div class="clear"></div>
 </nav>
 
-<section id="home">
+<section id="index">
 
 	<header>
 		<h1>CursedStones</h1>
 	</header>
 
-	<div class="command">
-		<button class="full">Play</button>
+	<div id="connected">
+		<div class="command">
+			<button class="full">Play</button>
+			<div class="clear"></div>
+		</div>
 	</div>
-	<div class="clear"></div>
+	
+	<div id="not_connected">
+		<div class="command">
+			<button onclick="index.showLogin()">S'authentifier</button>
+			<button onclick="index.showRegister()">S'enregistrer</button>
+			<div class="clear"></div>
+		</div>
+	</div>
+
+	<div id="login">
+		<div class="command">
+				<input type="text" name="user_name" placeholder="Pseudo" id="user_name_login">
+				<input type="password" name="password" placeholder="Mot de passe" id="password_login">
+				<button class="full">S'authentifier</button>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<div id="register">
+		<div class="command">
+			<input class="full" type="text" name="user_name" placeholder="Pseudo" id="user_name_register">
+			<input type="password" name="password" placeholder="Mot de passe" id="password_register">
+			<input type="password" name="password" placeholder="Confirmer le mot de passe" id="password_register">
+			<button class="full">S'enregistrer</button>
+		</div>
+		<div class="clear"></div>
+	</div>
 
 	<footer>
 		<a href="">© 2017 Polytech APP3 Info</a>
 	</footer>
 </section>
 
-<section id="login">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"/></script>
+<script type="text/javascript" src="/static/js/index.js"/></script>
 
-	<header>
-		<h1>CursedStones</h1>
-	</header>
-
-	<div class="command">
-		<form>
-			<input type="text" name="user_name" placeholder="Username" id="user_name">
-			<input type="password" name="password" placeholder="Password" id="password">
-			<button class="full">S'authentifier</button>
-		</form>
-	</div>
-	<div class="clear"></div>
-
-	<footer>
-		<a href="">© 2017 Polytech APP3 Info</a>
-	</footer>
-</section>
-
-<section id="register">
-
-	<header>
-		<h1>CursedStones</h1>
-	</header>
-
-	<div class="command">
-		<form>
-			<input type="text" name="user_name" placeholder="Username" id="user_name">
-			<input type="password" name="password" placeholder="Password" id="password">
-			<button class="full">S'authentifier</button>
-		</form>
-	</div>
-	<div class="clear"></div>
-
-	<footer>
-		<a href="">© 2017 Polytech APP3 Info</a>
-	</footer>
-</section>
+<script type="text/javascript">
+	var index = new Index(document);
+	index.showIndex();
+</script>
 
 </body>
 </html>

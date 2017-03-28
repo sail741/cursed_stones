@@ -142,6 +142,42 @@ module.exports = class Player {
             }
         });
 
+        player.socket.on(Constant.SOCKET_ATTACK, function (json) {
+            try {
+                if(!player.partie.is_current_player(player.pseudo)){
+                    throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
+                player.partie.board.attack_entity(json.entity, json.origin, json.dest);
+                player.socket.emit(Constant.SOCKET_ATTACK, {
+                    success: true
+                });
+            } catch (exception) {
+                console.error(exception);
+                player.socket.emit(Constant.SOCKET_ATTACK, {
+                    success: false,
+                    error: exception.message
+                });
+            }
+        });
+
+        player.socket.on(Constant.SOCKET_DEFENSE, function (json) {
+            try {
+                if(!player.partie.is_current_player(player.pseudo)){
+                    throw new Error(Constant.IS_NOT_YOUR_TURN);
+                }
+                player.partie.board.defense_entity(json.entity, json.origin);
+                player.socket.emit(Constant.SOCKET_ATTACK, {
+                    success: true
+                });
+            } catch (exception) {
+                console.error(exception);
+                player.socket.emit(Constant.SOCKET_ATTACK, {
+                    success: false,
+                    error: exception.message
+                });
+            }
+        });
+
         player.socket.on(Constant.SOCKET_REQUEST_OVERLAY, function (json) {
             try {
                 if(!player.partie.is_current_player(player.pseudo)){

@@ -3,10 +3,6 @@ const Util = require('./Utils');
 
 module.exports = class APied {
 
-    APied(){
-
-    }
-
     move(board, origin, profondeur) {
         var list_current = [];
         var has_next = [];
@@ -16,7 +12,7 @@ module.exports = class APied {
 
         while (list_current.length > 0) {
             var current = list_current.pop();
-            if(!Util.containsInArray(deja_visite, current)) {
+            if (!Util.containsInArray(deja_visite, current)) {
                 deja_visite.push(current);
 
                 if (current.row >= 1 && prof > 0) {
@@ -25,9 +21,7 @@ module.exports = class APied {
                             row: current.row - 1,
                             column: current.column
                         };
-                        if (!Util.containsInArray(deja_visite, next)) {
-                            has_next.push(next);
-                        }
+                        has_next.push(next);
                     }
                 }
                 if (current.column >= 1 && prof > 0) {
@@ -36,9 +30,7 @@ module.exports = class APied {
                             row: current.row,
                             column: current.column - 1
                         }
-                        if (!Util.containsInArray(deja_visite, next)) {
-                            has_next.push(next);
-                        }
+                        has_next.push(next);
                     }
                 }
                 if (current.column < Constant.WIDTH_SIZE - 1 && prof > 0) {
@@ -47,9 +39,7 @@ module.exports = class APied {
                             row: current.row,
                             column: current.column + 1
                         };
-                        if (!Util.containsInArray(deja_visite, next)) {
-                            has_next.push(next);
-                        }
+                        has_next.push(next);
                     }
                 }
                 if (current.row < Constant.HEIGHT_SIZE - 1 && prof > 0) {
@@ -58,9 +48,7 @@ module.exports = class APied {
                             row: current.row + 1,
                             column: current.column
                         };
-                        if (!Util.containsInArray(deja_visite, next)) {
-                            has_next.push(next);
-                        }
+                        has_next.push(next);
                     }
                 }
 

@@ -93,6 +93,7 @@ module.exports = class Partie {
     }
 
     nouveauTour() {
+        this.board.reset_etat(this.liste_player[this.current_player].pseudo);
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].etat = (i == this.current_player ? Constant.ETAT_PIOCHE : Constant.ETAT_STAY);
             this.liste_player[i].mana = this.mana;

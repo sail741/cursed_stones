@@ -5,7 +5,7 @@ sio.on('piocheCarte', function(data){
 	if(data.new_card != null){
 		piocheCard(cardsSelf, data.new_card);	
 	}
-	drawsCards(cardsSelf, data.hand);
+	//drawsCards(cardsSelf, data.hand);
 });
 
 sio.on('nouveauTour', function(data){

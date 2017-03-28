@@ -14,6 +14,7 @@ sio.on('nouveauTour', function(data){
 	setTourData(data.Self, data.Num_tour, data.Mana);
 	boardResetSelect();
 	if(data.Self){
+        requestOverlay("off");
 		startSelfTour();
 	}else{
         startAdvTour();

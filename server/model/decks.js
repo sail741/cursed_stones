@@ -37,13 +37,33 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 }).then(function(res) {
                     if(res.length > 0) {
-                        var tab = new Array();
+                        var tab_id_card = new Array();
                         for (var i = 0; i < res.length; i++) {
                             for (var j = 0; j < res[i].get("qty_card"); j++) {
-                                tab.push(res[i].get("id_card"));
+                                tab.push(tab_id_card[i].get("id_card"));
                             }
                         }
-                        callback({"status":1, "error":null, "deck":tab});
+                        callback({"status":1, "error":null, "deck":tab_id_card});
+                    } else {
+                        callback({"status":0, "error":"NOT_FOUND", "deck":null});
+                    }
+
+                })
+            },
+            get_decks: function(id_user, callback) {
+                this.findAll({
+                    where: {
+                        id_user: id_user
+                    }
+                }).then(function(res) {
+                    if(res.length > 0) {
+                        var tab_id_deck = new Array();
+                        for (var i = 0; i < res.length; i++) {
+                            if(!(res[i].get("id_deck") in tab_id_deck)) {
+                                tab_id_deck.push(res[i].get("id_deck"));
+                            }
+                        }
+                        callback({"status":1, "error":null, "decks":tab_id_deck});
                     } else {
                         callback({"status":0, "error":"NOT_FOUND", "deck":null});
                     }

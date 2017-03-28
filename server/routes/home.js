@@ -31,6 +31,18 @@ module.exports = function(app){
 		})
 		*/
 
+		/*
+		model.decks.get_decks(1, function(res) {
+			console.log(res);
+		})
+		*/
+
+		/*
+		model.users.update_points(1, 5, function(res) {
+			console.log(res);
+		})
+		*/
+
 		res.render('index.ejs')
 	});
 }

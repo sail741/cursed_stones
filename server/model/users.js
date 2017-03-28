@@ -25,6 +25,13 @@ module.exports = function(sequelize, DataTypes) {
     }, {
         tableName: 'users',
         classMethods: {
+            hash_pass: function(pass_unhashed) {
+                var crypto = require('crypto');
+                var grain = 'easy';
+                var sel = 'hash';
+                var hash = crypto.createHash('sha256').update(grain + pass_unhashed + sel).digest('base64');
+                return hash;
+            },
             create_user: function(username, pass_unhashed, country, callback) {
                 var that = this;
                 this.findAll({
@@ -70,12 +77,12 @@ module.exports = function(sequelize, DataTypes) {
                 var that = this;
                 this.findAll({
                     where: {
-                            id_user: id_user,
-                            password: hash
+                        id_user: id_user,
+                        password: hash
                     }
                 }).then(function(res) {
                     if(res.length == 0) {
-                        callback({"status":0, "error":"WRONG_OLD_PASSWORD"});
+                        callback({"status":0, "error":"WRONG_LOGS"});
                         return;
                     }
                     var new_hash = that.hash_pass(new_pass_unhashed);
@@ -86,12 +93,22 @@ module.exports = function(sequelize, DataTypes) {
                     })
                 });
             },
-            hash_pass: function(pass_unhashed) {
-                var crypto = require('crypto');
-                var grain = 'easy';
-                var sel = 'hash';
-                var hash = crypto.createHash('sha256').update(grain + pass_unhashed + sel).digest('base64');
-                return hash;
+            update_points: function(id_user, up_down_points, callback) {
+                this.findOne({
+                    where: {
+                        id_user:id_user
+                    }
+                }).then(function(res){
+                    if(res == null) {
+                        callback({"status":0, "error":"NOT_FOUND", "points":null});
+                        return;
+                    }
+                    var new_points = res.get("points") + up_down_points
+                    res.updateAttributes({
+                        points: new_points
+                    })
+                    callback({"status":1, "error":null, "points":new_points});
+                })
             }
         }
     });

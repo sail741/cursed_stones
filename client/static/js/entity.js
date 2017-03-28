@@ -5,7 +5,7 @@ function getEntityImage(entity){
 function buildEntityDiv(entity){
 	var div = document.createElement('div');
 
-	div.className = "entity";
+	div.className = "entity " + (entity.Self ? 'self' : 'enemie');
 	div.dataset.entity = entity.uid;
 
 	var img = document.createElement('img');

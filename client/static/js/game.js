@@ -73,5 +73,7 @@ function setManaAdv(mana){
 	renderStatusBar();
 }
 
-
+document.querySelector("#finTour").addEventListener("click", function(){
+	finTour();
+});
 

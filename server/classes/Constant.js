@@ -58,3 +58,4 @@ exports.SOCKET_REQUEST_OVERLAY = "requestOverlay";
 exports.SOCKET_DISPLAY_OVERLAY = "displayOverlay";
 exports.SOCKET_END_TURN = "fintour";
 exports.SOCKET_ATTACK = "attack";
+exports.SOCKET_DEFENSE = "setDefenseEntity";

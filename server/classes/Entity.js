@@ -78,6 +78,15 @@ module.exports = class Entity {
         this.can_do_action = false;
     }
 
+    defense_entity(board, origin) {
+        if(!this.can_do_action){
+            throw new Error(Constant.NO_MORE_ACTION);
+        }
+        this.defense_mode = true ;
+        board.notify_entity(this, origin);
+        this.can_move = false;
+    }
+
     request_overlay_move(board, origin) {
         return this.move_class.move(board, origin, this.movement);
     }

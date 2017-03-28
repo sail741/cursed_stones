@@ -122,6 +122,15 @@ module.exports = class Board {
         board_entity.attack_entity(this, origin, destination);
     }
 
+    defense_entity(entity, origin) {
+        this.is_good_position(origin);
+        this.is_good_entity(entity);
+        this.entity_position_same(entity, origin);
+        var board_entity = this.board[origin.row][origin.column];
+        board_entity.defense_entity(this, origin);
+    }
+
+
     request_overlay(entity, type) {
         if (entity != null) {
             this.is_good_entity(entity);

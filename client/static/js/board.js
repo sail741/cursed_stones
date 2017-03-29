@@ -86,28 +86,22 @@ function clickOnCase(){
 	console.log("Click on case", boardCasePos, card_selected);
 	if(card_selected){ //dans cards.js
 		requestPlaceCard(card_selected, boardCasePos);
+        unselectEntity();
 	}else if (entity_selected){
 		if(isEquivalent(convertPositionServerToClient(entity_selected.position), pos)){
 			console.log("unselect entity", entity_selected);
-			entity_selected = null;
-            action_entity_selected = null;
-            hideContextMenu();
-            requestOverlay("off");
+            unselectEntity();
 		}else {
 			
 			var entity = getEntity(pos);
 			if(entity != null && action_entity_selected == "attack"){
 				//TODO : Attaque
+				requestAttack(entity_selected, pos);
 			}else if(action_entity_selected == "move"){
 				requestMove(entity_selected, pos);
-				entity_selected = null;
-				action_entity_selected = null;
-				hideContextMenu();
-            	requestOverlay("off");
+				unselectEntity();
 			}else{
-                entity_selected = null;
-                action_entity_selected = null;
-                requestOverlay("off");
+                unselectEntity();
 			}
 		}
 	}else{
@@ -115,6 +109,7 @@ function clickOnCase(){
 		if(entity && entity.Self == true){
 			console.log('selection entity', entity);
 			entity_selected = entity;
+            displaySelected(entity);
 
 			clearContextMenuActions();
 			if(entity.movement > 0){
@@ -126,7 +121,6 @@ function clickOnCase(){
 			if(entity.attack > 0){
                 declareContextMenuAction("Attaque", function(){
                     requestOverlay("attack", entity);
-                    console.log('TODO attaque');
                     action_entity_selected = "attack";
                 });
 			}
@@ -146,6 +140,14 @@ function clickOnCase(){
 
 		}
 	}
+}
+
+function unselectEntity(){
+    entity_selected = null;
+    action_entity_selected = null;
+    displaySelected(null);
+    hideContextMenu();
+    requestOverlay("off");
 }
 
 function displayOverlayBoard(cases){
@@ -170,6 +172,8 @@ function displayOverlayBoard(cases){
 
 
 }
+
+
 
 function doPlaceCard(card, boardCasePos){
 	placeOnBoard(boardCasePos, card);

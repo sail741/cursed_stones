@@ -91,7 +91,9 @@ sio.on('setSlide', function(slide){
 
 sio.on('displayOverlay', function(data){
 	displayOverlayBoard(data);
-})
+});
+
+
 
 function requestCards(){
 	sio.emit('piocheCarte');
@@ -122,4 +124,12 @@ function requestOverlay(type, entity){
 		type: type,
 		entity: entity
 	})
+}
+
+function requestAttack(entity, target){
+	sio.emit('attack', {
+		entity: entity,
+		origin: entity.position,
+		dest: convertPositionClientToServer(target)
+	});
 }

@@ -7,6 +7,7 @@ function buildEntityDiv(entity){
 
 	div.className = "entity " + (entity.Self ? 'self' : 'enemie');
 	div.dataset.entity = entity.uid;
+	div.dataset.selected = 0;
 
 	var img = document.createElement('img');
 	img.src = '/static/img/cards/board_c1.png';//getEntityImage(entity);
@@ -23,6 +24,20 @@ function buildEntityDiv(entity){
 	}
 
 	return div;
+}
+
+function displaySelected(entity){
+
+	var selected_dom = board.querySelectorAll('.entity[data-selected="1"]');
+
+	for(var i = 0; i < selected_dom.length; i++){
+		selected_dom[i].dataset.selected = 0;
+	}
+
+	if(entity != null){
+        var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');
+        actualDiv.dataset.selected = 1;
+	}
 }
 
 function removeEntity(pos){

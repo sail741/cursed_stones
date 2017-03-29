@@ -42,7 +42,7 @@ module.exports = class Entity {
         if(!this.can_do_action){
             throw new Error(Constant.NO_MORE_ACTION);
         }
-        let cases_can_attack = this.attack_class.attack(board, origin, 1, this.pseudo);
+        let cases_can_attack = this.attack_class.attack(board.board, origin, 1, this.pseudo);
         if (!Utils.containsInArray(cases_can_attack,destination)) {
             throw new Error(Constant.NEED_MORE_RANGE);
         }

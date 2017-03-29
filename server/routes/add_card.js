@@ -19,11 +19,16 @@ module.exports = function(app){
 			var defence = req.body.defence;
 			var life = req.body.life;
 			var movement = req.body.movement;
-			model.cards_chara.add(name, description, type_card, cost, img, attack, defence, life, movement);
+			model.cards_chara.add(name, description, type_card, cost, img, attack, defence, life, movement, function(res) {
+				console.log(res);
+			});
 		} else {
 			var type_spell = req.body.type_spell;
 			var power_spell = req.body.power_spell;
 			var range_spell = req.body.range_spell;
+			model.cards_magic.add(name, description, type_card, cost, img, type_spell, power_spell, range_spell, function(res) {
+				console.log(res);
+			});
 		}
 		res.render('add_card.ejs');
 	});

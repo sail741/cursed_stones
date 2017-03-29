@@ -17,9 +17,9 @@ module.exports = class Entity {
         this.defense = defense;
         this.defense_left = defense;
         this.defense_mode = false;
-        this.can_do_action = true;
+        this.can_do_action = false;
         this.movement = movement;
-        this.can_move = true;
+        this.can_move = false;
     }
 
     move_entity(board, origin, destination) {
@@ -88,10 +88,16 @@ module.exports = class Entity {
     }
 
     request_overlay_move(board, origin) {
+        if(!this.can_move){
+            throw new Error(Constant.NO_MORE_ACTION);
+        }
         return this.move_class.move(board, origin, this.movement);
     }
 
     request_overlay_attack(board, origin) {
+        if(!this.can_do_action){
+            throw new Error(Constant.NO_MORE_ACTION);
+        }
         return this.attack_class.attack(board, origin, 1, this.pseudo);
     }
 
@@ -112,7 +118,8 @@ module.exports = class Entity {
             defense: this.defense_left,
             movement: this.movement,
             defenseMode: this.defense_mode,
-            canDoAction: this.can_do_action
+            canDoAction: this.can_do_action,
+            life: this.life
         }
     }
 

@@ -6,7 +6,12 @@ module.exports = function(app){
 		passport.authenticate('local', function(err, user, info, status) {
 			if (err) { return res.json({status: "error"}); }
 			if (!user) { return res.json({status: "error"}); }
-			return res.json({status: "success"});
+			console.log(...arguments);
+			req.logIn(user, function(err) {
+		      if (err) { return res.json({status: "error"}); }
+		      return res.json({status: "success"});
+		    });
+			
 		})(req, res, next);
 	});
 }

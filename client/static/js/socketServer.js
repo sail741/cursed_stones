@@ -93,6 +93,14 @@ sio.on('displayOverlay', function(data){
 	displayOverlayBoard(data);
 });
 
+sio.on('attack', function(data){
+	requestOverlay('off');
+	if(data.success){
+
+	}else{
+
+	}
+});
 
 
 function requestCards(){

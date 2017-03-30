@@ -2,6 +2,7 @@ module.exports = function(app){
 
 	// api part, @TBD
 	require('./login')(app);
+	require('./logout')(app);
 	require('./register')(app);
 	require('./status')(app);
 

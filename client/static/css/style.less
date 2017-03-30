@@ -1,3 +1,5 @@
+@caseSize: 4vw;
+
 *{
 	margin: 0;
 	padding: 0;
@@ -33,20 +35,21 @@ body{
 }
 
 #board{
-	perspective: 70em;
+	//perspective: 70em;
 	table{
 		border-top: 1px solid black;
 		margin: 0 auto;
-	    transform: rotateX(50deg) translateY(-30%) translateZ(60px); //DANS LE JS NOW
+	    //transform: rotateX(50deg) translateY(-30%) translateZ(60px); //DANS LE JS NOW
 		tr{
 			td {
+				position: relative;
 				border: 1px solid black;
-				width: 8vw;
-				height: 8vw;
+				width: @caseSize;
+				height: @caseSize;
 				min-width: 2vw;
 				min-height: 2vw;
-				max-width: 8vw;
-				max-height: 8vw;
+				max-width: @caseSize;
+				max-height: @caseSize;
 				
 				&.self{
 					background: rgba(0, 0, 255, 0.1);
@@ -219,11 +222,16 @@ body{
 }
 
 .overlay{
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	&.move{
 		background-color: rgba(0,100,0, 0.2);
+	}
+	&.attack{
+		background-color: rgba(244, 164, 66, 0.2);
 	}
 }
 

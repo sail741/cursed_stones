@@ -1,4 +1,8 @@
 const Constant = require('./Constant');
+var shortid = require('shortid');
+const Model = require('../model/model');
+const CardCharacter = require('./CardCharacter');
+const CardMagic = require('./CardMagic');
 
 module.exports = class Deck {
 
@@ -34,4 +38,33 @@ module.exports = class Deck {
         }
     }
 
+    convertJSONToDeck(id_deck, next) {
+        var deck = this;
+        Model.decks.get_deck(id_deck, function (json_card) {
+            var next_card = function(){
+                var card = json_card.deck.pop();
+                if(card == null){
+                    next();
+                    return;
+                }
+                Model.cards.get_card(card, function (json) {
+                    var card = json.card ;
+                    var uid = shortid.generate();
+                    var id_generates = [];
+                    while (uid in id_generates) {
+                        uid = shortid.generate();
+                    }
+                    id_generates.push(uid);
+                    if (card.type_card == "CHARA") {
+                        console.log(card);
+                        deck.add_card(new CardCharacter(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.attack, card.defence, card.life, card.movement));
+                    } else {
+                        deck.add_card(new CardMagic(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.type_spell, card.range_spell, card.power_spell));
+                    }
+                    next_card();
+                });
+            }
+            next_card();
+        });
+    };
 };

@@ -1,6 +1,4 @@
 const Deck = require('./Deck');
-const CardCharacter = require('./CardCharacter');
-const CardMagic = require('./CardMagic');
 var shortid = require('shortid');
 
 exports.convertJSONToDeck = function(json) {

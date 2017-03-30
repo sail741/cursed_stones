@@ -2,6 +2,7 @@ const Chat = require('./Chat');
 require('timers');
 const Constant = require('./Constant');
 const Utils = require('./Utils');
+const Deck = require('./Deck');
 const Board = require('./Board');
 const Test = require('./Test');
 
@@ -65,13 +66,15 @@ module.exports = class Partie {
     }
 
     init_player() {
-        for (var i = 0; i < this.liste_player.length; i++) {
-            //aller chercher un deck en base de donnees
-            var json_deck = Test.json_deck;
-            var deck = Utils.convertJSONToDeck(json_deck);
-            deck.shuffle_deck();
-            var player = this.liste_player[i];
-            player.add_deck(deck, i == this.current_player);
+        var partie = this ;
+        for (let i = 0; i < this.liste_player.length; i++) {
+            var deck = new Deck();
+            let player = this.liste_player[i];
+
+            deck.convertJSONToDeck(1,function(){
+                deck.shuffle_deck();
+                player.add_deck(deck, i == partie.current_player);
+            });
             player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
         }
     }

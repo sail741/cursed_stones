@@ -40,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
                         var tab_id_card = new Array();
                         for (var i = 0; i < res.length; i++) {
                             for (var j = 0; j < res[i].get("qty_card"); j++) {
-                                tab.push(tab_id_card[i].get("id_card"));
+                                tab_id_card.push(res[i].get("id_card"));
                             }
                         }
                         callback({"status":1, "error":null, "deck":tab_id_card});

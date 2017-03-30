@@ -55,7 +55,7 @@ module.exports = class Entity {
                 // si notre attaque est plus grande on va aussi attaquer ces points de vie
                 var left_attack = enemy.defense_left - this.attack;
                 enemy.defense_left = 0;
-                if (enemy.life < left_attack) {
+                if (enemy.life <= left_attack) {
                     enemy = null;
                     board.notify_delete_entity(destination);
                 } else {
@@ -67,7 +67,7 @@ module.exports = class Entity {
                 board.notify_entity(enemy, destination);
             }
         } else {
-            if (enemy.life < this.attack) {
+            if (enemy.life <= this.attack) {
                 enemy = null;
                 board.notify_delete_entity(destination);
             } else {

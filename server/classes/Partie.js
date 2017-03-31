@@ -68,7 +68,7 @@ module.exports = class Partie {
     init_player() {
         var partie = this ;
         for (let i = 0; i < this.liste_player.length; i++) {
-            var deck = new Deck();
+            let deck = new Deck();
             let player = this.liste_player[i];
 
             deck.convertJSONToDeck(1,function(){

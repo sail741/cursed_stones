@@ -12,6 +12,7 @@ function buildEntityDiv(entity){
 	var img = document.createElement('img');
 	img.src = '/static/img/cards/board_c1.png';//getEntityImage(entity);
 	img.alt = entity.name;
+	img.className = "entityimg"
 
 	div.appendChild(img);
 
@@ -22,6 +23,26 @@ function buildEntityDiv(entity){
 		imgShield.src = '/static/img/shield.png';
 		div.appendChild(imgShield);
 	}
+
+	var elemStatus = document.createElement('div');
+	elemStatus.className = "status";
+
+	var elemLife = document.createElement('span');
+	elemLife.textContent = entity.life;
+	elemLife.className = "icon life";
+
+	var elemAttack = document.createElement('span');
+	elemAttack.textContent = entity.attack;
+	elemAttack.className = "icon attack";
+	
+	var elemDefense = document.createElement('span');
+	elemDefense.textContent = entity.defense;
+	elemDefense.className = "icon defense";
+
+	elemStatus.appendChild(elemLife);
+	elemStatus.appendChild(elemAttack);
+	elemStatus.appendChild(elemDefense);
+	div.appendChild(elemStatus);
 
 	return div;
 }
@@ -73,5 +94,10 @@ function drawEntity(entity){
 		boardCase.appendChild(newDiv);
 	}
 
+
+}
+
+
+function setDefenseMode(){
 
 }

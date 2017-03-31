@@ -40,33 +40,33 @@ body{
 		border-top: 1px solid black;
 		margin: 0 auto;
 	    //transform: rotateX(50deg) translateY(-30%) translateZ(60px); //DANS LE JS NOW
-		tr{
-			td {
-				position: relative;
-				border: 1px solid black;
-				width: @caseSize;
-				height: @caseSize;
-				min-width: 2vw;
-				min-height: 2vw;
-				max-width: @caseSize;
-				max-height: @caseSize;
-				
-				&.self{
-					background: rgba(0, 0, 255, 0.1);
-				}
-				&.enemie{
-					background: rgba(255, 0, 0, 0.1);
-				}
+	    tr{
+	    	td {
+	    		position: relative;
+	    		border: 1px solid black;
+	    		width: @caseSize;
+	    		height: @caseSize;
+	    		min-width: 2vw;
+	    		min-height: 2vw;
+	    		max-width: @caseSize;
+	    		max-height: @caseSize;
 
-				&:hover{
-					background: rgba(255, 0, 255, 0.1);	
-				}
-				
+	    		&.self{
+	    			background: rgba(0, 0, 255, 0.1);
+	    		}
+	    		&.enemie{
+	    			background: rgba(255, 0, 0, 0.1);
+	    		}
 
-			}
-			
-		}
-	
+	    		&:hover{
+	    			background: rgba(255, 0, 255, 0.1);	
+	    		}
+
+
+	    	}
+
+	    }
+
 	}
 
 	.card.placing{
@@ -75,86 +75,126 @@ body{
 		left: 50%;
 		margin-left: -50px;
 		animation-name: placingcard;
-   		animation-duration: 2s;
-   		tranform-origin: 50% 50%;
+		animation-duration: 2s;
+		tranform-origin: 50% 50%;
 	}
 	
 }
 
 .card{
-		width: 100px;
-		height: 170px;
-		border: 1px solid black;
-		border-radius: 20px;
-		transition: .25s ease-in-out;
-		position: absolute;
-		bottom: 0;
-		background: #dbdbdb;
-		text-align: center;
+	width: 100px;
+	height: 170px;
+	border: 1px solid black;
+	border-radius: 20px;
+	transition: .25s ease-in-out;
+	position: absolute;
+	bottom: 0;
+	background: #dbdbdb;
+	text-align: center;
 		// bottom: -100px;
 		
 		
 	}
 
-.cards{
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	width: 0;
-	display: flex;
-	margin: 0 auto;
-
-	.card {
-		&.selected{
-
-		}
-		&.comming{
-			animation-name: commingcardsfrompioche;
-	   		animation-duration: 2s;
-	   		tranform-origin: 50% 50%;
-		}
-
-		&:hover{
-			width: 150px;
-			height: 255px;
-			background: blue;
-		 	bottom: 100px;
-		 	tranform: translateY(100px);
-		 	z-index: 2;
-		}
-	}
-	
-}
-
-.entity{
-	position: relative;
-	width: 100%;
-	height: 100%;
-	&.self{
-		background: rgba(0, 0, 255, 0.1);
-	}
-	&.enemie{
-		background: rgba(255, 0, 0, 0.1);
-	}
-	&[data-selected="1"] img{
-		animation-name: entitySelected;
-		animation-timing-function: linear;
-		animation-iteration-count: infinite;
-		animation-duration: 2s;
-		border-bottom: 4px solid red;
-	}
-	.shield{
+	.cards{
 		position: absolute;
-		top: 1px;
-		right: 1px;
-		width: 24px;
-		height: 40px;
-		
+		bottom: 0;
+		left: 50%;
+		width: 0;
+		display: flex;
+		margin: 0 auto;
+
+		.card {
+			&.selected{
+
+			}
+			&.comming{
+				animation-name: commingcardsfrompioche;
+				animation-duration: 2s;
+				tranform-origin: 50% 50%;
+			}
+
+			&:hover{
+				width: 150px;
+				height: 255px;
+				background: blue;
+				bottom: 100px;
+				tranform: translateY(100px);
+				z-index: 2;
+			}
+		}
+
 	}
-	img{
+
+	.entity{
 		position: relative;
-		width: 75%;
-		height: 75%;
+		width: 100%;
+		height: 100%;
+		&.self{
+			background: rgba(0, 0, 255, 0.1);
+		}
+		&.enemie{
+			background: rgba(255, 0, 0, 0.1);
+		}
+		&[data-selected="1"] .entityimg{
+			animation-name: entitySelected;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+			animation-duration: 2s;
+			border-bottom: 4px solid red;
+		}
+		.shield{
+			position: absolute;
+			top: 1px;
+			right: 1px;
+			width: 16px;
+			height: 16px;
+
+		}
+		.entityimg{
+			position: relative;
+			width: 75%;
+			height: 75%;
+		}
+
+
+		.status{
+		display: none;
+		position: absolute;
+		top: -80px;
+		left: -4px;
+		padding: 5px;
+		height: 70px;
+		width: 40px;
+		border-radius: 5px;
+		background-color: rgba(255, 255, 255, 0.5);
+
+		.icon{
+			display: block;
+			&:before{
+				width: 16px;
+				height: 16px;
+				margin-right: 5px;
+			}
+			&.life:before{
+				content: '❤';
+				color: red;
+			}
+			&.attack:before{
+				content: '⚔';
+				color: black;
+
+			}
+			&.defense:before{
+				content: '🛡'; //Best bouclier ever
+				color: blue;
+
+			}
+
+		}
+	}
+	&:hover .status{
+		display: block;
 	}
 }
 
@@ -195,7 +235,7 @@ body{
 
 #message{
 	visibility: hidden;
-  	opacity: 0;
+	opacity: 0;
 	position: absolute;
 	top: 15%;
 	left: 10%;
@@ -206,10 +246,10 @@ body{
 	border-radius: 5%;
 	border: 1px solid rgba(100, 100, 100, 0.5);
 	transition: .25s ease-in-out;
-		
+
 	&.show{
 		visibility: visible;
-  		opacity: 1;
+		opacity: 1;
 	}
 
 	span{

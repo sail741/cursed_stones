@@ -166,12 +166,12 @@ module.exports = class Player {
                     throw new Error(Constant.IS_NOT_YOUR_TURN);
                 }
                 player.partie.board.defense_entity(json.entity, json.origin);
-                player.socket.emit(Constant.SOCKET_ATTACK, {
+                player.socket.emit(Constant.SOCKET_DEFENSE, {
                     success: true
                 });
             } catch (exception) {
                 console.error(exception);
-                player.socket.emit(Constant.SOCKET_ATTACK, {
+                player.socket.emit(Constant.SOCKET_DEFENSE, {
                     success: false,
                     error: exception.message
                 });

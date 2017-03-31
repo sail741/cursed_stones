@@ -1,4 +1,6 @@
 //Toutes les sockets provenant du serveur et fonction d'appel au serveur
+//var entity_waiting_defenseMode = null;
+
 
 sio.on('piocheCarte', function(data){
 	console.log('evt: piocheCarte', data);
@@ -102,6 +104,10 @@ sio.on('attack', function(data){
 	}
 });
 
+// sio.on('setDefenseEntity', function(json){
+
+// })
+
 
 function requestCards(){
 	sio.emit('piocheCarte');
@@ -139,5 +145,12 @@ function requestAttack(entity, target){
 		entity: entity,
 		origin: entity.position,
 		dest: convertPositionClientToServer(target)
+	});
+}
+
+function requestDefenseMode(entity){
+	sio.emit('setDefenseEntity', {
+		entity: entity,
+		origin: entity.position //on aurait pu l'eviter lui ... 
 	});
 }

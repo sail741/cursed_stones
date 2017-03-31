@@ -83,8 +83,10 @@ module.exports = class Entity {
             throw new Error(Constant.NO_MORE_ACTION);
         }
         this.defense_mode = true ;
-        board.notify_entity(this, origin);
         this.can_move = false;
+        this.can_do_action = false;
+        board.notify_entity(this, origin);
+        
     }
 
     request_overlay_move(board, origin) {
@@ -109,6 +111,7 @@ module.exports = class Entity {
     }
 
     to_json(pseudo, position) {
+        console.log('defense', this.img, this.defense, this.defense_left);
         return {
             Self: this.pseudo == pseudo, //Si c’est une entité du joueurs actuel
             position: position,
@@ -119,6 +122,7 @@ module.exports = class Entity {
             movement: this.movement,
             defenseMode: this.defense_mode,
             canDoAction: this.can_do_action,
+            canMove: this.can_move,
             life: this.life
         }
     }

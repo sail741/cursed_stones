@@ -53,7 +53,7 @@ module.exports = class Entity {
             //on verifie qu'il a assez de defense
             if(enemy.defense_left < this.attack){
                 // si notre attaque est plus grande on va aussi attaquer ces points de vie
-                var left_attack = enemy.defense_left - this.attack;
+                var left_attack = this.attack - enemy.defense_left;
                 enemy.defense_left = 0;
                 if (enemy.life <= left_attack) {
                     enemy = null;

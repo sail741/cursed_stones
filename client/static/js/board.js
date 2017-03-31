@@ -116,16 +116,19 @@ function clickOnCase(){
 				declareContextMenuAction("Deplacement", function(){
 					requestOverlay("move", entity);
 					action_entity_selected = "move";
+					unselectEntity();
 				});
 			}
 			if(entity.canDoAction){
                 declareContextMenuAction("Attaque", function(){
                     requestOverlay("attack", entity);
+                    unselectEntity();
                     action_entity_selected = "attack";
                 });
 
                 if(entity.defense > 0){
 	                declareContextMenuAction("Activer le mode défense", function(){
+	                	unselectEntity();
 	                    requestDefenseMode(entity);
 	                });
 				}

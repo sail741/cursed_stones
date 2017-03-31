@@ -39,13 +39,17 @@ module.exports = class Partie {
         }
         this.liste_player.push(player);
         player.add_to_game(this);
-        player.socket.join(this.id_partie);
+        this.join_socket_room(player.socket);
         this.nb_player++;
 
         if (this.is_full()) {
             console.log("partie started");
             this.start_partie();
         }
+    }
+
+    join_socket_room(socket){
+        socket.join(this.id_partie);
     }
 
     get_player(pseudo) {

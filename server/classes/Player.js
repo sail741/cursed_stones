@@ -240,6 +240,7 @@ module.exports = class Player {
 
     reconnection(player) {
         this.socket = player.socket;
+        this.partie.join_socket_room(player.socket);
         this.socket_function();
         clearTimeout(this.timer_reconnexion);
         this.partie.resume_game(this);

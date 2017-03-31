@@ -160,6 +160,7 @@ function displayOverlayBoard(cases){
 		var caseDraw = cases[i];
 		var pos = convertPositionServerToClient(caseDraw.position);
 		var type = caseDraw.type;
+		console.log(type);
 		if(type == "off") continue;
         var caseDom = board.querySelector('td[data-pos="'+convertPosToStr(pos)+'"]');
 		if(caseDom){

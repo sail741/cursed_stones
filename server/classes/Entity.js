@@ -109,6 +109,7 @@ module.exports = class Entity {
     }
 
     to_json(pseudo, position) {
+        console.log('defense', this.img, this.defense, this.defense_left);
         return {
             Self: this.pseudo == pseudo, //Si c’est une entité du joueurs actuel
             position: position,

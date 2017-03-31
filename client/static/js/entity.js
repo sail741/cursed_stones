@@ -23,6 +23,26 @@ function buildEntityDiv(entity){
 		div.appendChild(imgShield);
 	}
 
+	var elemStatus = document.createElement('div');
+	elemStatus.className = "status";
+
+	var elemLife = document.createElement('span');
+	elemLife.textContent = entity.life;
+	elemLife.className = "icon life";
+
+	var elemAttack = document.createElement('span');
+	elemAttack.textContent = entity.attack;
+	elemAttack.className = "icon attack";
+	
+	var elemDefense = document.createElement('span');
+	elemDefense.textContent = entity.defense;
+	elemDefense.className = "icon defense";
+
+	elemStatus.appendChild(elemLife);
+	elemStatus.appendChild(elemAttack);
+	elemStatus.appendChild(elemDefense);
+	div.appendChild(elemStatus);
+
 	return div;
 }
 

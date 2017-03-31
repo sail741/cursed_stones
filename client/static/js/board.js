@@ -112,29 +112,26 @@ function clickOnCase(){
             displaySelected(entity);
 
 			clearContextMenuActions();
-			if(entity.movement > 0){
+			if(entity.canMove){
 				declareContextMenuAction("Deplacement", function(){
 					requestOverlay("move", entity);
 					action_entity_selected = "move";
 				});
 			}
-			if(entity.attack > 0){
+			if(entity.canDoAction){
                 declareContextMenuAction("Attaque", function(){
                     requestOverlay("attack", entity);
                     action_entity_selected = "attack";
                 });
-			}
-			else if(entity.defense > 0){
-				if(entity.defenseMode){
-                    declareContextMenuAction("Désactiver le mode défense", function(){
-                        console.log('TODO desac def');
-                    });
-				}else{
-                    declareContextMenuAction("Activer le mode défense", function(){
-                        console.log('TODO activ def');
-                    });
+
+                if(entity.defense > 0){
+	                declareContextMenuAction("Activer le mode défense", function(){
+	                    requestDefenseMode(entity);
+	                });
 				}
 			}
+			
+			
 
 			displayContextMenu();
 

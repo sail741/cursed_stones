@@ -12,6 +12,7 @@ function buildEntityDiv(entity){
 	var img = document.createElement('img');
 	img.src = '/static/img/cards/board_c1.png';//getEntityImage(entity);
 	img.alt = entity.name;
+	img.className = "entityimg"
 
 	div.appendChild(img);
 
@@ -93,5 +94,10 @@ function drawEntity(entity){
 		boardCase.appendChild(newDiv);
 	}
 
+
+}
+
+
+function setDefenseMode(){
 
 }

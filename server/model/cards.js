@@ -1,3 +1,5 @@
+const Constant = require('../classes/Constant')
+
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('cards', {
     id_card: {
@@ -46,10 +48,10 @@ module.exports = function(sequelize, DataTypes) {
                         "cost":res[0].get("cost"),
                         "img":res[0].get("img")
                     }
-                    if(res[0].get("type_card") == "chara") {
+                    if(res[0].get("type_card") == Constant.TYPE_CARD_CHARA) {
                         var cards_chara = this.sequelize.import('./cards_chara');
                         cards_chara.get_card(id_card, card_general, callback);
-                    } else if(res[0].get("type_card") == "magic") {
+                    } else if(res[0].get("type_card") == Constant.TYPE_CARD_MAGIC) {
                         var cards_magic = this.sequelize.import('./cards_magic');
                         cards_magic.get_card(id_card, card_general, callback);
                     } else {

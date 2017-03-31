@@ -59,3 +59,7 @@ exports.SOCKET_DISPLAY_OVERLAY = "displayOverlay";
 exports.SOCKET_END_TURN = "fintour";
 exports.SOCKET_ATTACK = "attack";
 exports.SOCKET_DEFENSE = "setDefenseEntity";
+
+
+exports.TYPE_CARD_CHARA = "chara";
+exports.TYPE_CARD_MAGIC = 'magic'; 

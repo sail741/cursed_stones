@@ -1,5 +1,6 @@
 var passport = require('passport');
 var model = require('../model/model')
+var Constant = require('../classes/Constant');
 
 module.exports = function(app){
 	//route d'affichage de la page add_card
@@ -14,7 +15,7 @@ module.exports = function(app){
 		var cost = req.body.cost;
 		var img = req.body.img;
 
-		if(type_card == "chara") {
+		if(type_card == Constant.TYPE_CARD_CHARA) {
 			var attack = req.body.attack;
 			var defence = req.body.defence;
 			var life = req.body.life;

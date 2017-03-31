@@ -97,12 +97,15 @@ function clickOnCase(){
 			if(entity != null){ 
 				if(entity.Self == true){
 					unselectEntity();
+					clickOnCase();
 				}else if(action_entity_selected == "attack"){
 					//TODO : Attaque
 					requestAttack(entity_selected, pos);
 					unselectEntity();
 				}else if(action_entity_selected == "move"){
 					requestMove(entity_selected, pos);
+					unselectEntity();
+				}else if(action_entity_selected == null){
 					unselectEntity();
 				}
 			}else{

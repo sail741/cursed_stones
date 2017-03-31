@@ -56,7 +56,7 @@ module.exports = class Entity {
                 var left_attack = this.attack - enemy.defense_left;
                 enemy.defense_left = 0;
                 if (enemy.life <= left_attack) {
-                    enemy = null;
+                    board.board[destination.row][destination.column] = null;
                     board.notify_delete_entity(destination);
                 } else {
                     enemy.life -= left_attack;
@@ -68,7 +68,7 @@ module.exports = class Entity {
             }
         } else {
             if (enemy.life <= this.attack) {
-                enemy = null;
+                board.board[destination.row][destination.column] = null;
                 board.notify_delete_entity(destination);
             } else {
                 enemy.life -= this.attack;

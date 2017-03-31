@@ -94,12 +94,17 @@ function clickOnCase(){
 		}else {
 			
 			var entity = getEntity(pos);
-			if(entity != null && action_entity_selected == "attack"){
-				//TODO : Attaque
-				requestAttack(entity_selected, pos);
-			}else if(action_entity_selected == "move"){
-				requestMove(entity_selected, pos);
-				unselectEntity();
+			if(entity != null){ 
+				if(entity.Self == true){
+					unselectEntity();
+				}else if(action_entity_selected == "attack"){
+					//TODO : Attaque
+					requestAttack(entity_selected, pos);
+					unselectEntity();
+				}else if(action_entity_selected == "move"){
+					requestMove(entity_selected, pos);
+					unselectEntity();
+				}
 			}else{
                 unselectEntity();
 			}

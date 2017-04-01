@@ -38,6 +38,24 @@ require('./model/model');
 require('./routes')(app);
 require('./sockets')(server,configBDD.sequelizeStore);
 
+
+// ===========================        PORT AFFECTATION AND START SERVER         ===========================
+
+try{
+
+    if(isNaN(parseInt(PORT))){
+        if(fs.existsSync(PORT)){
+            fs.unlinkSync(PORT);
+        }
+    }
+
+}catch(e){}
+
 server.listen(PORT, function(){
 	console.log("Server listen on ", PORT);
+    if(isNaN(parseInt(PORT))){
+        fs.stat(PORT, function(err){
+            if(!err) fs.chmod(PORT, 0777);
+        });
+    }
 })

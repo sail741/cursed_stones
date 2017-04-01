@@ -95,21 +95,24 @@ function clickOnCase(){
 			
 			var entity = getEntity(pos);
 			if(entity != null){ 
-				if(entity.Self == true){
+				if(entity.Self == true && action_entity_selected == null){
 					unselectEntity();
 					clickOnCase();
 				}else if(action_entity_selected == "attack"){
 					//TODO : Attaque
 					requestAttack(entity_selected, pos);
 					unselectEntity();
-				}else if(action_entity_selected == "move"){
-					requestMove(entity_selected, pos);
-					unselectEntity();
 				}else if(action_entity_selected == null){
 					unselectEntity();
 				}
 			}else{
-                unselectEntity();
+				if(action_entity_selected == "move"){
+					requestMove(entity_selected, pos);
+					unselectEntity();
+				}else{
+					unselectEntity();	
+				}
+                
 			}
 		}
 	}else{
@@ -124,13 +127,11 @@ function clickOnCase(){
 				declareContextMenuAction("Deplacement", function(){
 					requestOverlay("move", entity);
 					action_entity_selected = "move";
-					unselectEntity();
 				});
 			}
 			if(entity.canDoAction){
                 declareContextMenuAction("Attaque", function(){
                     requestOverlay("attack", entity);
-                    unselectEntity();
                     action_entity_selected = "attack";
                 });
 

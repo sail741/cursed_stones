@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const flash = require('connect-flash');
+const fs = require('fs');
 
 const morgan       = require('morgan');
 const cookieParser = require('cookie-parser');

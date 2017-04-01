@@ -11,7 +11,7 @@ sio.on('piocheCarte', function(data){
 });
 
 sio.on('nouveauTour', function(data){
-	setTourData(data.Self, data.Num_tour, data.Mana);
+	setTourData(data.Self, data.Num_Tour, data.Mana);
 	boardResetSelect();
 	if(data.Self){
         requestOverlay("off");
@@ -47,7 +47,9 @@ sio.on('placeCard', function(data){
 	if(data.sucess){
 	}else{
 		console.error(data.error);
-	}
+        vNotify.error({text: data.error, title:'Erreur'});
+
+    }
 
 });
 
@@ -99,13 +101,17 @@ sio.on('attack', function(data){
 	if(data.success){
 
 	}else{
-
+        vNotify.error({text: data.error, title:'Erreur'});
 	}
 });
 
-// sio.on('setDefenseEntity', function(json){
+sio.on('information', function(msg){
+    vNotify.error({text: msg, title:'Erreur'});
+});
 
-// })
+sio.on('signalDisconnect', function(json){
+	vNotify.info({text: 'Déconnexion de ' + json.player, title: "Déconnexion"});
+})
 
 
 function requestCards(){

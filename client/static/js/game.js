@@ -37,9 +37,11 @@ function setTourData(isMine, numTour, mana){
 		localTourWho = "self";
 		localSelfMana = mana;
 		displayMessage("C'est a votre tour de jouer !", "", 2000);
+        btnFinTour.dataset.disabled = 0;
 	}else{
 		localAdvMana = mana;
 		displayMessage("C'est a votre adversaire...", "", 2000);
+        btnFinTour.dataset.disabled = 1;
 	}
 
 	renderStatusBar();

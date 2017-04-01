@@ -3,7 +3,6 @@
 
 
 sio.on('piocheCarte', function(data){
-	console.log('evt: piocheCarte', data);
 	if(data.new_card != null){
 		piocheCard(cardsSelf, data.new_card, function(){
             setSelfHand(data.hand);
@@ -12,7 +11,6 @@ sio.on('piocheCarte', function(data){
 });
 
 sio.on('nouveauTour', function(data){
-	console.log('nouveau tour', data);
 	setTourData(data.Self, data.Num_tour, data.Mana);
 	boardResetSelect();
 	if(data.Self){
@@ -23,8 +21,13 @@ sio.on('nouveauTour', function(data){
 	}
 });
 
+sio.on('setStatus', function(data){
+    setTourData(data.Self, data.Num_tour, 0);
+    setManaSelf(data.Mana);
+    setManaAdv(data.Mana_adv)
+});
+
 sio.on('FirstHand', function(data){
-	console.log('first hand receive');
 	setSelfHand(data.hand);
 });
 
@@ -58,14 +61,12 @@ sio.on('editBoard', function(data){
 	entity?: Entity
 
 }
-*/	console.log('editBoard', data);
+*/
 	var entity = data.entity;
 	var pos = data.position;
 	if(entity){
 		drawEntity(entity);
-		console.log(entities);
 		entities.push(entity);
-		console.log(entities);
 	}else{
 		removeEntity(convertPositionServerToClient(pos));
 	}
@@ -74,7 +75,6 @@ sio.on('editBoard', function(data){
 });
 
 sio.on('syncBoard', function(p_entities){
-	console.log(entities)
 	var entities = [];
 	for(var i  =0; i < p_entities.length; i++){
 		entities.push(p_entities[i].entity);
@@ -87,7 +87,6 @@ sio.on('fintour', function(){
 });
 
 sio.on('setSlide', function(slide){
-	console.log('setSlide', slide);
 	setSlide(slide);
 });
 
@@ -125,7 +124,6 @@ function sendFinTour(){
 }
 
 function requestMove(entity, pos){
-	console.log(entity);
 	sio.emit('moveEntity', {
 		entity: entity, 
 		origin: entity.position,

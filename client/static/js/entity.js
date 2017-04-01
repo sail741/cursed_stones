@@ -82,13 +82,13 @@ function removeEntityOnArray(pos){
 }
 
 function drawEntity(entity){
-	var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');
-	var newDiv = buildEntityDiv(entity);
+	/*var actualDiv = document.querySelector('.entity[data-entity="'+entity.uid+'"]');
 	if(actualDiv != null){
         removeEntityOnArray(convertPositionServerToClient(entity.position));
 		actualDiv.remove();
-	}
-	var posStr = convertPosToStr(entity.position);
+	}*/
+    var newDiv = buildEntityDiv(entity);
+    var posStr = convertPosToStr(entity.position);
 	var boardCase = board.querySelector('td[data-pos="'+posStr+'"]');
 	if(boardCase != null){
 		boardCase.appendChild(newDiv);

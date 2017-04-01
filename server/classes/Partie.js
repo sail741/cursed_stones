@@ -198,12 +198,9 @@ module.exports = class Partie {
     }
 
     abandon(pseudo) {
-        //gestion des points ici
+        // TODO : gestion des points ici
         //notifier fin de partie
-        clearInterval(this.timer_tour);
-        clearTimeout(this.resume_game_timer);
-        this.delete_all_player();
-        this.destroy_partie();
+        this.fin_partie();
     }
 
     destroy_partie() {
@@ -220,6 +217,34 @@ module.exports = class Partie {
         }
         this.nouveauTour();
         this.run_timer_tour(Constant.TIMER_TOUR);
+    }
+
+    is_finish(){
+        //TODO : gestion des points à faire ici
+        if(this.board.kingdom_J1_is_destroy()){
+            this.send_winner(this.liste_player[1].pseudo);
+            this.fin_partie();
+        }
+        if(this.board.kingdom_J2_is_destroy()) {
+            this.send_winner(this.liste_player[0].pseudo);
+            this.fin_partie();
+        }
+
+    }
+
+    fin_partie(){
+        clearInterval(this.timer_tour);
+        clearTimeout(this.resume_game_timer);
+        this.delete_all_player();
+        this.destroy_partie();
+    }
+
+    send_winner(pseudo){
+        for (var i = 0; i < this.liste_player.length; i++) {
+            this.liste_player[i].socket.emit(Constant.SOCKET_FINISH, {
+                winner_self: this.liste_player[i].pseudo == pseudo
+            });
+        }
     }
 
     get_status() {

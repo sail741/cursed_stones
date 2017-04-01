@@ -151,6 +151,7 @@ module.exports = class Player {
                 player.socket.emit(Constant.SOCKET_ATTACK, {
                     success: true
                 });
+                player.partie.is_finish();
             } catch (exception) {
                 console.error(exception);
                 player.socket.emit(Constant.SOCKET_ATTACK, {

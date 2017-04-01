@@ -209,4 +209,12 @@ module.exports = class Board {
         }
         return json;
     }
+
+    kingdom_J1_is_destroy(){
+        return this.J1_kingdom.life == 0;
+    }
+
+    kingdom_J2_is_destroy(){
+        return this.J2_kingdom.life == 0;
+    }
 };

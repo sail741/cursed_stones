@@ -16,15 +16,18 @@ module.exports = class Board {
                 this.board[i][x] = null;
             }
         }
-        var middle = Math.round(Constant.HEIGHT_SIZE / 2);
-        this.board[middle][0] = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle-1][0] = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle-1][1] = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle][1] = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle][Constant.WIDTH_SIZE - 1] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle-1][Constant.WIDTH_SIZE - 1] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle-1][Constant.WIDTH_SIZE - 2] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle][Constant.WIDTH_SIZE - 2] = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
+        var middle = Math.round(Constant.HEIGHT_SIZE / 2)
+
+        this.J1_kingdom = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
+        this.J2_kingdom = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
+        this.board[middle][0] = this.J1_kingdom;
+        this.board[middle-1][0] = this.J1_kingdom;
+        this.board[middle-1][1] = this.J1_kingdom;
+        this.board[middle][1] = this.J1_kingdom;
+        this.board[middle][Constant.WIDTH_SIZE - 1] = this.J2_kingdom;
+        this.board[middle-1][Constant.WIDTH_SIZE - 1] = this.J2_kingdom;
+        this.board[middle-1][Constant.WIDTH_SIZE - 2] = this.J2_kingdom;
+        this.board[middle][Constant.WIDTH_SIZE - 2] = this.J2_kingdom;
     }
 
     generate_uid() {

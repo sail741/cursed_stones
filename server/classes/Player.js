@@ -260,12 +260,18 @@ module.exports = class Player {
         console.log(this.pseudo);
         this.broadcast_msg(Constant.SOCKET_SIGNAL_RECONNECT, {player : this.pseudo});
         //on redonne toute les informations nécessaire pour jouer au joueur
+        this.socket.emit(Constant.SOCKET_START_GAME, {
+            Pseudo : player.pseudo,
+            Pseudo_adv: this.partie.get_adversaire_player(this.pseudo).pseudo
+        });
         this.socket.emit(Constant.SOCKET_SET_STATUS, {
             Self: this.partie.is_current_player(this.pseudo),
             Num_Tour: this.partie.num_tour,
             Mana: this.mana,
             Mana_adv: this.partie.get_adversaire_player(this.pseudo).mana
         });
+
+
     }
 
     broadcast_msg(packet,message){

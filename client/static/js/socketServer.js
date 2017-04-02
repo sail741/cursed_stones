@@ -114,7 +114,12 @@ sio.on('signalDisconnect', function(json){
 });
 sio.on('signalConnexion', function(json){
     vNotify.info({text: 'Reconnexion de ' + json.player, title: "Reconnexion"});
-})
+});
+sio.on('startGame', function(data){
+	localPseudoAdv = data.Pseudo_adv;
+	localPseudoActual = data.Pseudo;
+
+});
 
 
 function requestCards(){

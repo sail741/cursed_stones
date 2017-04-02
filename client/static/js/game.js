@@ -9,6 +9,9 @@ var localTourWho = "...";
 
 var localTourNum = 0;
 
+var localPseudoActual = null;
+var localPseudoAdv = null;
+
 var btnFinTour = document.querySelector("#finTour");
 
 //On envoie l'event de joinGame
@@ -32,9 +35,9 @@ function setTourData(isMine, numTour, mana){
 
 	localTourNum = numTour;
 
-	localTourWho = "adversaire"; //TODO recup les nom des joueurs
+	localTourWho = localPseudoAdv;
 	if(isMine){
-		localTourWho = "self";
+		localTourWho = localPseudoActual;
 		localSelfMana = mana;
 		displayMessage("C'est a votre tour de jouer !", "", 2000);
         btnFinTour.dataset.disabled = 0;

@@ -66,6 +66,7 @@ module.exports = class Player {
                     });
                 }
             } catch (exception) {
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });
@@ -115,6 +116,7 @@ module.exports = class Player {
                     mana_left: player.mana
                 });
             } catch (exception) {
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_PLACE_CARD, {
                     hand: player.hand,
                     error: exception.message,
@@ -212,6 +214,7 @@ module.exports = class Player {
                 }
                 player.partie.fin_tour();
             } catch(exception){
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });

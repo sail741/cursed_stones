@@ -64,12 +64,14 @@ module.exports = class Partie {
     start_partie() {
         this.partie_status = Constant.STATUS_START;
         this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
-        this.init_player();
-        this.nouveauTour();
-        this.run_timer_tour(Constant.TIMER_TOUR);
+        var partie = this ;
+        this.init_player(function(){
+            partie.nouveauTour();
+            partie.run_timer_tour(Constant.TIMER_TOUR);
+        });
     }
 
-    init_player() {
+    init_player(next) {
         var partie = this ;
         for (let i = 0; i < this.liste_player.length; i++) {
             let deck = new Deck();
@@ -78,8 +80,11 @@ module.exports = class Partie {
             deck.convertJSONToDeck(1,function(){
                 deck.shuffle_deck();
                 player.add_deck(deck, i == partie.current_player);
+                player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
+                if(i == partie.liste_player.length -1){
+                    next();
+                }
             });
-            player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
         }
     }
 

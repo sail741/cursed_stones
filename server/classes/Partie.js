@@ -52,9 +52,9 @@ module.exports = class Partie {
         socket.join(this.id_partie);
     }
 
-    get_player(pseudo) {
+    get_adversaire_player(pseudo) {
         for (var i = 0; i < this.liste_player.length; i++) {
-            if (this.liste_player[i].pseudo == pseudo) {
+            if (this.liste_player[i].pseudo != pseudo) {
                 return this.liste_player[i];
             }
         }

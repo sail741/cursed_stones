@@ -121,6 +121,14 @@ sio.on('startGame', function(data){
 
 });
 
+sio.on('adversaireChange', function(data){
+/*    mana_left: Int,
+        cards_change: Int //Si remove nombre négatif
+*/
+
+	setManaAdv(data.mana_left);
+});
+
 
 function requestCards(){
 	sio.emit('piocheCarte');

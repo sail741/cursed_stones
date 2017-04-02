@@ -48,11 +48,11 @@ module.exports = class Partie {
         }
     }
 
-    join_socket_room(socket){
+    join_socket_room(socket) {
         socket.join(this.id_partie);
     }
 
-    send_message_to_room(packet,message){
+    send_message_to_room(packet, message) {
         this.global_socket.in(this.id_partie).emit(packet, message);
     }
 
@@ -68,24 +68,34 @@ module.exports = class Partie {
     start_partie() {
         this.partie_status = Constant.STATUS_START;
         this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
-        var partie = this ;
-        this.init_player(function(){
+        var partie = this;
+        this.init_player(function () {
+            partie.emit_pseudo();
             partie.nouveauTour();
             partie.run_timer_tour(Constant.TIMER_TOUR);
         });
     }
 
+    emit_pseudo() {
+        for (let i = 0; i < this.liste_player.length; i++) {
+            this.liste_player[i].socket.emit(Constant.SOCKET_START_GAME, {
+                Pseudo: this.liste_player[i].pseudo,
+                Pseudo_adv: this.liste_player[i == 0 ? 1 : 0].pseudo
+            });
+        }
+    }
+
     init_player(next) {
-        var partie = this ;
+        var partie = this;
         for (let i = 0; i < this.liste_player.length; i++) {
             let deck = new Deck();
             let player = this.liste_player[i];
 
-            deck.convertJSONToDeck(1,function(){
+            deck.convertJSONToDeck(1, function () {
                 deck.shuffle_deck();
                 player.add_deck(deck, i == partie.current_player);
                 player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
-                if(i == partie.liste_player.length -1){
+                if (i == partie.liste_player.length - 1) {
                     next();
                 }
             });
@@ -149,7 +159,7 @@ module.exports = class Partie {
         this.sync_board(player);
 
         if (this.partie_status == Constant.STATUS_PAUSED && this.nb_deco == 0) {
-            var partie = this ;
+            var partie = this;
             this.partie_status = Constant.STATUS_START;
             this.resume_game_timer = setTimeout(function () {
                 partie.run_timer_tour(Constant.TIMER_TOUR);
@@ -228,27 +238,27 @@ module.exports = class Partie {
         this.run_timer_tour(Constant.TIMER_TOUR);
     }
 
-    is_finish(){
+    is_finish() {
         //TODO : gestion des points à faire ici
-        if(this.board.kingdom_J1_is_destroy()){
+        if (this.board.kingdom_J1_is_destroy()) {
             this.send_winner(this.liste_player[1].pseudo);
             this.fin_partie();
         }
-        if(this.board.kingdom_J2_is_destroy()) {
+        if (this.board.kingdom_J2_is_destroy()) {
             this.send_winner(this.liste_player[0].pseudo);
             this.fin_partie();
         }
 
     }
 
-    fin_partie(){
+    fin_partie() {
         clearInterval(this.timer_tour);
         clearTimeout(this.resume_game_timer);
         this.delete_all_player();
         this.destroy_partie();
     }
 
-    send_winner(pseudo){
+    send_winner(pseudo) {
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].socket.emit(Constant.SOCKET_FINISH, {
                 winner_self: this.liste_player[i].pseudo == pseudo

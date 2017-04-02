@@ -62,6 +62,7 @@ exports.SOCKET_ATTACK = "attack";
 exports.SOCKET_DEFENSE = "setDefenseEntity";
 exports.SOCKET_SET_STATUS = "setStatus";
 exports.SOCKET_FINISH = "gameOver";
+exports.SOCKET_START_GAME = "startGame";
 
 exports.TYPE_CARD_CHARA = "chara";
 exports.TYPE_CARD_MAGIC = 'magic'; 

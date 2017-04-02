@@ -145,6 +145,7 @@ module.exports = class Entity {
             Self: this.pseudo == pseudo, //Si c’est une entité du joueurs actuel
             position: this.position,
             multiCase: this.multi_case,
+            name: this.name,
             img: this.img,
             uid: this.uid,
             attack: this.attack,

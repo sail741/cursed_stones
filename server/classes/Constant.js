@@ -42,6 +42,7 @@ exports.TYPE_OVERLAY_OFF = "off";
 
 exports.SOCKET_DISCONNECT = "disconnect";
 exports.SOCKET_SIGNAL_DISCONNECT = "signalDisconnect";
+exports.SOCKET_SIGNAL_RECONNECT = "signalConnexion";
 exports.SOCKET_CHAT = "chat";
 exports.SOCKET_NEW_TOUR = "nouveauTour";
 exports.SOCKET_FIRST_HAND = "FirstHand";

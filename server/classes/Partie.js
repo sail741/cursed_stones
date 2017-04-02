@@ -52,6 +52,10 @@ module.exports = class Partie {
         socket.join(this.id_partie);
     }
 
+    send_message_to_room(packet,message){
+        this.global_socket.in(this.id_partie).emit(packet, message);
+    }
+
     get_adversaire_player(pseudo) {
         for (var i = 0; i < this.liste_player.length; i++) {
             if (this.liste_player[i].pseudo != pseudo) {

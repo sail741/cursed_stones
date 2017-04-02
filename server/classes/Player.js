@@ -77,7 +77,7 @@ module.exports = class Player {
 
             player.is_disconnected = true;
             //on previens les autres joueurs de la deconnexion
-            player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_SIGNAL_DISCONNECT, {
+            player.partie.send_message_to_room(Constant.SOCKET_SIGNAL_DISCONNECT, {
                 player: player.pseudo,
             });
             //deconnexion du joueur
@@ -106,7 +106,7 @@ module.exports = class Player {
                 var entity = player.partie.board.put_card(player.pseudo, card, json.position);
                 player.delete_card_in_hand(card);
                 player.mana = player.mana - card.cost;
-                player.socket.broadcast.to(player.partie.id_partie).emit(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
+                player.broadcast_msg(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
                     mana_left: player.mana,
                     cards_change: -1
                 });
@@ -197,7 +197,7 @@ module.exports = class Player {
                     });
 
                 }
-                player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_DISPLAY_OVERLAY, arrayToSend);
+                player.partie.send_message_to_room(Constant.SOCKET_DISPLAY_OVERLAY, arrayToSend);
 
 
 
@@ -244,19 +244,32 @@ module.exports = class Player {
 
     reconnection(player) {
         this.socket = player.socket;
+        //on rejoins la room socket de la partie
         this.partie.join_socket_room(player.socket);
+        //on reactive tout les packets
         this.socket_function();
+        //on desactive le timer de reconnexion
         clearTimeout(this.timer_reconnexion);
+        //on relance la partie
         this.partie.resume_game(this);
+        //on renvoie la main au joueur
         this.socket.emit(Constant.SOCKET_FIRST_HAND, {
             hand: this.hand
         });
+        //on signale aux autres joueurs qu'un joueur c'est reco
+        console.log(this.pseudo);
+        this.broadcast_msg(Constant.SOCKET_SIGNAL_RECONNECT, {player : this.pseudo});
+        //on redonne toute les informations nécessaire pour jouer au joueur
         this.socket.emit(Constant.SOCKET_SET_STATUS, {
             Self: this.partie.is_current_player(this.pseudo),
             Num_Tour: this.partie.num_tour,
             Mana: this.mana,
             Mana_adv: this.partie.get_adversaire_player(this.pseudo).mana
         });
+    }
+
+    broadcast_msg(packet,message){
+        this.socket.broadcast.to(this.partie.id_partie).emit(packet,message);
     }
 }
 ;

@@ -224,7 +224,6 @@ module.exports = class Board {
 
     to_json(pseudo) {
         var json = [];
-        console.log(this.entity_list);
         for (var key in this.entity_list) {
             if (this.entity_list[key] != null) {
                 json.push({

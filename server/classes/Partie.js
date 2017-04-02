@@ -115,6 +115,7 @@ module.exports = class Partie {
     }
 
     sync_board(player) {
+        console.log(this.board.to_json(player.pseudo));
         player.socket.emit(Constant.SOCKET_SYNC_BOARD, this.board.to_json(player.pseudo));
     }
 

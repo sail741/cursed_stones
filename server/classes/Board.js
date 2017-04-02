@@ -16,18 +16,31 @@ module.exports = class Board {
                 this.board[i][x] = null;
             }
         }
+
+        this.entity_list = []
+
         var middle = Math.round(Constant.HEIGHT_SIZE / 2)
 
         this.J1_kingdom = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
         this.J2_kingdom = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.board[middle][0] = this.J1_kingdom;
-        this.board[middle-1][0] = this.J1_kingdom;
-        this.board[middle-1][1] = this.J1_kingdom;
-        this.board[middle][1] = this.J1_kingdom;
-        this.board[middle][Constant.WIDTH_SIZE - 1] = this.J2_kingdom;
-        this.board[middle-1][Constant.WIDTH_SIZE - 1] = this.J2_kingdom;
-        this.board[middle-1][Constant.WIDTH_SIZE - 2] = this.J2_kingdom;
-        this.board[middle][Constant.WIDTH_SIZE - 2] = this.J2_kingdom;
+
+        this.J1_kingdom.set_no_action();
+        this.J1_kingdom.set_multi_case(true);
+        this.J2_kingdom.set_no_action();
+        this.J2_kingdom.set_multi_case(true);
+
+        this.add_entity(middle, 0, this.J1_kingdom);
+        this.add_entity(middle - 1, 0, this.J1_kingdom);
+        this.add_entity(middle - 1, 1, this.J1_kingdom);
+        this.add_entity(middle, 1, this.J1_kingdom);
+
+        this.add_entity(middle, Constant.WIDTH_SIZE - 1, this.J2_kingdom);
+        this.add_entity(middle - 1, Constant.WIDTH_SIZE - 1, this.J2_kingdom);
+        this.add_entity(middle - 1, Constant.WIDTH_SIZE - 2, this.J2_kingdom);
+        this.add_entity(middle, Constant.WIDTH_SIZE - 2, this.J2_kingdom);
+
+        this.entity_list[this.J1_kingdom.uid] = this.J1_kingdom;
+        this.entity_list[this.J2_kingdom.uid] = this.J2_kingdom;
     }
 
     generate_uid() {
@@ -54,8 +67,9 @@ module.exports = class Board {
             throw new Error(Constant.ERROR_ENTITY_ALREADY_HERE);
         }
         var entity = this.convert_card_to_entity(pseudo, card);
-        this.board[position.row][position.column] = entity;
-        this.notify_entity(entity, position);
+        this.add_entity(position.row, position.column, entity);
+
+        this.notify_entity(entity);
         return entity;
     }
 
@@ -88,11 +102,11 @@ module.exports = class Board {
         return this.board[position.row][position.column] === null;
     }
 
-    notify_entity(entity, position) {
+    notify_entity(entity) {
         for (var i = 0; i < this.partie.liste_player.length; i++) {
             this.partie.liste_player[i].socket.emit(Constant.SOCKET_EDIT_BOARD, {
-                position: position,
-                entity: entity.to_json(this.partie.liste_player[i].pseudo, position)
+                position: entity.position,
+                entity: entity.to_json(this.partie.liste_player[i].pseudo)
             });
         }
     }
@@ -181,7 +195,24 @@ module.exports = class Board {
         return pos1.row == pos2.row && pos1.column == pos2.column;
     }
 
-    reset_etat(pseudo){
+    add_entity(row, column, entity) {
+        this.board[row][column] = entity;
+        entity.add_position(row, column);
+        this.entity_list[entity.uid] = entity;
+    }
+
+    delete_entity(row, column) {
+        var entity = this.board[row][column];
+        this.entity_list[entity.uid] = null;
+        this.board[row][column] = null;
+    }
+
+    get_entity(row, column) {
+        return this.board[row][column];
+    }
+
+
+    reset_etat(pseudo) {
         for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
             for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
                 if (this.board[i][x] !== null && this.board[i][x].pseudo == pseudo) {
@@ -193,28 +224,23 @@ module.exports = class Board {
 
     to_json(pseudo) {
         var json = [];
-        for (var i = 0; i < Constant.HEIGHT_SIZE; i++) {
-            for (var x = 0; x < Constant.WIDTH_SIZE; x++) {
-                if (this.board[i][x] !== null) {
-                    var pos = {
-                        row: i,
-                        column: x
-                    };
-                    json.push({
-                        position: pos,
-                        entity: this.board[i][x].to_json(pseudo, pos)
-                    });
-                }
+        console.log(this.entity_list);
+        for (var key in this.entity_list) {
+            if (this.entity_list[key] != null) {
+                json.push({
+                    position: this.entity_list[key].position,
+                    entity: this.entity_list[key].to_json(pseudo)
+                });
             }
         }
         return json;
     }
 
-    kingdom_J1_is_destroy(){
+    kingdom_J1_is_destroy() {
         return this.J1_kingdom.life == 0;
     }
 
-    kingdom_J2_is_destroy(){
+    kingdom_J2_is_destroy() {
         return this.J2_kingdom.life == 0;
     }
 };

@@ -20,21 +20,27 @@ module.exports = class Entity {
         this.can_do_action = false;
         this.movement = movement;
         this.can_move = false;
+        this.no_action = false;
+        this.multi_case = false;
+        this.position = [];
     }
 
     move_entity(board, origin, destination) {
         if(!this.can_move){
             throw new Error(Constant.NO_MORE_ACTION);
         }
+        // TODO : pour l'instant on deplace que les entites de 1x1
         let casesCanMove = this.move_class.move(board.board, origin, this.movement);
         if (!Utils.containsInArray(casesCanMove,destination)) {
             throw new Error(Constant.NEED_MORE_MOVEMENT);
         }
-        this.position = destination;
-        board.board[destination.row][destination.column] = this;
-        board.notify_entity(this, destination);
-        board.board[origin.row][origin.column] = null;
+
+        board.delete_entity(origin.row,origin.column);
         board.notify_delete_entity(origin);
+
+        board.add_entity(destination.row,destination.column,this);
+        board.notify_entity(this, destination);
+
         this.can_move = false;
     }
 
@@ -46,7 +52,7 @@ module.exports = class Entity {
         if (!Utils.containsInArray(cases_can_attack,destination)) {
             throw new Error(Constant.NEED_MORE_RANGE);
         }
-        var enemy = board.board[destination.row][destination.column];
+        var enemy = board.get_entity(destination.row,destination.column);
 
         // si l'ennemi est en defense
         if(enemy.defense_mode){
@@ -56,7 +62,7 @@ module.exports = class Entity {
                 var left_attack = this.attack - enemy.defense_left;
                 enemy.defense_left = 0;
                 if (enemy.life <= left_attack) {
-                    board.board[destination.row][destination.column] = null;
+                    board.delete_entity(destination.row,destination.column);
                     enemy.life = 0;
                     board.notify_delete_entity(destination);
                 } else {
@@ -69,7 +75,7 @@ module.exports = class Entity {
             }
         } else {
             if (enemy.life <= this.attack) {
-                board.board[destination.row][destination.column] = null;
+                board.delete_entity(destination.row,destination.column);
                 enemy.life = 0;
                 board.notify_delete_entity(destination);
             } else {
@@ -106,16 +112,39 @@ module.exports = class Entity {
     }
 
     reset_etat(){
-        this.can_move = true ;
-        this.can_do_action = true ;
-        this.defense_mode = false ;
-        this.defense_left = this.defense;
+        if(!this.no_action) {
+            this.can_move = true;
+            this.can_do_action = true;
+            this.defense_mode = false;
+            this.defense_left = this.defense;
+        }
     }
 
-    to_json(pseudo, position) {
+    set_no_action(){
+        this.no_action = true ;
+    }
+
+    set_multi_case(boolean){
+        this.multi_case = boolean ;
+    }
+
+    add_position(row,column){
+        var json = {
+            row : row,
+            column: column
+        };
+        if(this.multi_case){
+            this.position.push(json);
+        } else {
+            this.position = json;
+        }
+    }
+
+    to_json(pseudo) {
         return {
             Self: this.pseudo == pseudo, //Si c’est une entité du joueurs actuel
-            position: position,
+            position: this.position,
+            multiCase: this.multi_case,
             img: this.img,
             uid: this.uid,
             attack: this.attack,

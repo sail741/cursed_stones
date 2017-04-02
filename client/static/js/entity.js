@@ -27,6 +27,10 @@ function buildEntityDiv(entity){
 	var elemStatus = document.createElement('div');
 	elemStatus.className = "status";
 
+	var elemName = document.createElement('span');
+	elemName.className = 'name';
+	elemName.textContent = entity.name;
+
 	var elemLife = document.createElement('span');
 	elemLife.textContent = entity.life;
 	elemLife.className = "icon life";
@@ -39,6 +43,7 @@ function buildEntityDiv(entity){
 	elemDefense.textContent = entity.defense;
 	elemDefense.className = "icon defense";
 
+	elemStatus.appendChild(elemName);
 	elemStatus.appendChild(elemLife);
 	elemStatus.appendChild(elemAttack);
 	elemStatus.appendChild(elemDefense);

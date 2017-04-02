@@ -155,7 +155,27 @@ function buildDOMCard(card){
 	titleSpan.className = "title";
 	titleSpan.textContent = card.name;
 
+
+	var costSpan = document.createElement('div');
+	costSpan.textContent = "\t⬟ : " + card.cost;
+
+    var lifeSpan = document.createElement('div');
+    lifeSpan.textContent = "\t❤ : " + card.life;
+    lifeSpan.style.color = 'red';
+
+    var attackSpan = document.createElement('div');
+    attackSpan.textContent = "\t⚔ : " + card.attack;
+
+    var defenseSpan = document.createElement('div');
+    defenseSpan.textContent = "\t🛡 : " + card.defence;
+    defenseSpan.style.color = 'blue';
+
+
 	divCard.appendChild(titleSpan);
+    divCard.appendChild(costSpan);
+    divCard.appendChild(lifeSpan);
+    divCard.appendChild(attackSpan);
+    divCard.appendChild(defenseSpan);
 
 	return divCard;
 	

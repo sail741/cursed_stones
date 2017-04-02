@@ -11,7 +11,7 @@ sio.on('piocheCarte', function(data){
 });
 
 sio.on('nouveauTour', function(data){
-	setTourData(data.Self, data.Num_Tour, data.Mana);
+	setTourData(data.Self, data.Num_tour, data.Mana);
 	boardResetSelect();
 	if(data.Self){
         requestOverlay("off");
@@ -22,7 +22,7 @@ sio.on('nouveauTour', function(data){
 });
 
 sio.on('setStatus', function(data){
-    setTourData(data.Self, data.Num_tour, 0);
+    setTourData(data.Self, data.Num_Tour, 0);
     setManaSelf(data.Mana);
     setManaAdv(data.Mana_adv)
 });
@@ -47,7 +47,7 @@ sio.on('placeCard', function(data){
 	if(data.sucess){
 	}else{
 		console.error(data.error);
-        vNotify.error({text: data.error, title:'Erreur'});
+        vNotify.error({text: data.error, title:'Impossible de placer la carte'});
 
     }
 
@@ -111,6 +111,9 @@ sio.on('information', function(msg){
 
 sio.on('signalDisconnect', function(json){
 	vNotify.info({text: 'Déconnexion de ' + json.player, title: "Déconnexion"});
+});
+sio.on('signalConnexion', function(json){
+    vNotify.info({text: 'Reconnexion de ' + json.player, title: "Reconnexion"});
 })
 
 

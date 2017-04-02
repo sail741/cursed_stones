@@ -9,10 +9,11 @@ document.addEventListener("mousemove", function(evt){
 });
 
 function displayContextMenu(){
-    contextMenuDom.style.display = "flex";
-    contextMenuDom.style.left = mouseX + "px";
-    contextMenuDom.style.top = mouseY + "px";
-
+    if(getNbActions() != 0){
+        contextMenuDom.style.display = "flex";
+        contextMenuDom.style.left = mouseX + "px";
+        contextMenuDom.style.top = mouseY + "px";
+    }
 }
 
 function clearContextMenuActions(){
@@ -31,6 +32,11 @@ function declareContextMenuAction(actionName, evtClick){
         evtClick();
     });
     contextMenuDom.appendChild(span);
+}
+
+function getNbActions(){
+    var children = contextMenuDom.children;
+    return children.length;
 }
 
 function hideContextMenu(){

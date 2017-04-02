@@ -19,8 +19,10 @@ app.use(flash());
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
+app.use(bodyParser.json()); // get information from html forms
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({ secret: 'eflkn65esr5834ktbf384zle348sju384ozehnfsejbf',
+                                    saveUninitialized: true,
 									store: configBDD.sequelizeStore,
 									resave: false,
 })); // session secret

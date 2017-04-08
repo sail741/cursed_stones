@@ -99,7 +99,7 @@ function drawEntity(entity) {
     removeEntityOnArray(entity.uid);
 
     for (var i = 0; i < actualDivs.length; i++) {
-        actualDivs.remove();
+        actualDivs[i].remove();
     }
 
     var newDiv = buildEntityDiv(entity);

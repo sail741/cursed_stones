@@ -79,7 +79,7 @@ function isEquivalentPositionEnity(entity , pos){
     if (entity.multiCase) {
         for (var j = 0; j < entity.position.length; j++) {
             if (isEquivalent(convertPositionServerToClient(entity.position[j]), pos)) {
-                true
+                return true;
             }
         }
     } else {

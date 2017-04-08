@@ -58,7 +58,7 @@ server.listen(PORT, function(){
 	console.log("Server listen on ", PORT);
     if(isNaN(parseInt(PORT))){
         fs.stat(PORT, function(err){
-            if(!err) fs.chmod(PORT, 0777);
+            if(!err) fs.chmodSync(PORT, 0777);
         });
     }
 })

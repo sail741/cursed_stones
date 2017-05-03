@@ -35,7 +35,7 @@ module.exports = class Entity {
             throw new Error(Constant.NEED_MORE_MOVEMENT);
         }
 
-        board.delete_entity(origin.row,origin.column);
+        board.delete_entity(board.get_entity(origin.row,origin.column));
         board.notify_delete_entity(origin);
 
         board.add_entity(destination.row,destination.column,this);
@@ -62,25 +62,25 @@ module.exports = class Entity {
                 var left_attack = this.attack - enemy.defense_left;
                 enemy.defense_left = 0;
                 if (enemy.life <= left_attack) {
-                    board.delete_entity(destination.row,destination.column);
+                    board.delete_entity(enemy);
                     enemy.life = 0;
-                    board.notify_delete_entity(destination);
+                    board.notify_delete_entity(enemy.position);
                 } else {
                     enemy.life -= left_attack;
-                    board.notify_entity(enemy, destination);
+                    board.notify_entity(enemy);
                 }
             } else {
                 enemy.defense_left -= this.attack;
-                board.notify_entity(enemy, destination);
+                board.notify_entity(enemy);
             }
         } else {
             if (enemy.life <= this.attack) {
-                board.delete_entity(destination.row,destination.column);
+                board.delete_entity(enemy);
                 enemy.life = 0;
-                board.notify_delete_entity(destination);
+                board.notify_delete_entity(enemy.position);
             } else {
                 enemy.life -= this.attack;
-                board.notify_entity(enemy, destination);
+                board.notify_entity(enemy);
             }
         }
         this.can_do_action = false;

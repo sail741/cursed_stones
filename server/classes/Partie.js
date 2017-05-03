@@ -4,7 +4,6 @@ const Constant = require('./Constant');
 const Utils = require('./Utils');
 const Deck = require('./Deck');
 const Board = require('./Board');
-const Test = require('./Test');
 
 module.exports = class Partie {
 

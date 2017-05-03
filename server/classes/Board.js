@@ -201,10 +201,15 @@ module.exports = class Board {
         this.entity_list[entity.uid] = entity;
     }
 
-    delete_entity(row, column) {
-        var entity = this.board[row][column];
+    delete_entity(entity) {
+        if(entity.multi_case){
+            for (var i = 0; i < entity.position.length; i++) {
+                this.board[entity.position[i].row][entity.position[i].column] = null;
+            }
+        } else {
+            this.board[entity.position.row][entity.position.column] = null;
+        }
         this.entity_list[entity.uid] = null;
-        this.board[row][column] = null;
     }
 
     get_entity(row, column) {

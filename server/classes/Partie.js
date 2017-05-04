@@ -197,7 +197,7 @@ module.exports = class Partie {
         for (var i = 0; i < this.liste_player.length; i++) {
             if (this.liste_player[i].pseudo == pseudo) {
                 this.liste_player[i].delete_game();
-                this.game_manager.delete_player(this.liste_player[i].pseudo);
+                //this.game_manager.delete_player(this.liste_player[i].pseudo);
                 this.liste_player.splice(i, 1);
             }
         }
@@ -211,7 +211,7 @@ module.exports = class Partie {
         //faire la gestion des points ici
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].delete_game();
-            this.game_manager.delete_player(this.liste_player[i].pseudo);
+            //this.game_manager.delete_player(this.liste_player[i].pseudo);
         }
     }
 

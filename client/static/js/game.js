@@ -14,6 +14,21 @@ var localPseudoAdv = null;
 
 var btnFinTour = document.querySelector("#finTour");
 
+//TODO : a verifier ici
+function reconnect() {
+	sio.emit('check_already_in_game',function (is_reconnect) {
+		if(!is_reconnect){
+			select_deck();
+		}
+    })
+}
+
+//TODO : a verifier ici le 1 a parametrer quand on pourra selectionner le deck
+function select_deck(){
+    sio.emit('select_deck',1,function () {
+		joinGame();
+    })
+}
 //On envoie l'event de joinGame
 function joinGame(){
 	sio.emit('joinGame');

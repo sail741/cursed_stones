@@ -3,7 +3,8 @@ var sio = io({reconnection: false});
 sio.on('connect', function(){
 	console.log('Connected');
 	console.log('send join game');
-	joinGame();
+	//TODO : j'ai fait des modifs ici
+    reconnect();
 });
 
 sio.on('error', function(){

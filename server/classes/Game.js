@@ -13,17 +13,15 @@ module.exports = class Game {
         this.current_classed = new Partie(shortid.generate(), this, false);
     }
 
-    rejoindre_game(player) {
-        if (this.check_is_in_game(player)) {
+    rejoindre_game(pseudo,socket) {
+        if (this.check_is_in_game(pseudo,socket)) {
             return true;
         }
         if (!this.current_classed.is_full() && this.current_classed.partie_status === Constant.STATUS_WAIT) {
-            this.current_classed.add_player(player);
-            this.player_liste[player.pseudo] = player;
+            this.current_classed.add_player(this.player_liste[pseudo]);
         } else {
             this.current_classed = new Partie(shortid.generate(), this, false);
-            this.current_classed.add_player(player);
-            this.player_liste[player.pseudo] = player;
+            this.current_classed.add_player(this.player_liste[pseudo]);
         }
     }
 
@@ -53,21 +51,22 @@ module.exports = class Game {
         this.create_perso(shortid.generate());
     }
 
-    check_is_in_game(new_version_player) {
-        var old_version_player = this.player_liste[new_version_player.pseudo];
-
+    check_is_in_game(pseudo,new_socket) {
+        var old_version_player = this.player_liste[pseudo];
         if (old_version_player !== undefined) {
-            if (!old_version_player.is_disconnected) {
+            if (!old_version_player.is_disconnected && old_version_player.socket.id != new_socket.id) {
                 old_version_player.socket.disconnect();
-                return false;
-            } else {
-                if (old_version_player.partie !== null && old_version_player.partie.get_status() !== Constant.STATUS_WAIT) {
-                    old_version_player.reconnection(new_version_player);
-                    return true;
-                }
+            }
+            if (old_version_player.partie !== null && old_version_player.partie.get_status() !== Constant.STATUS_WAIT) {
+                old_version_player.reconnection(new_socket);
+                return true;
             }
         }
         return false;
+    }
+
+    add_player(player) {
+        this.player_liste[player.pseudo] = player;
     }
 
     destroy_partie(id_partie) {

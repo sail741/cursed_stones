@@ -2,10 +2,11 @@ const Constant = require('./Constant');
 
 module.exports = class Player {
 
-    constructor(socket) {
+    constructor(socket,id_deck) {
         this.socket = socket;
         this.pseudo = socket.request.user.username;
         this.id_user = socket.request.user.id_user;
+        this.id_deck = id_deck ;
         this.partie = null;
         this.timer_reconnexion = null;
         this.deck = null;
@@ -37,7 +38,9 @@ module.exports = class Player {
 
     delete_game() {
         clearTimeout(this.timer_reconnexion);
-        this.socket.disconnect();
+        //il faut pas deconnecter pour le one page
+        //this.socket.disconnect();
+        this.socket.removeAllListeners();
         this.partie = null;
     }
 
@@ -242,10 +245,10 @@ module.exports = class Player {
         }
     }
 
-    reconnection(player) {
-        this.socket = player.socket;
+    reconnection(new_socket) {
+        this.socket = new_socket;
         //on rejoins la room socket de la partie
-        this.partie.join_socket_room(player.socket);
+        this.partie.join_socket_room(new_socket);
         //on reactive tout les packets
         this.socket_function();
         //on desactive le timer de reconnexion
@@ -261,7 +264,7 @@ module.exports = class Player {
         this.broadcast_msg(Constant.SOCKET_SIGNAL_RECONNECT, {player : this.pseudo});
         //on redonne toute les informations nécessaire pour jouer au joueur
         this.socket.emit(Constant.SOCKET_START_GAME, {
-            Pseudo : player.pseudo,
+            Pseudo : this.pseudo,
             Pseudo_adv: this.partie.get_adversaire_player(this.pseudo).pseudo
         });
         this.socket.emit(Constant.SOCKET_SET_STATUS, {

@@ -30,7 +30,7 @@ function convertPosToStr(pos){
 	return pos.x + '-' + pos.y;
 }
 
-function displayMessage(title, sub, time){
+function displayMessage(title, sub, time, cb){
 	var messageElement =  document.querySelector('#message');
 	messageElement.querySelector('span').textContent = title;
 	messageElement.querySelector('p').textContent = sub;
@@ -40,6 +40,9 @@ function displayMessage(title, sub, time){
 	}
 	messageTimeout = setTimeout(function(){
 		messageElement.className = '';
+		if(cb){
+			cb();
+		}
 	}, time);
 	messageElement.className = 'show';
 }

@@ -56,7 +56,6 @@ module.exports = class Deck {
                     }
                     id_generates.push(uid);
                     if (card.type_card == Constant.TYPE_CARD_CHARA) {
-                        console.log(card);
                         deck.add_card(new CardCharacter(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.attack, card.defence, card.life, card.movement));
                     } else {
                         deck.add_card(new CardMagic(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.type_spell, card.range_spell, card.power_spell));

@@ -4,7 +4,6 @@ const Constant = require('./Constant');
 const Utils = require('./Utils');
 const Deck = require('./Deck');
 const Board = require('./Board');
-const Test = require('./Test');
 
 module.exports = class Partie {
 
@@ -39,7 +38,7 @@ module.exports = class Partie {
         }
         this.liste_player.push(player);
         player.add_to_game(this);
-        player.socket.join(this.id_partie);
+        this.join_socket_room(player.socket);
         this.nb_player++;
 
         if (this.is_full()) {
@@ -48,9 +47,17 @@ module.exports = class Partie {
         }
     }
 
-    get_player(pseudo) {
+    join_socket_room(socket) {
+        socket.join(this.id_partie);
+    }
+
+    send_message_to_room(packet, message) {
+        this.global_socket.in(this.id_partie).emit(packet, message);
+    }
+
+    get_adversaire_player(pseudo) {
         for (var i = 0; i < this.liste_player.length; i++) {
-            if (this.liste_player[i].pseudo == pseudo) {
+            if (this.liste_player[i].pseudo != pseudo) {
                 return this.liste_player[i];
             }
         }
@@ -60,22 +67,37 @@ module.exports = class Partie {
     start_partie() {
         this.partie_status = Constant.STATUS_START;
         this.board = new Board(this, this.liste_player[0].pseudo, this.liste_player[1].pseudo);
-        this.init_player();
-        this.nouveauTour();
-        this.run_timer_tour(Constant.TIMER_TOUR);
+        var partie = this;
+        this.init_player(function () {
+            partie.emit_pseudo();
+            partie.nouveauTour();
+            partie.run_timer_tour(Constant.TIMER_TOUR);
+        });
     }
 
-    init_player() {
-        var partie = this ;
+    emit_pseudo() {
         for (let i = 0; i < this.liste_player.length; i++) {
-            var deck = new Deck();
+            this.liste_player[i].socket.emit(Constant.SOCKET_START_GAME, {
+                Pseudo: this.liste_player[i].pseudo,
+                Pseudo_adv: this.liste_player[i == 0 ? 1 : 0].pseudo
+            });
+        }
+    }
+
+    init_player(next) {
+        var partie = this;
+        for (let i = 0; i < this.liste_player.length; i++) {
+            let deck = new Deck();
             let player = this.liste_player[i];
 
-            deck.convertJSONToDeck(1,function(){
+            deck.convertJSONToDeck(1, function () {
                 deck.shuffle_deck();
                 player.add_deck(deck, i == partie.current_player);
+                player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
+                if (i == partie.liste_player.length - 1) {
+                    next();
+                }
             });
-            player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
         }
     }
 
@@ -136,7 +158,7 @@ module.exports = class Partie {
         this.sync_board(player);
 
         if (this.partie_status == Constant.STATUS_PAUSED && this.nb_deco == 0) {
-            var partie = this ;
+            var partie = this;
             this.partie_status = Constant.STATUS_START;
             this.resume_game_timer = setTimeout(function () {
                 partie.run_timer_tour(Constant.TIMER_TOUR);
@@ -175,7 +197,7 @@ module.exports = class Partie {
         for (var i = 0; i < this.liste_player.length; i++) {
             if (this.liste_player[i].pseudo == pseudo) {
                 this.liste_player[i].delete_game();
-                this.game_manager.delete_player(this.liste_player[i].pseudo);
+                //this.game_manager.delete_player(this.liste_player[i].pseudo);
                 this.liste_player.splice(i, 1);
             }
         }
@@ -189,17 +211,14 @@ module.exports = class Partie {
         //faire la gestion des points ici
         for (var i = 0; i < this.liste_player.length; i++) {
             this.liste_player[i].delete_game();
-            this.game_manager.delete_player(this.liste_player[i].pseudo);
+            //this.game_manager.delete_player(this.liste_player[i].pseudo);
         }
     }
 
     abandon(pseudo) {
-        //gestion des points ici
+        // TODO : gestion des points ici
         //notifier fin de partie
-        clearInterval(this.timer_tour);
-        clearTimeout(this.resume_game_timer);
-        this.delete_all_player();
-        this.destroy_partie();
+        this.fin_partie();
     }
 
     destroy_partie() {
@@ -216,6 +235,34 @@ module.exports = class Partie {
         }
         this.nouveauTour();
         this.run_timer_tour(Constant.TIMER_TOUR);
+    }
+
+    is_finish() {
+        //TODO : gestion des points à faire ici
+        if (this.board.kingdom_J1_is_destroy()) {
+            this.send_winner(this.liste_player[1].pseudo);
+            this.fin_partie();
+        }
+        if (this.board.kingdom_J2_is_destroy()) {
+            this.send_winner(this.liste_player[0].pseudo);
+            this.fin_partie();
+        }
+
+    }
+
+    fin_partie() {
+        clearInterval(this.timer_tour);
+        clearTimeout(this.resume_game_timer);
+        this.delete_all_player();
+        this.destroy_partie();
+    }
+
+    send_winner(pseudo) {
+        for (var i = 0; i < this.liste_player.length; i++) {
+            this.liste_player[i].socket.emit(Constant.SOCKET_FINISH, {
+                winner_self: this.liste_player[i].pseudo == pseudo
+            });
+        }
     }
 
     get_status() {

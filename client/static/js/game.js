@@ -9,8 +9,26 @@ var localTourWho = "...";
 
 var localTourNum = 0;
 
+var localPseudoActual = null;
+var localPseudoAdv = null;
+
 var btnFinTour = document.querySelector("#finTour");
 
+//TODO : a verifier ici
+function reconnect() {
+	sio.emit('check_already_in_game',function (is_reconnect) {
+		if(!is_reconnect){
+			select_deck();
+		}
+    })
+}
+
+//TODO : a verifier ici le 1 a parametrer quand on pourra selectionner le deck
+function select_deck(){
+    sio.emit('select_deck',1,function () {
+		joinGame();
+    })
+}
 //On envoie l'event de joinGame
 function joinGame(){
 	sio.emit('joinGame');
@@ -32,14 +50,16 @@ function setTourData(isMine, numTour, mana){
 
 	localTourNum = numTour;
 
-	localTourWho = "adversaire"; //TODO recup les nom des joueurs
+	localTourWho = localPseudoAdv;
 	if(isMine){
-		localTourWho = "self";
+		localTourWho = localPseudoActual;
 		localSelfMana = mana;
 		displayMessage("C'est a votre tour de jouer !", "", 2000);
+        btnFinTour.dataset.disabled = 0;
 	}else{
 		localAdvMana = mana;
 		displayMessage("C'est a votre adversaire...", "", 2000);
+        btnFinTour.dataset.disabled = 1;
 	}
 
 	renderStatusBar();

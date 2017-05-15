@@ -42,6 +42,7 @@ exports.TYPE_OVERLAY_OFF = "off";
 
 exports.SOCKET_DISCONNECT = "disconnect";
 exports.SOCKET_SIGNAL_DISCONNECT = "signalDisconnect";
+exports.SOCKET_SIGNAL_RECONNECT = "signalConnexion";
 exports.SOCKET_CHAT = "chat";
 exports.SOCKET_NEW_TOUR = "nouveauTour";
 exports.SOCKET_FIRST_HAND = "FirstHand";
@@ -59,7 +60,9 @@ exports.SOCKET_DISPLAY_OVERLAY = "displayOverlay";
 exports.SOCKET_END_TURN = "fintour";
 exports.SOCKET_ATTACK = "attack";
 exports.SOCKET_DEFENSE = "setDefenseEntity";
-
+exports.SOCKET_SET_STATUS = "setStatus";
+exports.SOCKET_FINISH = "gameOver";
+exports.SOCKET_START_GAME = "startGame";
 
 exports.TYPE_CARD_CHARA = "chara";
 exports.TYPE_CARD_MAGIC = 'magic'; 

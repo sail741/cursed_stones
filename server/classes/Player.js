@@ -2,10 +2,11 @@ const Constant = require('./Constant');
 
 module.exports = class Player {
 
-    constructor(socket) {
+    constructor(socket,id_deck) {
         this.socket = socket;
         this.pseudo = socket.request.user.username;
         this.id_user = socket.request.user.id_user;
+        this.id_deck = id_deck ;
         this.partie = null;
         this.timer_reconnexion = null;
         this.deck = null;
@@ -37,7 +38,9 @@ module.exports = class Player {
 
     delete_game() {
         clearTimeout(this.timer_reconnexion);
-        this.socket.disconnect();
+        //il faut pas deconnecter pour le one page
+        //this.socket.disconnect();
+        this.socket.removeAllListeners();
         this.partie = null;
     }
 
@@ -66,6 +69,7 @@ module.exports = class Player {
                     });
                 }
             } catch (exception) {
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });
@@ -76,7 +80,7 @@ module.exports = class Player {
 
             player.is_disconnected = true;
             //on previens les autres joueurs de la deconnexion
-            player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_SIGNAL_DISCONNECT, {
+            player.partie.send_message_to_room(Constant.SOCKET_SIGNAL_DISCONNECT, {
                 player: player.pseudo,
             });
             //deconnexion du joueur
@@ -105,7 +109,7 @@ module.exports = class Player {
                 var entity = player.partie.board.put_card(player.pseudo, card, json.position);
                 player.delete_card_in_hand(card);
                 player.mana = player.mana - card.cost;
-                player.socket.broadcast.to(player.partie.id_partie).emit(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
+                player.broadcast_msg(Constant.SOCKET_OPPENENT_NOTIFY_CHANGE, {
                     mana_left: player.mana,
                     cards_change: -1
                 });
@@ -115,6 +119,7 @@ module.exports = class Player {
                     mana_left: player.mana
                 });
             } catch (exception) {
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_PLACE_CARD, {
                     hand: player.hand,
                     error: exception.message,
@@ -151,6 +156,7 @@ module.exports = class Player {
                 player.socket.emit(Constant.SOCKET_ATTACK, {
                     success: true
                 });
+                player.partie.is_finish();
             } catch (exception) {
                 console.error(exception);
                 player.socket.emit(Constant.SOCKET_ATTACK, {
@@ -194,7 +200,7 @@ module.exports = class Player {
                     });
 
                 }
-                player.partie.global_socket.in(player.partie.id_partie).emit(Constant.SOCKET_DISPLAY_OVERLAY, arrayToSend);
+                player.partie.send_message_to_room(Constant.SOCKET_DISPLAY_OVERLAY, arrayToSend);
 
 
 
@@ -211,6 +217,7 @@ module.exports = class Player {
                 }
                 player.partie.fin_tour();
             } catch(exception){
+                console.error(exception);
                 player.socket.emit(Constant.SOCKET_INFORMATION, exception.message);
             }
         });
@@ -238,14 +245,40 @@ module.exports = class Player {
         }
     }
 
-    reconnection(player) {
-        this.socket = player.socket;
+    reconnection(new_socket) {
+        this.socket = new_socket;
+        //on rejoins la room socket de la partie
+        this.partie.join_socket_room(new_socket);
+        //on reactive tout les packets
         this.socket_function();
+        //on desactive le timer de reconnexion
         clearTimeout(this.timer_reconnexion);
+        //on relance la partie
         this.partie.resume_game(this);
+        //on renvoie la main au joueur
         this.socket.emit(Constant.SOCKET_FIRST_HAND, {
             hand: this.hand
         });
+        //on signale aux autres joueurs qu'un joueur c'est reco
+        console.log(this.pseudo);
+        this.broadcast_msg(Constant.SOCKET_SIGNAL_RECONNECT, {player : this.pseudo});
+        //on redonne toute les informations nécessaire pour jouer au joueur
+        this.socket.emit(Constant.SOCKET_START_GAME, {
+            Pseudo : this.pseudo,
+            Pseudo_adv: this.partie.get_adversaire_player(this.pseudo).pseudo
+        });
+        this.socket.emit(Constant.SOCKET_SET_STATUS, {
+            Self: this.partie.is_current_player(this.pseudo),
+            Num_Tour: this.partie.num_tour,
+            Mana: this.mana,
+            Mana_adv: this.partie.get_adversaire_player(this.pseudo).mana
+        });
+
+
+    }
+
+    broadcast_msg(packet,message){
+        this.socket.broadcast.to(this.partie.id_partie).emit(packet,message);
     }
 }
 ;

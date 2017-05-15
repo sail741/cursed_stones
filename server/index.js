@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const flash = require('connect-flash');
+const fs = require('fs');
 
 const morgan       = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -18,8 +19,10 @@ app.use(flash());
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
+app.use(bodyParser.json()); // get information from html forms
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({ secret: 'eflkn65esr5834ktbf384zle348sju384ozehnfsejbf',
+                                    saveUninitialized: true,
 									store: configBDD.sequelizeStore,
 									resave: false,
 })); // session secret
@@ -38,6 +41,24 @@ require('./model/model');
 require('./routes')(app);
 require('./sockets')(server,configBDD.sequelizeStore);
 
+
+// ===========================        PORT AFFECTATION AND START SERVER         ===========================
+
+try{
+
+    if(isNaN(parseInt(PORT))){
+        if(fs.existsSync(PORT)){
+            fs.unlinkSync(PORT);
+        }
+    }
+
+}catch(e){}
+
 server.listen(PORT, function(){
 	console.log("Server listen on ", PORT);
+    if(isNaN(parseInt(PORT))){
+        fs.stat(PORT, function(err){
+            if(!err) fs.chmodSync(PORT, 0777);
+        });
+    }
 })

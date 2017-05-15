@@ -74,3 +74,18 @@ function isEquivalent(a, b) {
 function distance(p1, p2){
 	return Math.sqrt((p2.x-p1.x)*(p2.x-p1.x) + (p2.y-p1.y)*(p2.y-p1.y))
 }
+
+function isEquivalentPositionEnity(entity , pos){
+    if (entity.multiCase) {
+        for (var j = 0; j < entity.position.length; j++) {
+            if (isEquivalent(convertPositionServerToClient(entity.position[j]), pos)) {
+                return true;
+            }
+        }
+    } else {
+        if (isEquivalent(convertPositionServerToClient(entity.position), pos)) {
+            return true;
+        }
+    }
+    return false;
+}

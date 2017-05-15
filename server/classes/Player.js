@@ -1,12 +1,13 @@
 const Constant = require('./Constant');
+const global_socket = require('../sockets/index');
 
 module.exports = class Player {
 
-    constructor(socket,id_deck) {
+    constructor(socket) {
         this.socket = socket;
         this.pseudo = socket.request.user.username;
         this.id_user = socket.request.user.id_user;
-        this.id_deck = id_deck ;
+        this.id_deck = 1 ;
         this.partie = null;
         this.timer_reconnexion = null;
         this.deck = null;
@@ -20,6 +21,10 @@ module.exports = class Player {
         return {
             "pseudo": this.pseudo
         };
+    }
+
+    change_deck(id_deck) {
+        this.id_deck = id_deck;
     }
 
     add_to_game(partie) {
@@ -41,6 +46,7 @@ module.exports = class Player {
         //il faut pas deconnecter pour le one page
         //this.socket.disconnect();
         this.socket.removeAllListeners();
+        global_socket.global_socket(this.socket);
         this.partie = null;
     }
 

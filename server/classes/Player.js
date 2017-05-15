@@ -95,7 +95,7 @@ module.exports = class Player {
             if (status === Constant.STATUS_PAUSED) {
                 //abandon si le joueur ne se reconnecte pas dans le temps imparti
                 player.timer_reconnexion = setTimeout(function () {
-                    player.partie.abandon(player.pseudo);
+                    player.partie.abandon(player);
                 }, Constant.TIMER_RECONNEXION);
             }
         });

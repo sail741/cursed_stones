@@ -21,8 +21,8 @@ module.exports = class Board {
 
         var middle = Math.round(Constant.HEIGHT_SIZE / 2)
 
-        this.J1_kingdom = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "./img/kingdom.png", 0, 0);
-        this.J2_kingdom = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "./img/kingdom.png", 0, 0);
+        this.J1_kingdom = new Entity(this.generate_uid(), pseudo_J1, "Kingdom", 30, "kingdom.png", 0, 0);
+        this.J2_kingdom = new Entity(this.generate_uid(), pseudo_J2, "Kingdom", 30, "kingdom.png", 0, 0);
 
         this.J1_kingdom.set_no_action();
         this.J1_kingdom.set_multi_case(true);

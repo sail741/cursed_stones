@@ -14,8 +14,9 @@ var localPseudoAdv = null;
 
 var btnFinTour = document.querySelector("#finTour");
 
-//TODO : a verifier ici
-function reconnect() {
+function connect() {
+	console.log('Connected');
+	console.log('send join game');
 	sio.emit('check_already_in_game',function (is_reconnect) {
 		if(!is_reconnect){
 			select_deck();

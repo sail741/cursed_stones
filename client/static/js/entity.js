@@ -1,5 +1,5 @@
 function getEntityImage(entity) {
-    return '/static/img/cards/' + entity.card.img;
+    return '/static/img/cards/' + entity.img;
 }
 
 function buildEntityDiv(entity) {
@@ -10,9 +10,9 @@ function buildEntityDiv(entity) {
     div.dataset.selected = 0;
 
     var img = document.createElement('img');
-    img.src = '/static/img/cards/board_c1.png';//getEntityImage(entity);
+    img.src = getEntityImage(entity);
     img.alt = entity.name;
-    img.className = "entityimg"
+    img.className = "entityimg";
 
     div.appendChild(img);
 

@@ -17,4 +17,7 @@ module.exports = function(app){
 	// Test for Leo
 	require('./add_card')(app);
 
+	// create a deck
+	require('./create_deck')(app);
+
 }

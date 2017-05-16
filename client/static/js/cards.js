@@ -170,12 +170,17 @@ function buildDOMCard(card){
     defenseSpan.textContent = "\t🛡 : " + card.defence;
     defenseSpan.style.color = 'blue';
 
+	var image = document.createElement("img");
+	image.src = getEntityImage(card);
+
 
 	divCard.appendChild(titleSpan);
-    divCard.appendChild(costSpan);
+    divCard.appendChild(image);
+	divCard.appendChild(costSpan);
     divCard.appendChild(lifeSpan);
     divCard.appendChild(attackSpan);
     divCard.appendChild(defenseSpan);
+
 
 	return divCard;
 	

@@ -260,3 +260,8 @@ section footer a
     75%  {opacity: 0.8; transform: rotateZ(-30deg);}
     100%  {opacity: 1; transform: rotateZ(0deg);}
 }
+
+#game
+{
+	display: none;
+}

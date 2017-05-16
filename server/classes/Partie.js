@@ -91,7 +91,7 @@ module.exports = class Partie {
             let deck = new Deck();
             let player = this.liste_player[i];
 
-            deck.convertJSONToDeck(1, function () {
+            deck.convertJSONToDeck(player.id_deck, function () {
                 deck.shuffle_deck();
                 player.add_deck(deck, i == partie.current_player);
                 player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);

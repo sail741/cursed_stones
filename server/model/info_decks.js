@@ -30,12 +30,14 @@ module.exports = function(sequelize, DataTypes) {
                 }).then(function(res) {
                     if(res.length > 0) {
                         var tab_id_deck = new Array();
+                        var tab_name_deck = new Array();
                         for (var i = 0; i < res.length; i++) {
                             if(!(res[i].get("id_deck") in tab_id_deck)) {
                                 tab_id_deck.push(res[i].get("id_deck"));
+                                tab_name_deck.push(res[i].get("name_deck"));
                             }
                         }
-                        callback({"status":1, "error":null, "decks":tab_id_deck});
+                        callback({"status":1, "error":null, "id_decks":tab_id_deck, "name_decks":tab_name_deck});
                     } else {
                         callback({"status":0, "error":"NOT_FOUND", "deck":null});
                     }

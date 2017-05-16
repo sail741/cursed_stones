@@ -118,7 +118,7 @@ module.exports = function(sequelize, DataTypes) {
                     callback({"status":1, "error":null, "points":new_points});
                 })
             },
-            classement: function(callback){
+            get_classement_world: function(callback){
                 this.findAll({
                     order: '"points" DESC' }).then(function (res){
                     if(res.length == 0) {
@@ -132,7 +132,7 @@ module.exports = function(sequelize, DataTypes) {
                         callback({"classement" : json});
                     }
                 })
-            }
+            },
         }
     });
 };

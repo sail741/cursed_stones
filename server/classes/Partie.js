@@ -4,6 +4,7 @@ const Constant = require('./Constant');
 const Utils = require('./Utils');
 const Deck = require('./Deck');
 const Board = require('./Board');
+const Model = require('../model/model');
 
 module.exports = class Partie {
 
@@ -215,8 +216,18 @@ module.exports = class Partie {
         }
     }
 
-    abandon(pseudo) {
-        // TODO : gestion des points ici
+    maj_point(id_user,nb_point){
+        Model.users.update_points(id_user,nb_point,function (res) {
+            console.log(res);
+            if(res.status == 0){
+                console.log(res.error);
+            }
+        });
+    }
+
+    abandon(player) {
+        this.maj_point(player.id_user,-20);
+        this.maj_point(this.get_adversaire_player(player.pseudo).id_user,10);
         //notifier fin de partie
         this.fin_partie();
     }
@@ -238,13 +249,16 @@ module.exports = class Partie {
     }
 
     is_finish() {
-        //TODO : gestion des points à faire ici
         if (this.board.kingdom_J1_is_destroy()) {
             this.send_winner(this.liste_player[1].pseudo);
+            this.maj_point(this.liste_player[1].id_user,10);
+            this.maj_point(this.liste_player[0].id_user,-10);
             this.fin_partie();
         }
         if (this.board.kingdom_J2_is_destroy()) {
             this.send_winner(this.liste_player[0].pseudo);
+            this.maj_point(this.liste_player[1].id_user,-10);
+            this.maj_point(this.liste_player[0].id_user,10);
             this.fin_partie();
         }
 

@@ -5,6 +5,7 @@ module.exports = function(app){
 	require('./logout')(app);
 	require('./register')(app);
 	require('./status')(app);
+	require('./get_decks')(app);
 
 	// One page for presentation / login / register
 	require('./home')(app);

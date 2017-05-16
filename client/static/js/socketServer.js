@@ -122,8 +122,8 @@ sio.on('startGame', function(data){
 });
 
 sio.on('gameOver', function (data) {
-    displayMessage("Fin de la partie", data.winner_self ? "Bravo tu as gagné" : "Dommage. La prochaine fois tu y arriveras", 10 * 1000, function(){
-    	location.reload(); 
+    displayAction("Fin de la partie", data.winner_self ? "Bravo tu as gagné" : "Dommage. La prochaine fois tu y arriveras", "Rejouer", function(){
+    	connect();
 	});
 });
 

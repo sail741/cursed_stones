@@ -226,8 +226,8 @@ module.exports = class Partie {
     }
 
     abandon(player) {
-        this.maj_point(player.id_user,-20);
-        this.maj_point(this.get_adversaire_player(player.pseudo).id_user,10);
+        this.maj_point(player.id_user,Constant.POINT_RAGE_QUIT);
+        this.maj_point(this.get_adversaire_player(player.pseudo).id_user,Constant.POINT_WIN);
         //notifier fin de partie
         this.fin_partie();
     }
@@ -251,14 +251,14 @@ module.exports = class Partie {
     is_finish() {
         if (this.board.kingdom_J1_is_destroy()) {
             this.send_winner(this.liste_player[1].pseudo);
-            this.maj_point(this.liste_player[1].id_user,10);
-            this.maj_point(this.liste_player[0].id_user,-10);
+            this.maj_point(this.liste_player[1].id_user,Constant.POINT_WIN);
+            this.maj_point(this.liste_player[0].id_user,Constant.POINT_LOOSE);
             this.fin_partie();
         }
         if (this.board.kingdom_J2_is_destroy()) {
             this.send_winner(this.liste_player[0].pseudo);
-            this.maj_point(this.liste_player[1].id_user,-10);
-            this.maj_point(this.liste_player[0].id_user,10);
+            this.maj_point(this.liste_player[1].id_user,Constant.POINT_LOOSE);
+            this.maj_point(this.liste_player[0].id_user,Constant.POINT_WIN);
             this.fin_partie();
         }
 

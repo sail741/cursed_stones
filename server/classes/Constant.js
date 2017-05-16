@@ -15,6 +15,10 @@ exports.WIDTH_SIZE = 16;
 exports.HEIGHT_SIZE = 8;
 exports.WIDTH_PLAYER_ZONE = 4;
 
+exports.POINT_WIN = 10;
+exports.POINT_LOOSE = -10;
+exports.POINT_RAGE_QUIT = -15;
+
 exports.LEFT = 'left';
 exports.RIGHT = 'right';
 

@@ -2,6 +2,10 @@
 <html>
 <head>
 	<title>Cursed stones</title>
+	<link rel="stylesheet/less" type="text/css" href="static/css/style.less">
+	<link rel="stylesheet" href="static/css/vanilla-notification.css">
+	<script src="static/js/less.js"></script>
+	<script src="static/js/vanilla-notification.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
 </head>
 <body>
@@ -28,7 +32,7 @@
 
 	<div id="connected">
 		<div class="command">
-			<button class="full" onclick="window.open('/game');">Play</button>
+			<button class="full" onclick="index.play();">Play</button>
 			<div class="clear"></div>
 		</div>
 	</div>
@@ -69,6 +73,40 @@
 	</footer>
 </section>
 
+<section id="game">
+
+		<div class="container">
+			<div class="status">
+				<div>Mana Self <span id="mana_self">0</span></div>
+				<div>Tour n°<span id="tourNum"></span> de <span id="tourWho"></span> <span class="btn" id="finTour" data-disabled="1">Fin tour</span> </div>
+				<div>Mana Adv <span id="mana_adv">0</span></div>
+			</div>
+			<div class="cards adv">
+			</div>
+
+			<div id="board">
+				
+			</div>
+			
+			<div class="cards self">
+				
+			</div>
+
+			<div id="message">
+				<span>C'est a votre tour</span>
+				<p>Vous pouvez jouer votre meilleurs carte ! Sauf si vous la gardez pour plus tard biensur</p>
+
+				<button class="btn" id="btn-action"></button>
+			</div>
+
+		</div>
+		<div id="contextMenu"></div>
+</section>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"/></script>
+<script type="text/javascript" src="/static/js/index.js"/></script>
+
+
 <script src="socket.io/socket.io.js"></script>
 <script src="static/js/utils.js"></script>
 <script src="static/js/contextMenu.js"></script>
@@ -76,19 +114,14 @@
 <script src="static/js/board.js"></script>
 <script src="static/js/cards.js"></script>
 <script src="static/js/game.js"></script>
-<script src="static/js/sockets.js"></script>
 <script src="static/js/socketServer.js"></script>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"/></script>
-<script type="text/javascript" src="/static/js/index.js"/></script>
-
 <script type="text/javascript">
+	var sio = null;
+
 	var index = new Index(document);
 	index.showIndex();
 </script>
-
-
-
 
 </body>
 </html>

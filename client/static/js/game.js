@@ -32,7 +32,7 @@ function select_deck(){
 }
 //On envoie l'event de joinGame
 function joinGame(){
-	sio.emit('joinGame');
+	
 }
 
 // Démarre son tour

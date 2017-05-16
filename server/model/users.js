@@ -117,6 +117,21 @@ module.exports = function(sequelize, DataTypes) {
                     })
                     callback({"status":1, "error":null, "points":new_points});
                 })
+            },
+            classement: function(callback){
+                this.findAll({
+                    order: '"points" DESC' }).then(function (res){
+                    if(res.length == 0) {
+                        callback({"status":0, "error":"NOT_FOUND", "points":null});
+                        return;
+                    } else {
+                        json = [];
+                        for(var i = 0; i < res.length ; i++){
+                            json.push({"pseudo" : res[i].username, "points": res[i].points});
+                        }
+                        callback({"classement" : json});
+                    }
+                })
             }
         }
     });

@@ -189,7 +189,7 @@ function Index(element)
 				context.showGame();
 			}else{
 				//context.showSelectDeck();
-				context.select_deck(1);
+				context.select_deck(5);
 			}
 	    });
 	}

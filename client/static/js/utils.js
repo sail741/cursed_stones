@@ -38,13 +38,36 @@ function displayMessage(title, sub, time, cb){
 		clearTimeout(messageTimeout);
 		messageTimeout = null;
 	}
-	messageTimeout = setTimeout(function(){
-		messageElement.className = '';
-		if(cb){
-			cb();
-		}
-	}, time);
+	if(time > 0){
+        messageTimeout = setTimeout(function(){
+            messageElement.className = '';
+            if(cb){
+                cb();
+            }
+        }, time);
+	}
+    messageElement.querySelector("#btn-action").style.display = '';
+
 	messageElement.className = 'show';
+	return messageElement;
+}
+
+function displayAction(title, sub, btnTitle, cbClick){
+	var messageElement = displayMessage(title, sub, -1);
+
+
+	var btnOld = messageElement.querySelector("#btn-action");
+
+	//On clone pour retirer les events
+	var btn= btnOld.cloneNode(true);
+	messageElement.replaceChild(btn, btnOld);
+
+	btn.style.display = 'block';
+	btn.textContent = btnTitle;
+	if(cbClick){
+        btn.addEventListener('click', cbClick);
+	}
+
 }
 
 function isEquivalent(a, b) {

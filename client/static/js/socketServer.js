@@ -118,12 +118,6 @@ function initSocketServer()
 	    vNotify.info({text: 'Reconnexion de ' + json.player, title: "Reconnexion"});
 	});
 
-	sio.on('gameOver', function (data) {
-	    displayAction("Fin de la partie", data.winner_self ? "Bravo tu as gagné" : "Dommage. La prochaine fois tu y arriveras", "Rejouer", function(){
-	    	connect();
-		});
-	});
-
 	sio.on('adversaireChange', function(data){
 	/*    mana_left: Int,
 	        cards_change: Int //Si remove nombre négatif

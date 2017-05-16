@@ -219,11 +219,17 @@ function Index(element)
 
 			initSocketServer();
 
+			var context = this;
 			sio.on('startGame', function(data){
-				alert("Holla again");
 				localPseudoAdv = data.Pseudo_adv;
 				localPseudoActual = data.Pseudo;
 				// afficher plateau
+				context.showGame();
+			});
+			sio.on('gameOver', function (data) {
+			    displayAction("Fin de la partie", data.winner_self ? "Bravo tu as gagné" : "Dommage. La prochaine fois tu y arriveras", "Rejouer", function(){
+			    	context.play();
+				});
 			});
 		}
 		

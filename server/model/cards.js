@@ -59,6 +59,20 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 }
             })
+        },
+        get_cards: function(callback) {
+            this.findAll({
+            }).then(function(res) {
+                if(res.length == 0) {
+                    callback({"status":0, "error":"NO_CARDS", "cards":null});
+                } else {
+                    var tab_cards = new Array();
+                    for (var i = 0; i < res.length; i++) {
+                        tab_cards.push(res[i].get("id_card"));
+                    }
+                    callback({"status":1, "error":null, "cards":tab_cards});
+                }
+            })
         }
     }
   });

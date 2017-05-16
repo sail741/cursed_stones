@@ -1,0 +1,183 @@
+<html>
+    <head>
+        <title>Create deck</title>
+    </head>
+    <body>
+        <form action="/create_deck" method="post">
+            <div>
+                <label>Deck name:</label>
+                <input type="text" name="name_deck" maxlength=30 required/>
+            </div>
+
+            <br/><br/>
+
+
+            <p id="cartesRestantes">Cartes restantes : 30</p>
+
+            <br/>
+            List :
+            <div id="listCards">
+            	<table>
+            		<thead>
+            			<tr>
+	            			<td>Name</td>
+	            			<td>Cost</td>
+	            			<td>Attack</td>
+	            			<td>Life</td>
+	            			<td>Defence</td>
+	            			<td>movement</td>
+	            			<td></td>
+	            		</tr>
+            		</thead>
+            		<tbody></tbody>
+            	</table>
+            </div>
+
+            <br/><br/>
+            Deck :
+            <div id="deck">
+            	<table>
+            		<thead>
+            			<tr>
+	            			<td>Name</td>
+	            			<td>Cost</td>
+	            			<td>Attack</td>
+	            			<td>Life</td>
+	            			<td>Defence</td>
+	            			<td>movement</td>
+	            			<td></td>
+	            		</tr>
+            		</thead>
+            		<tbody></tbody>
+            	</table>
+            </div>
+
+            <br/><br/>
+            <div>
+                <input id="submit_button" type="submit" value="Create" disabled/>
+            </div>
+        </form>
+    </body>
+</html>
+
+<script type="text/javascript">
+	var cards = <%- cards %>;
+	var deck = new Array();
+
+	var cartesRestantes = 30;
+	var listCards = document.querySelector("#listCards tbody");
+	var listDeck = document.querySelector("#deck tbody");
+
+	for (var i = 0; i < cards.length; i++) {
+		addLine(listCards, cards[i], "list");
+	}
+
+
+	function addCard(card) {
+		var index = deck.indexOf(card);
+		if(index == -1) {
+			if(cartesRestantes > 0) {
+				deck.push(card);
+				addLine(listDeck, card, "deck");
+			}
+			updateQty();
+		} else {
+			if(cartesRestantes > 0) {
+				var inputNumber = listDeck.querySelectorAll("tr")[index].querySelector("input");
+				inputNumber.value = parseInt(inputNumber.value) + 1;
+				updateQty();
+			}
+		}
+	}
+
+
+	function addLine(tbody, card, typeLine) {
+		var td, tr, button, input;
+		tr= document.createElement("tr");
+		td = document.createElement("td");
+		td.innerHTML = card.name;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = card.cost;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = card.attack;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = card.life;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = card.defence;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = card.movement;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		if(typeLine == "list") {
+			button = document.createElement("button");
+			button.type = "button";
+			button.innerHTML = "+";
+			button.onclick = function() {
+				addCard(card);
+			}
+			td.appendChild(button);
+		} else {
+			input = document.createElement("input");
+			input.type = "number"
+			input.value = 1;
+			input.min = 0;
+			input.max = 30;
+			input.name = "qty_" + card.id_card;
+			input.classList.add('inputNumberCard');
+			input.onchange = function(event) {
+				if(updateQty()) {
+					if(this.value == 0) {
+					var currentTr = event.target.parentNode.parentNode;
+						currentTr.parentNode.removeChild(currentTr);
+						var index = deck.indexOf(card);
+						if(index == -1) {
+							console.log("should not append");
+						} else {
+							deck.splice(index,1);
+						}
+					}
+				} else {
+					this.value = 0;
+					this.value = getCartesRestantes();
+					updateQty();
+				}
+			}
+			td.appendChild(input);
+		}
+		
+		tr.appendChild(td);
+		tbody.appendChild(tr)
+	}
+
+
+	function updateQty() {
+		cartesRestantes = getCartesRestantes();
+		if(cartesRestantes >= 0 && cartesRestantes <= 30) {
+			var p = document.querySelector("#cartesRestantes");
+			p.innerHTML = "Cartes restantes : " + cartesRestantes;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function getCartesRestantes() {
+		cartesRestantes = 30;
+		var listInputNumber = document.querySelectorAll(".inputNumberCard");
+		for (var i = 0; i < listInputNumber.length; i++) {
+			cartesRestantes -= parseInt(listInputNumber[i].value);
+		}
+		if(cartesRestantes == 0) {
+			document.querySelector("#submit_button").disabled = false;
+		} else {
+			document.querySelector("#submit_button").disabled = true;
+		}
+		return cartesRestantes;
+	}
+
+</script>

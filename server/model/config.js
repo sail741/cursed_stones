@@ -2,9 +2,9 @@ const Sequelize = require('sequelize');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-sequelize = new Sequelize('cursed_stones', 'cursed_stones', 'cursed_stones', {
-		host: '164.132.96.202',
-		dialect: 'mysql', 
+sequelize = new Sequelize('cursed_stones', 'root', 'root', {
+        host: '128.0.0.3',
+		dialect: 'mysql',
 		logging: false,
 		define: {
         	timestamps: false

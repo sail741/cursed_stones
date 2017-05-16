@@ -35,13 +35,13 @@ module.exports = class Entity {
             throw new Error(Constant.NEED_MORE_MOVEMENT);
         }
 
+        this.can_move = false;
+
         board.delete_entity(board.get_entity(origin.row,origin.column));
         board.notify_delete_entity(origin);
 
         board.add_entity(destination.row,destination.column,this);
         board.notify_entity(this, destination);
-
-        this.can_move = false;
     }
 
     attack_entity(board, origin, destination) {

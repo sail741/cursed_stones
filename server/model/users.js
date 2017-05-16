@@ -120,7 +120,7 @@ module.exports = function(sequelize, DataTypes) {
             },
             get_classement_world: function(callback){
                 this.findAll({
-                    order: [['points', 'DESC']]
+                    order: [['points', 'DESC']],
                     limit: 10 }).then(function (res){
                     if(res.length == 0) {
                         callback({"status":0, "error":"NOT_FOUND", "points":null});

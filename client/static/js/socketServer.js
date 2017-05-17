@@ -70,8 +70,9 @@ function initSocketServer()
 		var entity = data.entity;
 		var pos = data.position;
 		if(entity){
+            replaceOrInsertEntity(entity);
 			drawEntity(entity);
-			entities.push(entity);
+
 		}else{
 			removeEntity(convertPositionServerToClient(pos));
 		}

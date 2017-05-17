@@ -86,6 +86,24 @@ function removeEntityOnArrayFromUID(uid) {
     }
 }
 
+function replaceEntity(entity){
+    var entityOld = getEntityFromUID(entity.uid);
+    if (entityOld) {
+        var index = entities.indexOf(entityOld);
+        entities[index] = entity;
+    }
+}
+
+function replaceOrInsertEntity(entity){
+    var entityOld = getEntityFromUID(entity.uid);
+    if (entityOld) {
+        var index = entities.indexOf(entityOld);
+        entities[index] = entity;
+    }else{
+        entities.push(entity);
+    }
+}
+
 function removeEntityOnArray(pos) {
     var entity = getEntity(pos);
     if (entity) {
@@ -96,7 +114,10 @@ function removeEntityOnArray(pos) {
 
 function drawEntity(entity) {
     var actualDivs = document.querySelectorAll('.entity[data-entity="' + entity.uid + '"]');
-    removeEntityOnArray(entity.uid);
+    //removeEntityOnArray(entity.uid);
+
+
+
 
     for (var i = 0; i < actualDivs.length; i++) {
         actualDivs[i].remove();

@@ -1,8 +1,8 @@
 const socketio = require('socket.io');
 const Game = require('../classes/Game');
 const Player = require('../classes/Player');
+const Constant = require('../classes/Constant');
 const passportSocketIo = require("passport.socketio");
-var cookieparser = require('cookie');
 
 module.exports = function (server, storeSquelize) {
 
@@ -31,9 +31,12 @@ module.exports = function (server, storeSquelize) {
         });
 
         socket.on('joinGame', function () {
-            // TODO : a supprimer lors de la mise en place du one page
             console.log('joinGame', socket.request.user.username);
             game.rejoindre_game(socket.request.user.username, socket);
+        });
+
+        socket.on(Constant.SOCKET_DISCONNECT, function () {
+            game.delete_player(socket.request.user.username);
         });
     };
 

@@ -226,6 +226,7 @@ module.exports = class Partie {
     }
 
     abandon(player) {
+        this.send_winner(this.get_adversaire_player(player.pseudo).pseudo);
         this.maj_point(player.id_user,Constant.POINT_RAGE_QUIT);
         this.maj_point(this.get_adversaire_player(player.pseudo).id_user,Constant.POINT_WIN);
         //notifier fin de partie

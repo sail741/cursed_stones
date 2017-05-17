@@ -273,3 +273,78 @@ section footer a
 	color: white;
 	text-align: center;
 }
+
+.packet
+{
+	width: 580px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.packet button
+{
+	position: relative;
+
+	width: 250px;
+	margin: 20px;
+	float: left;
+	display: block;
+
+	padding-top: 80px;
+	padding-bottom: 80px;
+
+	outline: none;
+
+	background-color: white;
+	border: 0px;
+	border-bottom: 5px solid #b9b9b9;
+
+	font-size: 16px; 
+	font-family: "Helvetica Neue";
+	cursor: pointer;
+
+	transition: all 0.2s;
+
+	animation-name: buttonFrames;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.packet input
+{
+	position: relative;
+
+	width: 250px;
+	height: 50px;
+	margin: 20px;
+	float: left;
+	display: block;
+
+	outline: none;
+
+	background-color: white;
+	border: 0px;
+
+	font-size: 16px; 
+	font-family: "Helvetica Neue";
+
+	transition: all 0.2s;
+
+	animation-name: buttonFrames;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	box-sizing:border-box; 
+	padding: 10px;
+}
+
+.packet button:hover
+{
+	background-color: #f3f3f3;
+}
+
+.packet button:active
+{
+	border-bottom: 5px solid white;
+}

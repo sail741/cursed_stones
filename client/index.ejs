@@ -44,10 +44,14 @@
 
 	</div>
 
+	<div id="create_deck">
+
+	</div>
+
 	<div id="connected">
 		<div class="command">
 			<button class="full" onclick="index.play();">Jouer</button>
-			<button class="full" onclick="index.create();">Création de Decks</button>
+			<button class="full" onclick="index.showCreateDeck();">Création de Decks</button>
 			<button class="full" onclick="index.logout();">Déconnexion</button>
 			<div class="clear"></div>
 		</div>
@@ -87,6 +91,15 @@
 	<footer>
 		<a href="">© 2017 Polytech APP3 Info</a>
 	</footer>
+</section>
+
+<section id="select_deck">
+	<div class="packet" id="decks">
+		<button onclick="index.play();">Deck 1</button>
+		<button onclick="index.showCreateDeck();">Deck 2</button>
+		<button onclick="index.logout();">Default deck</button>
+		<div class="clear"></div>
+	</div>
 </section>
 
 <section id="game">

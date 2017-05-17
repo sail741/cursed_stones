@@ -1,5 +1,7 @@
 function Index(element)
 {
+	this.defaultDeck = 1;
+
 	this.element = element;
 
 	this.showIndex = function(){
@@ -47,6 +49,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showNotConnected = function(){
@@ -60,6 +64,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showLogin = function(){
@@ -73,6 +79,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showRegister = function(){
@@ -86,6 +94,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showGame = function(){
@@ -99,6 +109,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'block';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showClassement = function(){
@@ -112,6 +124,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'block';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showLoading = function(){
@@ -125,10 +139,38 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
+	}
+
+	this.showCreateDeck = function(){
+		this.element.getElementById('loading').style.display = 'none';
+		this.element.getElementById('nav').style.display = 'block';
+		this.element.getElementById('index').style.display = 'block';
+		this.element.getElementById('connected').style.display = 'none';
+		this.element.getElementById('not_connected').style.display = 'none';
+		this.element.getElementById('login').style.display = 'none';
+		this.element.getElementById('register').style.display = 'none';
+		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'block';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.showSelectDeck = function(){
-
+		this.element.getElementById('loading').style.display = 'none';
+		this.element.getElementById('nav').style.display = 'none';
+		this.element.getElementById('index').style.display = 'none';
+		this.element.getElementById('connected').style.display = 'none';
+		this.element.getElementById('not_connected').style.display = 'none';
+		this.element.getElementById('login').style.display = 'none';
+		this.element.getElementById('register').style.display = 'none';
+		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'block';
 	}
 
 	this.showInstructions = function(){
@@ -142,6 +184,8 @@ function Index(element)
 		this.element.getElementById('game').style.display = 'none';
 		this.element.getElementById('classement').style.display = 'none';
 		this.element.getElementById('instructions').style.display = 'block';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
 	}
 
 	this.classement = function(){
@@ -302,8 +346,42 @@ function Index(element)
 			if(is_reconnect){
 				context.showGame();
 			}else{
+
+				$.ajax({
+		           url : '/get_decks',
+		           type : 'get',
+		           success : function(data, statut){
+						if(data.status == 1)
+						{
+							var content = '';
+							for (var i = data.id_decks.length - 1; i >= 0; i--) {			
+								content += '<button onclick="index.select_deck(' + data.id_decks[i] + ');">'+ data.name_decks[i] +'</button>';
+							}
+
+							content += '<button onclick="index.select_deck('+ context.defaultDeck + ');">Default</button>';
+
+							context.element.getElementById('decks').innerHTML = content;
+
+							setTimeout(function() {
+								context.showSelectDeck();	
+							}, 500);
+
+							
+						}
+						else
+						{
+							alert('Erreur');
+							context.showIndex();
+						}
+					},
+		           error: function(error){
+		           		alert(error.statusText);
+		           }
+		        });
+
+				
 				//context.showSelectDeck();
-				context.select_deck(5);
+				//context.select_deck(5);
 			}
 	    });
 	}

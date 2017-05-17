@@ -7,6 +7,7 @@
 	<script src="static/js/less.js"></script>
 	<script src="static/js/vanilla-notification.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css" >
 </head>
 <body>
 
@@ -23,6 +24,19 @@
 	</ul>
 	<div class="clear"></div>
 </nav>
+
+<div id="create_deck">
+		<div class="command">
+			<form onsubmit="return index.submitDeck();">
+				<input type="text" required name="deck_name" placeholder="Nom de deck" id="deck_name">
+				<button>Ajouter</button>
+			</form>
+		</div>
+		<div class="clear"></div>
+		<div class="cartes" id="cartes">
+		</div>
+		<div class="clear"></div>
+</div>
 
 <section id="index">
 
@@ -44,14 +58,10 @@
 
 	</div>
 
-	<div id="create_deck">
-
-	</div>
-
 	<div id="connected">
 		<div class="command">
 			<button class="full" onclick="index.play();">Jouer</button>
-			<button class="full" onclick="index.showCreateDeck();">Création de Decks</button>
+			<button class="full" onclick="index.createDeck();">Création de Decks</button>
 			<button class="full" onclick="index.logout();">Déconnexion</button>
 			<div class="clear"></div>
 		</div>

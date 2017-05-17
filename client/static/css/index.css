@@ -38,6 +38,8 @@ body
     animation-duration: 2s;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
+
+	overflow-y: auto !important;
 }
 
 @keyframes logoFrames {
@@ -347,4 +349,128 @@ section footer a
 .packet button:active
 {
 	border-bottom: 5px solid white;
+}
+
+#create_deck, #select_deck
+{
+	display: none;
+}
+
+.cartes
+{
+	width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.cartes button:hover
+{
+	background-color: #f3f3f3;
+}
+
+.cartes button:active
+{
+	border-bottom: 5px solid white;
+}
+
+.cartes .carte
+{
+	position: relative;
+
+	width: 150px;
+	margin: 20px;
+	float: left;
+
+	padding: 20px;
+
+	outline: none;
+
+	background-color: white;
+	border: 0px;
+	border-bottom: 5px solid #b9b9b9;
+
+	font-size: 16px; 
+	font-family: "Helvetica Neue";
+	cursor: pointer;
+
+	transition: all 0.2s;
+
+	animation-name: buttonFrames;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.cartes .carte h3
+{
+	text-align: center;
+}
+
+.cartes .carte img
+{
+	width: 100px;
+	display: block;
+	margin: 5px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+
+.cartes p
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	
+	width: 110px;
+	display: block;
+	text-align: center;
+	font-size: 18px;
+    letter-spacing: 5px;
+    font-weight: bold;
+}
+
+.cartes .groupe p
+{
+	float: left;
+	width: 55px;
+}
+
+.cartes .carte .number{
+	position: absolute;
+		right: 0;
+		top: 0;
+	border-radius: 0px 100%;
+    border-left: 1px solid #b5b5b5;
+    padding: 0px 8px 7px 10px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+
+
+::-moz-scrollbar {
+    width: 20px;
+}
+ 
+::-moz-scrollbar-track {
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-moz-scrollbar-thumb {
+    border-radius: 10px;
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }

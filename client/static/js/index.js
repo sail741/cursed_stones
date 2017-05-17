@@ -146,7 +146,7 @@ function Index(element)
 	this.showCreateDeck = function(){
 		this.element.getElementById('loading').style.display = 'none';
 		this.element.getElementById('nav').style.display = 'block';
-		this.element.getElementById('index').style.display = 'block';
+		this.element.getElementById('index').style.display = 'none';
 		this.element.getElementById('connected').style.display = 'none';
 		this.element.getElementById('not_connected').style.display = 'none';
 		this.element.getElementById('login').style.display = 'none';
@@ -324,18 +324,120 @@ function Index(element)
         });
 	}
 
-	this.create = function(){
+	this.addCard = function(button, e){
+
+		var number = button.getElementsByClassName("number")[0];
+		var numberInt = parseInt(number.innerHTML);
+
+		if(numberInt < 5)
+		{
+			number.innerHTML = numberInt + 1;
+		}
+		else
+		{
+			number.innerHTML = 0;
+		}
+
+		
+	}
+
+	this.createDeck = function(){
+
 		this.showLoading();
 
-		var context = this; 
-		sio.emit('check_already_in_game',function (is_reconnect) {
-			if(is_reconnect){
-				context.showGame();
-			}else{
-				//context.showSelectDeck();
-				context.select_deck(5);
-			}
-	    });
+		var context = this;
+		$.ajax({
+           url : '/get_cards',
+           type : 'GET',
+           success : function(data, statut){
+
+				var content = '';
+           		for (var i = 0; i < data.cards.length; i++) {
+
+           			card = data.cards[i];
+           			content += '<button class="carte" onclick="index.addCard(this)" id='+ card.id_card +'>\
+           							<div class="number">0</div>\
+									<h3>'+card.name+'</h3>\
+									<img src="/static/img/cards/'+card.img+'"> \
+									<p><i class="fa fa-tint" aria-hidden="true">'+card.cost+'</i></p>\
+									<div class="groupe">\
+										<p><i class="fa fa-heart" aria-hidden="true">'+card.life+'</i></p>\
+										<p><i class="fa fa-arrows" aria-hidden="true">'+card.movement+'</i></p>\
+										<div class="clear"></div>\
+									</div>\
+									<div class="groupe">\
+										<p><i class="fa fa-bomb" aria-hidden="true">'+card.attack+'</i></p>\
+										<p><i class="fa fa-shield " aria-hidden="true">'+card.defence+'</i></p>\
+										<div class="clear"></div>\
+									</div>			\
+								</button>'
+           		}
+
+           		context.element.getElementById('cartes').innerHTML = content;
+
+           		setTimeout(function() {
+           			context.showCreateDeck();
+           		}, 500);
+
+			},
+           error: function(error){
+           		alert(error.statusText);
+           }
+        });
+
+        return false;
+	}
+
+	this.submitDeck = function(){
+
+
+		var cards = this.element.getElementsByClassName("carte");
+		
+		// check somme
+		var somme = 0;
+		for(i = 0; i < cards.length; i++)
+		{
+			var number = cards[i].getElementsByClassName("number")[0];
+			somme += parseInt(number.innerHTML);
+		}
+
+		
+		if(somme != 30)
+		{
+			alert('Il faut avoir 30 cartes');
+			return false;
+		}
+
+		this.showLoading();
+
+		var params = "name_deck=" + this.element.getElementById('deck_name').value;
+
+		for(i = 0; i < cards.length; i++)
+		{
+			var number = cards[i].getElementsByClassName("number")[0];
+			var intNumber = parseInt(number.innerHTML);
+			
+			if(intNumber == 0)
+				continue;
+			params += "&qty_" + cards[i].getAttribute("id") + "=" + intNumber;
+		}
+		
+		var context = this;
+		$.ajax({
+           url : '/create_deck',
+           type : 'POST',
+           data : params,
+           success : function(data, statut){
+				console.log(data);
+				this.showIndex();
+			},
+           error: function(error){
+           		alert(error.statusText);
+           		this.showIndex();
+           }
+        });
+
+        return false;
 	}
 
 	this.play = function(){

@@ -95,7 +95,7 @@ module.exports = function(app){
 			};
 			model.decks.create_deck(req.user.id_user, json_deck, function() {
 				//TODO : page suite
-				es.json({success: 1});
+				res.json({success: 1});
 			})
 		}
 	});

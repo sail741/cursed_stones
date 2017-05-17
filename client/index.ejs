@@ -16,10 +16,10 @@
 
 <nav id="nav">
 	<ul>
-		<li onclick="index.showIndex()">Home</li>
-		<li>A propos</li>
-		<li>Classement</li>
-		<li>Contact</li>
+		<li onclick="index.showIndex()">Accueil</li>
+		<li onclick="index.showInstructions()">Instructions</li>
+		<li onclick="index.classement()">Classement</li>
+		<li onclick="window.location.href='mailto:contact@cursedstones.rlm.pw'">Contact</li>
 	</ul>
 	<div class="clear"></div>
 </nav>
@@ -30,9 +30,25 @@
 		<h1>CursedStones</h1>
 	</header>
 
+	<div id="classement">
+		<table id="classementTable">
+			<tr>
+				<th>Rang</th>
+				<th>Pseudo</th>
+				<th>Points</th>
+			</tr>
+		</table>
+	</div>
+
+	<div id="instructions">
+
+	</div>
+
 	<div id="connected">
 		<div class="command">
-			<button class="full" onclick="index.play();">Play</button>
+			<button class="full" onclick="index.play();">Jouer</button>
+			<button class="full" onclick="index.create();">Création de Decks</button>
+			<button class="full" onclick="index.logout();">Déconnexion</button>
 			<div class="clear"></div>
 		</div>
 	</div>

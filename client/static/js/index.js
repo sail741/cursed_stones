@@ -7,11 +7,6 @@ function Index(element)
 
 		var context = this;
 
-		//context.element.getElementById('nav').style.display = 'none';
-		//context.element.getElementById('index').style.display = 'none';
-		//context.element.getElementById('loading').style.display = 'block';
-		// Check status from Leo
-
 		this.showLoading();
 
 		$.ajax({
@@ -50,6 +45,8 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'none';
 		this.element.getElementById('register').style.display = 'none';
 		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showNotConnected = function(){
@@ -61,6 +58,8 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'none';
 		this.element.getElementById('register').style.display = 'none';
 		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showLogin = function(){
@@ -72,6 +71,8 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'block';
 		this.element.getElementById('register').style.display = 'none';
 		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showRegister = function(){
@@ -83,6 +84,8 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'none';
 		this.element.getElementById('register').style.display = 'block';
 		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showGame = function(){
@@ -94,6 +97,21 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'none';
 		this.element.getElementById('register').style.display = 'none';
 		this.element.getElementById('game').style.display = 'block';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
+	}
+
+	this.showClassement = function(){
+		this.element.getElementById('loading').style.display = 'none';
+		this.element.getElementById('nav').style.display = 'block';
+		this.element.getElementById('index').style.display = 'block';
+		this.element.getElementById('connected').style.display = 'none';
+		this.element.getElementById('not_connected').style.display = 'none';
+		this.element.getElementById('login').style.display = 'none';
+		this.element.getElementById('register').style.display = 'none';
+		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'block';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showLoading = function(){
@@ -105,10 +123,64 @@ function Index(element)
 		this.element.getElementById('login').style.display = 'none';
 		this.element.getElementById('register').style.display = 'none';
 		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
 	}
 
 	this.showSelectDeck = function(){
 
+	}
+
+	this.showInstructions = function(){
+		this.element.getElementById('loading').style.display = 'none';
+		this.element.getElementById('nav').style.display = 'block';
+		this.element.getElementById('index').style.display = 'block';
+		this.element.getElementById('connected').style.display = 'none';
+		this.element.getElementById('not_connected').style.display = 'none';
+		this.element.getElementById('login').style.display = 'none';
+		this.element.getElementById('register').style.display = 'none';
+		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'block';
+	}
+
+	this.classement = function(){
+		this.showLoading();
+
+		var context = this;
+		$.ajax({
+           url : '/classement',
+           type : 'GET',
+           success : function(data, statut){
+           		context.element.getElementById('classementTable').innerHTML = '<tr>\
+				<th>Rang</th>\
+				<th>Pseudo</th>\
+				<th>Points</th>\
+				</tr>';
+
+				var rang = 1;
+				data.classement.forEach(function(element) {
+					if(rang > 10)
+						return;
+
+				  context.element.getElementById('classementTable').innerHTML += '<tr>\
+					<td>'+ rang +'</td>\
+					<td>'+ element.pseudo +'</td>\
+					<td>'+ element.points +'</td>\
+					</tr>';
+					rang++;	
+
+				});
+
+				setTimeout(function() {
+					context.showClassement();
+				}, 500);
+				
+			},
+           error: function(error){
+           		alert(error.statusText);
+           }
+        });
 	}
 
 	this.login = function(){
@@ -178,6 +250,48 @@ function Index(element)
         });
 
         return false;
+	}
+
+	this.logout = function(){
+		this.showLoading();
+
+		userName = this.element.getElementById('user_name_login').value;
+		password = this.element.getElementById('password_login').value;
+
+		var context = this;
+		$.ajax({
+           url : '/logout',
+           type : 'POST',
+           success : function(data, statut){
+				if(data.status == 'success')
+				{
+					context.showIndex();
+					sio = null;
+				}
+				else
+				{
+					context.showIndex();
+					alert('Erreur');
+				}
+			},
+           error: function(error){
+           		alert(error.statusText);
+           }
+        });
+	}
+
+	this.create = function(){
+		this.showLoading();
+
+		var context = this; 
+		sio.emit('check_already_in_game',function (is_reconnect) {
+			if(is_reconnect){
+				context.showGame();
+			}else{
+				//context.showSelectDeck();
+				context.select_deck(5);
+			}
+	    });
 	}
 
 	this.play = function(){

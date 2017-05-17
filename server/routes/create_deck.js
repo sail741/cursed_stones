@@ -3,6 +3,36 @@ var model = require('../model/model')
 var Constant = require('../classes/Constant');
 
 module.exports = function(app){
+	app.get('/get_cards', function(req, res){
+		model.cards.get_cards(function(resCards) {
+			if(resCards.status == 0) {
+				//TODO : page error
+			}
+			var tabIdCards = resCards.cards;
+			var tabCards = new Array();
+
+            var next = function() {
+                cur_id = tabIdCards.pop();
+                if(cur_id == null){
+                    res.json({cards: tabCards});
+                    return;
+                } 
+
+                model.cards.get_card(cur_id, function(resCard) {
+                	if(resCard.status == 0) {
+						//TODO : page error
+					}
+                	var card = resCard.card;
+					tabCards.push(card);
+					next()
+                });
+                
+            }
+            next();
+   		});
+		
+	});
+
 	//route d'affichage de la page create_deck
 	app.get('/create_deck', function(req, res){
 		model.cards.get_cards(function(resCards) {
@@ -65,7 +95,7 @@ module.exports = function(app){
 			};
 			model.decks.create_deck(req.user.id_user, json_deck, function() {
 				//TODO : page suite
-				res.render('home.ejs');
+				es.json({success: 1});
 			})
 		}
 	});

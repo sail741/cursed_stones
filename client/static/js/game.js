@@ -119,6 +119,12 @@ function setManaAdv(mana){
 	renderStatusBar();
 }
 
+function setManaMax(mana){
+	manaMaxSelf = mana;
+	manaMaxAdv = mana;
+	renderStatusBar();
+}
+
 btnFinTour.addEventListener("click", function(){
 	finTour();
 });

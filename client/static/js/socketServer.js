@@ -27,6 +27,7 @@ function initSocketServer()
 	    setTourData(data.Self, data.Num_Tour, 0);
 	    setManaSelf(data.Mana);
 	    setManaAdv(data.Mana_adv)
+		setManaMax(data.Mana_max);
 	});
 
 	sio.on('FirstHand', function(data){

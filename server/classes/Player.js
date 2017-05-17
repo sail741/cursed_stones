@@ -63,6 +63,9 @@ module.exports = class Player {
                 if (!player.partie.is_current_player(player.pseudo)) {
                     throw new Error(Constant.IS_NOT_YOUR_TURN);
                 }
+                if(player.hand.length >= Constant.NB_CARD_MAX_IN_HAND){
+                    throw new Error(Constant.MAX_CARD_IN_HAND_REACH);
+                }
                 if (player.etat === Constant.ETAT_PIOCHE) {
                     var card = player.deck.piocher_carte();
                     player.hand.push(card);

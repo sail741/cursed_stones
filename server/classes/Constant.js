@@ -11,6 +11,7 @@ exports.ETAT_PLAYING = "playing";
 exports.ETAT_STAY = "stay";
 exports.NB_CARD_START_FIRST_PLAYER = 4;
 exports.NB_CARD_START_SECOND_PLAYER = 5;
+exports.NB_CARD_MAX_IN_HAND = 7;
 exports.WIDTH_SIZE = 16;
 exports.HEIGHT_SIZE = 8;
 exports.WIDTH_PLAYER_ZONE = 4;
@@ -39,6 +40,7 @@ exports.NEED_MORE_MOVEMENT = "vous n'avez pas assez de point de mouvement";
 exports.IS_NOT_YOUR_TURN = "ce n'est pas à votre tour";
 exports.NO_MORE_ACTION = "cette carte ne peux pas faire plus d'action";
 exports.NO_MORE_MOVE = "cette carte a déjà bougé";
+exports.MAX_CARD_IN_HAND_REACH = "vous avez trop de carte dans la main, aucune carte n'a été piochée";
 
 exports.TYPE_OVERLAY_MOVE = "move";
 exports.TYPE_OVERLAY_ATTACK = "attack";

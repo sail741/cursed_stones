@@ -54,6 +54,8 @@ module.exports = class Entity {
         }
         var enemy = board.get_entity(destination.row,destination.column);
 
+        this.can_do_action = false;
+
         // si l'ennemi est en defense
         if(enemy.defense_mode){
             //on verifie qu'il a assez de defense
@@ -83,7 +85,7 @@ module.exports = class Entity {
                 board.notify_entity(enemy);
             }
         }
-        this.can_do_action = false;
+        board.notify_entity(this);
     }
 
     defense_entity(board, origin) {

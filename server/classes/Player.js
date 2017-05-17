@@ -277,7 +277,8 @@ module.exports = class Player {
             Self: this.partie.is_current_player(this.pseudo),
             Num_Tour: this.partie.num_tour,
             Mana: this.mana,
-            Mana_adv: this.partie.get_adversaire_player(this.pseudo).mana
+            Mana_adv: this.partie.get_adversaire_player(this.pseudo).mana,
+            Mana_max: this.partie.mana
         });
 
 

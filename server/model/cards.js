@@ -62,6 +62,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         get_cards: function(callback) {
             this.findAll({
+                order: [['cost', 'DESC']]
             }).then(function(res) {
                 if(res.length == 0) {
                     callback({"status":0, "error":"NO_CARDS", "cards":null});

@@ -7,7 +7,7 @@ module.exports = class Game {
 
     constructor(sio) {
         this.partie_perso_liste = [];
-        this.player_liste = [];
+        this.player_liste = {};
         this.id_partie = 1;
         this.global_socket = sio;
         this.current_classed = new Partie(shortid.generate(), this, false);
@@ -75,7 +75,9 @@ module.exports = class Game {
     }
 
     add_player(player) {
-        this.player_liste[player.pseudo] = player;
+        if(this.player_liste[player.pseudo] == null) {
+            this.player_liste[player.pseudo] = player;
+        }
     }
 
     destroy_partie(id_partie) {
@@ -83,7 +85,9 @@ module.exports = class Game {
     }
 
     delete_player(pseudo) {
-        delete this.player_liste[pseudo];
+        if(!this.check_is_in_game(pseudo)) {
+            delete this.player_liste[pseudo];
+        }
     }
 
     change_deck(pseudo,id_deck) {

@@ -13,6 +13,7 @@ function initSocketServer()
 	});
 
 	sio.on('nouveauTour', function(data){
+        clearTimeoutFinTour
 		setTourData(data.Self, data.Num_tour, data.Mana);
 		boardResetSelect();
 		if(data.Self){
@@ -27,6 +28,7 @@ function initSocketServer()
 	    setTourData(data.Self, data.Num_Tour, 0);
 	    setManaSelf(data.Mana);
 	    setManaAdv(data.Mana_adv)
+		setManaMax(data.Mana_max);
 	});
 
 	sio.on('FirstHand', function(data){
@@ -69,8 +71,9 @@ function initSocketServer()
 		var entity = data.entity;
 		var pos = data.position;
 		if(entity){
+            replaceOrInsertEntity(entity);
 			drawEntity(entity);
-			entities.push(entity);
+
 		}else{
 			removeEntity(convertPositionServerToClient(pos));
 		}
@@ -87,7 +90,7 @@ function initSocketServer()
 	});
 
 	sio.on('fintour', function(){
-		doFinTour();
+		//clearTimeoutFinTour();
 	});
 
 	sio.on('setSlide', function(slide){

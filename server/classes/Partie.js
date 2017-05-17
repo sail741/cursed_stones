@@ -85,21 +85,35 @@ module.exports = class Partie {
         }
     }
 
-    init_player(next) {
+    init_player(cb) {
         var partie = this;
-        for (let i = 0; i < this.liste_player.length; i++) {
-            let deck = new Deck();
-            let player = this.liste_player[i];
 
-            deck.convertJSONToDeck(player.id_deck, function () {
+        let i = -1;
+
+        let next = function(){
+            i++;
+            if(i == partie.liste_player.length){
+                cb();
+                return;
+            }
+            let deck = new Deck();
+            let player = partie.liste_player[i];
+
+
+            deck.convertJSONToDeck(player.id_deck, function(){
                 deck.shuffle_deck();
                 player.add_deck(deck, i == partie.current_player);
                 player.socket.emit(Constant.SOCKET_SET_SLIDE, i === 0 ? Constant.LEFT : Constant.RIGHT);
-                if (i == partie.liste_player.length - 1) {
-                    next();
-                }
+                next();
+
             });
-        }
+
+
+
+        };
+
+        next();
+
     }
 
     run_timer_tour(timer) {

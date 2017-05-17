@@ -104,7 +104,9 @@ module.exports = class Partie {
 
     run_timer_tour(timer) {
         var partie = this;
+        console.log("===== START TIME");
         this.timer_tour = setInterval(function () {
+            console.log("INTERVAL TRIGGER ========================================================================");
             partie.change_current_player();
             if (partie.current_player == partie.id_first_player) {
                 partie.num_tour++;
@@ -239,6 +241,7 @@ module.exports = class Partie {
     }
 
     fin_tour() {
+        console.log("===== END TIME");
         clearInterval(this.timer_tour);
         this.change_current_player();
         if (this.current_player == this.id_first_player) {

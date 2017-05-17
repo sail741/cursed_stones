@@ -1,4 +1,4 @@
-var TOUR_TIME = 1000 * 120; // 2 min
+var TOUR_TIME = 1000 * 30; // 1 min
 
 var tourTimerId = null;
 
@@ -40,7 +40,6 @@ function joinGame(){
 
 // Démarre son tour
 function startSelfTour(){
-	tourTimerId = setTimeout(forceFinTour, TOUR_TIME);
 	requestCards(); //On demande une carte pour le nouveau tour
 	btnFinTour.dataset.disabled = 0;
 	
@@ -99,10 +98,9 @@ function forceFinTour(){
 }
 
 function finTour(){
-		doFinTour();
 		sendFinTour();
 }
-function doFinTour(){
+function clearTimeoutFinTour(){
 	if(tourTimerId != null){
 		clearTimeout(tourTimerId);
 	}

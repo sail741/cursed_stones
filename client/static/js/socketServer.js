@@ -13,6 +13,7 @@ function initSocketServer()
 	});
 
 	sio.on('nouveauTour', function(data){
+        clearTimeoutFinTour
 		setTourData(data.Self, data.Num_tour, data.Mana);
 		boardResetSelect();
 		if(data.Self){
@@ -89,7 +90,7 @@ function initSocketServer()
 	});
 
 	sio.on('fintour', function(){
-		doFinTour();
+		//clearTimeoutFinTour();
 	});
 
 	sio.on('setSlide', function(slide){

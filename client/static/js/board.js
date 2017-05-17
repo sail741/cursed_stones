@@ -28,6 +28,7 @@ function setSlide(slide) {
             }
         }
     }
+    renderStatusBar();
 }
 
 function initBoard(largeur, hauteur) {

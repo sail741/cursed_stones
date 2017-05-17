@@ -5,6 +5,9 @@ var tourTimerId = null;
 var localSelfMana = 0;
 var localAdvMana = 0;
 
+var manaMaxSelf = 0;
+var manaMaxAdv = 0;
+
 var localTourWho = "...";
 
 var localTourNum = 0;
@@ -57,21 +60,36 @@ function setTourData(isMine, numTour, mana){
 		localSelfMana = mana;
 		displayMessage("C'est a votre tour de jouer !", "", 2000);
         btnFinTour.dataset.disabled = 0;
+        manaMaxSelf = mana;
 	}else{
 		localAdvMana = mana;
 		displayMessage("C'est a votre adversaire...", "", 2000);
         btnFinTour.dataset.disabled = 1;
+        manaMaxAdv = mana;
 	}
+
+
 
 	renderStatusBar();
 	
 }
 
 function renderStatusBar(){
-	document.querySelector('#tourWho').textContent = localTourWho;
+
+	document.querySelector('#tourWho').textContent = localTourWho ;
 	document.querySelector('#tourNum').textContent = localTourNum;
-	document.querySelector('#mana_self').textContent = localSelfMana;
-	document.querySelector('#mana_adv').textContent = localAdvMana;
+
+	let manaLeft = currentSlide == 'left' ? localSelfMana + '/' + manaMaxSelf : localAdvMana + '/' + manaMaxAdv ;
+    let manaRight = currentSlide == 'right' ? localSelfMana + '/' + manaMaxSelf: localAdvMana + '/' + manaMaxAdv;
+
+    let userLeft = currentSlide == 'left' ? localPseudoActual : localPseudoAdv ;
+    let userRight = currentSlide == 'right' ? localPseudoActual : localPseudoAdv ;
+
+    document.querySelector('#mana_left').textContent = manaLeft ;
+	document.querySelector('#mana_right').textContent = manaRight;
+
+    document.querySelector('#mana_user_left').textContent = userLeft;
+    document.querySelector('#mana_user_right').textContent = userRight;
 
 
 }

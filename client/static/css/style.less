@@ -161,6 +161,10 @@ body{
 			height: 75%;
 		}
 
+	&:hover .status{
+			display: block;
+	}
+
 	.status{
 		display: none;
 		position: absolute;
@@ -171,6 +175,10 @@ body{
 		width: 40px;
 		border-radius: 5px;
 		background-color: rgba(255, 255, 255, 0.5);
+
+		&:hover{
+			display: none;
+		}
 
 		.name{
 			text-align: center;
@@ -200,9 +208,7 @@ body{
 
 		}
 	}
-	&:hover .status{
-		display: block;
-	}
+
 }
 
 @keyframes placingcard {

@@ -27,26 +27,32 @@ function buildEntityDiv(entity) {
     var elemStatus = document.createElement('div');
     elemStatus.className = "status";
 
-    var elemName = document.createElement('span');
-    elemName.className = 'name';
-    elemName.textContent = entity.name;
 
-    var elemLife = document.createElement('span');
+
+    var elemLife = document.createElement('i');
     elemLife.textContent = entity.life;
-    elemLife.className = "icon life";
+    elemLife.className = "fa fa-heart";
 
-    var elemAttack = document.createElement('span');
+    var elemAttack = document.createElement('i');
     elemAttack.textContent = entity.attack;
-    elemAttack.className = "icon attack";
+    elemAttack.className = "fa fa-bomb";
 
-    var elemDefense = document.createElement('span');
+    var elemDefense = document.createElement('i');
     elemDefense.textContent = entity.defense;
-    elemDefense.className = "icon defense";
+    elemDefense.className = "fa fa-shield";
 
-    elemStatus.appendChild(elemName);
+
+
     elemStatus.appendChild(elemLife);
     elemStatus.appendChild(elemAttack);
-    elemStatus.appendChild(elemDefense);
+    if(entity.movement){
+        var elemMove = document.createElement('i');
+        elemMove.textContent = entity.movement;
+        elemMove.className = "fa fa-arrows";
+        elemStatus.appendChild(elemMove);
+    }
+
+
     div.appendChild(elemStatus);
 
     return div;

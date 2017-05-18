@@ -70,6 +70,7 @@ module.exports = function(sequelize, DataTypes) {
                         card_general.defence = res[0].get("defence");
                         card_general.life = res[0].get("life");
                         card_general.movement = res[0].get("movement");
+                        card_general.range = res[0].get("range");
                         res = {
                             "status":1,
                             "error": null,

@@ -34,14 +34,14 @@ module.exports = class HandToHand {
                     }
                     has_next.push(next);
                 }
-                if (current.column < Constant.WIDTH_SIZE - 1 && prof > 0) {
+                if (current.column < Constant.WIDTH_SIZE && prof > 0) {
                     var next = {
                         row: current.row,
                         column: current.column + 1
                     };
                     has_next.push(next);
                 }
-                if (current.row < Constant.HEIGHT_SIZE - 1 && prof > 0) {
+                if (current.row < Constant.HEIGHT_SIZE && prof > 0) {
                     var next = {
                         row: current.row + 1,
                         column: current.column

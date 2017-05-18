@@ -82,7 +82,7 @@ module.exports = class Board {
     }
 
     convert_card_to_entity(pseudo, card) {
-        return new Entity(this.generate_uid(), pseudo, card.name, card.life, card.img, card.attack, card.defence, card.movement);
+        return new Entity(this.generate_uid(), pseudo, card.name, card.life, card.img, card.attack, card.defence, card.movement, card.range);
     }
 
     is_good_position(position) {

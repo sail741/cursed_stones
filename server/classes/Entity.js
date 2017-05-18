@@ -1,13 +1,18 @@
 const Constant = require('./Constant');
 const APied = require('./APied');
 const HandToHand = require('./HandToHand');
+const Distance = require('./Distance');
 const Utils = require('./Utils');
 
 module.exports = class Entity {
 
-    constructor(uid, pseudo, name, life, img, attack, defense, movement) {
+    constructor(uid, pseudo, name, life, img, attack, defense, movement, range) {
         this.move_class = new APied();
-        this.attack_class = new HandToHand();
+        if(range == 1) {
+            this.attack_class = new HandToHand();
+        } else {
+            this.attack_class = new Distance();
+        }
         this.uid = uid;
         this.pseudo = pseudo;
         this.name = name;
@@ -19,6 +24,7 @@ module.exports = class Entity {
         this.defense_mode = false;
         this.can_do_action = false;
         this.movement = movement;
+        this.range = range;
         this.can_move = false;
         this.no_action = false;
         this.multi_case = false;
@@ -48,7 +54,7 @@ module.exports = class Entity {
         if(!this.can_do_action){
             throw new Error(Constant.NO_MORE_ACTION);
         }
-        let cases_can_attack = this.attack_class.attack(board.board, origin, 1, this.pseudo);
+        let cases_can_attack = this.attack_class.attack(board.board, origin, this.range, this.pseudo);
         if (!Utils.containsInArray(cases_can_attack,destination)) {
             throw new Error(Constant.NEED_MORE_RANGE);
         }
@@ -110,7 +116,7 @@ module.exports = class Entity {
         if(!this.can_do_action){
             throw new Error(Constant.NO_MORE_ACTION);
         }
-        return this.attack_class.attack(board, origin, 1, this.pseudo);
+        return this.attack_class.attack(board, origin, this.range, this.pseudo);
     }
 
     reset_etat(){

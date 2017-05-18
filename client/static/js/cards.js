@@ -146,41 +146,88 @@ function piocheCard(cardsElem, card, cb){
 
 
 function buildDOMCard(card){
-	var divCard = document.createElement('div');
-	divCard.className = "card";
+	var divCard = document.createElement('button');
+	divCard.className = "carte";
 	
 	divCard.dataset.uid = card.uid;
 
-	var titleSpan = document.createElement('span');
-	titleSpan.className = "title";
+	var titleSpan = document.createElement('h3');
 	titleSpan.textContent = card.name;
 
 
-	var costSpan = document.createElement('div');
-	costSpan.textContent = "\t⬟ : " + card.cost;
+	var costSpan = document.createElement('p');
+	var iCost = document.createElement('i');
+	iCost.className="fa fa-tint";
+	iCost.textContent = card.cost;
 
-    var lifeSpan = document.createElement('div');
-    lifeSpan.textContent = "\t❤ : " + card.life;
-    lifeSpan.style.color = 'red';
+	costSpan.appendChild(iCost);
 
-    var attackSpan = document.createElement('div');
-    attackSpan.textContent = "\t⚔ : " + card.attack;
+	var divGrp1 = document.createElement('div');
+	divGrp1.className = "groupe";
 
-    var defenseSpan = document.createElement('div');
-    defenseSpan.textContent = "\t🛡 : " + card.defence;
-    defenseSpan.style.color = 'blue';
+    var divGrp2 = document.createElement('div');
+    divGrp2.className = "groupe";
+
+
+    var lifeSpan =  document.createElement('p');
+    var iLfe = document.createElement('i');
+    iLfe.className="fa fa-heart";
+    iLfe.textContent = card.life;
+
+    lifeSpan.appendChild(iLfe);
+
+    divGrp1.appendChild(lifeSpan);
+
+    var moveSpan =  document.createElement('p');
+    var iMove = document.createElement('i');
+    iMove.className="fa fa-arrows";
+    iMove.textContent = card.move;
+
+    moveSpan.appendChild(iMove);
+
+    divGrp1.appendChild(moveSpan);
+
+    var divClear1 = document.createElement("div");
+    divClear1.className = "clear";
+
+
+    divGrp1.appendChild(divClear1);
+
+
+    var attackSpan =  document.createElement('p');
+    var iAttack = document.createElement('i');
+    iAttack.className="fa fa-bomb";
+    iAttack.textContent = card.attack;
+
+    attackSpan.appendChild(iAttack);
+
+    divGrp2.appendChild(moveSpan);
+
+    var defenceSpan =  document.createElement('p');
+    var iDef = document.createElement('i');
+    iDef.className="fa fa-shield";
+    iDef.textContent = card.defence;
+
+    defenceSpan.appendChild(iDef);
+
+    divGrp2.appendChild(defenceSpan);
+
+    var divClear2 = document.createElement("div");
+    divClear2.className = "clear";
+
+
+    divGrp2.appendChild(divClear2);
 
 	var image = document.createElement("img");
 	image.src = getEntityImage(card);
 
 
+
 	divCard.appendChild(titleSpan);
     divCard.appendChild(image);
 	divCard.appendChild(costSpan);
-    divCard.appendChild(lifeSpan);
-    divCard.appendChild(attackSpan);
-    divCard.appendChild(defenseSpan);
-
+    divCard.appendChild(divGrp1);
+    divCard.appendChild(divGrp2);
 
 	return divCard;
 	

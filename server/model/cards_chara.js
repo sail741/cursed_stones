@@ -24,11 +24,15 @@ module.exports = function(sequelize, DataTypes) {
         movement: {
             type: DataTypes.INTEGER(11),
             allowNull: false
+        },
+        range: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false
         }
     }, {
         tableName: 'cards_chara',
         classMethods: {
-            add: function(name, description, type_card, cost, img, attack, defence, life, movement, callback) {
+            add: function(name, description, type_card, cost, img, attack, defence, life, movement, range, callback) {
                 var cards = this.sequelize.import('./cards');
                 var that = this;
 
@@ -45,7 +49,8 @@ module.exports = function(sequelize, DataTypes) {
                         attack: attack,
                         defence: defence,
                         life:life,
-                        movement: movement
+                        movement: movement,
+                        range: range
                     }).then(function() {
                         callback({"status":1, "error":null, "id_card":id_card})
                     })

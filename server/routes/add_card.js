@@ -20,7 +20,8 @@ module.exports = function(app){
 			var defence = req.body.defence;
 			var life = req.body.life;
 			var movement = req.body.movement;
-			model.cards_chara.add(name, description, type_card, cost, img, attack, defence, life, movement, function(res) {
+			var range = req.body.range;
+			model.cards_chara.add(name, description, type_card, cost, img, attack, defence, life, movement, range, function(res) {
 				console.log(res);
 			});
 		} else {

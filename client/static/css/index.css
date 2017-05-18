@@ -161,7 +161,8 @@ header h1
 
 nav
 {
-	width: 100%px;
+	width: 100%;
+	margin: 20px;
 }
 
 nav ul
@@ -222,12 +223,12 @@ section footer a
     margin-bottom: 10px;
 }
 
-#connected, #not_connected, #login, #register, #nav, #index
+#connected, #not_connected, #login, #register, #nav, #index, #loadingplayer
 {
 	display: none;
 }
 
-#loading
+#loading, #loadingplayer
 {
 	position: absolute;
 		left: 0;
@@ -238,7 +239,7 @@ section footer a
 	display: block;
 }
 
-#loading h1
+#loading h1, #loadingplayer h1
 {
 
 	font-size: 50px;
@@ -404,6 +405,8 @@ section footer a
 .cartes .carte h3
 {
 	text-align: center;
+	overflow: hidden;
+	height: 23px;
 }
 
 .cartes .carte img
@@ -445,6 +448,13 @@ section footer a
     padding: 0px 8px 7px 10px;
 }
 
+.carte .description{
+	height: 110px;
+	padding-top: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -473,4 +483,41 @@ section footer a
 ::-moz-scrollbar-thumb {
     border-radius: 10px;
     -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+/* Tableau */
+.container{
+	position: absolute;
+    left: 10%;
+    font-family: "Helvetica Neue";
+}
+
+.status {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    color: white;
+    font-size: 16px; 
+}
+
+#board table tr td {
+
+    border: 1px solid #a5a5a5;
+    cursor: pointer;
+}
+
+#board table tr td.self {
+    background: rgba(83, 142, 255, 0.32);
+}
+
+#board table tr td.enemie {
+    background: rgba(192, 57, 43, 0.53);
+}
+
+#board table tr td:hover {
+    background: rgba(255, 255, 255, 0.81) !important;
+}
+
+#board table tr td:active {
+    opacity: 0.8;
 }

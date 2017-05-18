@@ -51,6 +51,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showNotConnected = function(){
@@ -66,6 +67,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showLogin = function(){
@@ -81,6 +83,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showRegister = function(){
@@ -96,6 +99,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showGame = function(){
@@ -111,6 +115,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showClassement = function(){
@@ -126,6 +131,23 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
+	}
+
+	this.showLoadingPlayer = function(){
+		this.element.getElementById('loading').style.display = 'none';
+		this.element.getElementById('nav').style.display = 'none';
+		this.element.getElementById('index').style.display = 'none';
+		this.element.getElementById('connected').style.display = 'none';
+		this.element.getElementById('not_connected').style.display = 'none';
+		this.element.getElementById('login').style.display = 'none';
+		this.element.getElementById('register').style.display = 'none';
+		this.element.getElementById('game').style.display = 'none';
+		this.element.getElementById('classement').style.display = 'none';
+		this.element.getElementById('instructions').style.display = 'none';
+		this.element.getElementById('create_deck').style.display = 'none';
+		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'block';
 	}
 
 	this.showLoading = function(){
@@ -141,6 +163,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showCreateDeck = function(){
@@ -156,6 +179,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'block';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showSelectDeck = function(){
@@ -171,6 +195,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'none';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'block';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.showInstructions = function(){
@@ -186,6 +211,7 @@ function Index(element)
 		this.element.getElementById('instructions').style.display = 'block';
 		this.element.getElementById('create_deck').style.display = 'none';
 		this.element.getElementById('select_deck').style.display = 'none';
+		this.element.getElementById('loadingplayer').style.display = 'none';
 	}
 
 	this.classement = function(){
@@ -370,6 +396,7 @@ function Index(element)
 										<p><i class="fa fa-shield " aria-hidden="true">'+card.defence+'</i></p>\
 										<div class="clear"></div>\
 									</div>			\
+									<div class="description">'+ card.description +'</div>\
 								</button>'
            		}
 
@@ -428,12 +455,11 @@ function Index(element)
            type : 'POST',
            data : params,
            success : function(data, statut){
-				console.log(data);
-				this.showIndex();
+				context.showIndex();
 			},
            error: function(error){
            		alert(error.statusText);
-           		this.showIndex();
+           		context.showIndex();
            }
         });
 
@@ -489,7 +515,7 @@ function Index(element)
 	}
 
 	this.select_deck = function(id){
-		this.showLoading();
+		this.showLoadingPlayer();
 		sio.emit('select_deck',id,function () {
 			sio.emit('joinGame');
 	    })

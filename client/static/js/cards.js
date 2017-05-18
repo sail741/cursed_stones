@@ -184,12 +184,15 @@ function buildDOMCard(card){
 	titleSpan.textContent = card.name;
 
 
-	var costSpan = document.createElement('p');
-	var iCost = document.createElement('i');
-	iCost.className="fa fa-tint";
-	iCost.textContent = card.cost;
+    var image = document.createElement("img");
+    image.src = getEntityImage(card);
 
-	costSpan.appendChild(iCost);
+
+    divCard.appendChild(titleSpan);
+    divCard.appendChild(image);
+
+
+
 
 	var divGrp1 = document.createElement('div');
 	divGrp1.className = "groupe";
@@ -197,66 +200,112 @@ function buildDOMCard(card){
     var divGrp2 = document.createElement('div');
     divGrp2.className = "groupe";
 
+    var divGrp3 = document.createElement('div');
+    divGrp3.className = "groupe";
 
-    var lifeSpan =  document.createElement('p');
+
+
+    // START GRP 1
+
+	//Mana
+    var costElem = document.createElement('p');
+    var iCost = document.createElement('i');
+    iCost.className="fa fa-tint";
+    iCost.title = "Coût en mana";
+    iCost.textContent = card.cost;
+
+    costElem.appendChild(iCost);
+
+
+    divGrp1.appendChild(costElem);
+
+    //Vie
+    var lifeElem =  document.createElement('p');
     var iLfe = document.createElement('i');
     iLfe.className="fa fa-heart";
+    iLfe.title = "Vie";
     iLfe.textContent = card.life;
 
-    lifeSpan.appendChild(iLfe);
+    lifeElem.appendChild(iLfe);
 
-    divGrp1.appendChild(lifeSpan);
-
-    var moveSpan =  document.createElement('p');
-    var iMove = document.createElement('i');
-    iMove.className="fa fa-arrows";
-    iMove.textContent = card.movement;
-
-    moveSpan.appendChild(iMove);
-
-    divGrp1.appendChild(moveSpan);
+    divGrp1.appendChild(lifeElem);
 
     var divClear1 = document.createElement("div");
     divClear1.className = "clear";
-
-
     divGrp1.appendChild(divClear1);
 
+    divCard.appendChild(divGrp1);
 
-    var attackSpan =  document.createElement('p');
-    var iAttack = document.createElement('i');
-    iAttack.className="fa fa-bomb";
-    iAttack.textContent = card.attack;
+    //END GRP 1
 
-    attackSpan.appendChild(iAttack);
+    //START GRP 2
 
-    divGrp2.appendChild(attackSpan);
+	//Mouvement
 
-    var defenceSpan =  document.createElement('p');
+    var moveElem =  document.createElement('p');
+    var iMove = document.createElement('i');
+    iMove.className="fa fa-arrows";
+    iMove.title = "Point de déplacement";
+    iMove.textContent = card.movement;
+
+    moveElem.appendChild(iMove);
+
+    divGrp2.appendChild(moveElem);
+
+
+    divCard.appendChild(divGrp2);
+
+	//Defense
+
+
+    var defenceElem =  document.createElement('p');
     var iDef = document.createElement('i');
     iDef.className="fa fa-shield";
+    iDef.title = "Point de défence";
     iDef.textContent = card.defence;
 
-    defenceSpan.appendChild(iDef);
+    defenceElem.appendChild(iDef);
 
-    divGrp2.appendChild(defenceSpan);
-
-    var divClear2 = document.createElement("div");
-    divClear2.className = "clear";
+    divGrp2.appendChild(defenceElem);
 
 
-    divGrp2.appendChild(divClear2);
+    //END GRP 2
 
-	var image = document.createElement("img");
-	image.src = getEntityImage(card);
-
+	//Start grp 3
 
 
-	divCard.appendChild(titleSpan);
-    divCard.appendChild(image);
-	divCard.appendChild(costSpan);
-    divCard.appendChild(divGrp1);
-    divCard.appendChild(divGrp2);
+	//Attack
+    var attackElem =  document.createElement('p');
+    var iAttack = document.createElement('i');
+    iAttack.className="fa fa-bomb";
+    iAttack.title = "Point d'attaque";
+    iAttack.textContent = card.attack;
+
+
+    attackElem.appendChild(iAttack);
+
+    if(card.range){
+        divGrp2.appendChild(attackElem);
+
+        var rangeElem =  document.createElement('p');
+        var iRange = document.createElement('i');
+        iRange.className="fa fa-bullseye";
+        iRange.title = "Attaque a distance";
+        iRange.textContent = card.range;
+
+        rangeElem.append(iRange);
+
+        divGrp3.appendChild(rangeElem);
+
+        divCard.appendChild(divGrp3);
+	}else{ //Pas de range donc pas de groupe pour le centrage
+
+        divCard.appendChild(attackElem);
+	}
+
+
+
+
 
 	return divCard;
 	

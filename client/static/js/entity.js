@@ -32,25 +32,39 @@ function buildEntityDiv(entity) {
     var elemLife = document.createElement('i');
     elemLife.textContent = entity.life;
     elemLife.className = "fa fa-heart";
-
-    var elemAttack = document.createElement('i');
-    elemAttack.textContent = entity.attack;
-    elemAttack.className = "fa fa-bomb";
-
-    var elemDefense = document.createElement('i');
-    elemDefense.textContent = entity.defense;
-    elemDefense.className = "fa fa-shield";
-
-
-
     elemStatus.appendChild(elemLife);
-    elemStatus.appendChild(elemAttack);
+
+
     if(entity.movement){
         var elemMove = document.createElement('i');
         elemMove.textContent = entity.movement;
         elemMove.className = "fa fa-arrows";
         elemStatus.appendChild(elemMove);
     }
+
+    if(entity.attack) {
+        var elemAttack = document.createElement('i');
+        elemAttack.textContent = entity.attack;
+        elemAttack.className = "fa fa-bomb";
+        elemStatus.appendChild(elemAttack);
+    }
+
+    if(entity.range){
+        var elemRange = document.createElement('i');
+        elemRange.textContent = entity.range;
+        elemRange.className = "fa fa-bullseye";
+        elemStatus.appendChild(elemRange);
+    }
+
+    if(entity.defense) {
+        var elemDefense = document.createElement('i');
+        elemDefense.textContent = entity.defense;
+        elemDefense.className = "fa fa-shield";
+        div.appendChild(elemDefense);
+    }
+
+
+
 
 
     div.appendChild(elemStatus);

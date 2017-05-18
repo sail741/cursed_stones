@@ -374,7 +374,7 @@ section footer a
 	border-bottom: 5px solid white;
 }
 
-.cartes .carte
+.carte
 {
 	position: relative;
 
@@ -402,14 +402,14 @@ section footer a
 	animation-timing-function: linear;
 }
 
-.cartes .carte h3
+.carte h3
 {
 	text-align: center;
 	overflow: hidden;
 	height: 23px;
 }
 
-.cartes .carte img
+.carte img
 {
 	width: 100px;
 	display: block;
@@ -420,7 +420,7 @@ section footer a
 
 
 
-.cartes p
+.carte p
 {
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -433,13 +433,13 @@ section footer a
     font-weight: bold;
 }
 
-.cartes .groupe p
+.carte .groupe p
 {
 	float: left;
 	width: 55px;
 }
 
-.cartes .carte .number{
+.carte .number{
 	position: absolute;
 		right: 0;
 		top: 0;
@@ -515,7 +515,7 @@ section footer a
 }
 
 #board table tr td:hover {
-    background: rgba(255, 255, 255, 0.81) !important;
+    background: rgba(255, 255, 255, 0.5) !important;
 }
 
 #board table tr td:active {

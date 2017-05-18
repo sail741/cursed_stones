@@ -487,8 +487,8 @@ section footer a
 
 /* Tableau */
 .container{
-	position: absolute;
-    left: 10%;
+	position: initial !important;
+    width: 100%;
     font-family: "Helvetica Neue";
 }
 
@@ -500,10 +500,23 @@ section footer a
     font-size: 16px; 
 }
 
+#board table{
+	width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #board table tr td {
 
     border: 1px solid #a5a5a5;
     cursor: pointer;
+    width: 50px;
+    height: 50px;
+
+    min-width: auto;
+    min-height: auto;
+    max-width: auto;
+    max-height: auto;
 }
 
 #board table tr td.self {
@@ -520,4 +533,64 @@ section footer a
 
 #board table tr td:active {
     opacity: 0.8;
+}
+
+#game .carte{
+	margin-left : 10px;
+	margin-right: 10px;
+	transform: translateY(100px);
+}
+
+.carte.comming{
+	animation-name: commingcardsfrompioche2;
+	animation-duration: 2s;
+	position: absolute;
+}
+
+@keyframes commingcardsfrompioche2 {
+	0% {
+		left: -10px;
+		bottom: 200px;
+	}
+	70% {
+		bottom: 200px;
+		left: calc(50% - 85px);
+
+	}
+	100% {
+		bottom: 0;
+		left: calc(50% - 85px);
+	}
+}
+
+.cards.self
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.cards_container{
+	width: 100%;
+	position: absolute;
+		left: 0px;
+		bottom: 0px;
+	overflow-x: auto;
+}
+
+.entity .entityimg {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+}
+
+.entity .entityimg {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+}
+
+.entity{
+    width: 50px;
+    height: 50px;
 }

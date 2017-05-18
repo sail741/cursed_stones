@@ -1,4 +1,4 @@
-var WIDTH = 100;
+var WIDTH = 170;
 
 var card_selected = null;
 
@@ -13,14 +13,50 @@ var timeoutIdPiocheRedraw = null;
 
 function drawsCards(elem, cards){
 
+	// elem.innerHTML = ''; //On supprime les anciennes cartes
+
+	// if(cards.length == 0) return;
+
+	// var rotate_angle = (50 / cards.length); //calcules de l'angle
+
+	// var translateStart = -(cards.length * WIDTH / 2);
+	// var rotateStart = -(cards.length / 2) * rotate_angle + (rotate_angle / 2);
+
+	// for(var i = 0; i < cards.length; i++){
+
+	// 	var card = cards[i];
+	// 	if(card == null){
+	// 		continue; //WORKAROUND because Kevin... 
+	// 	}
+	// 	var divCard = buildDOMCard(card);
+	// 	divCard.dataset.card_index = i;
+
+	// 	let move = translateStart;
+	// 	translateStart += WIDTH/cards.length;
+
+	// 	let rotate = rotateStart;
+	// 	rotateStart += rotate_angle;
+
+	// 	divCard.style.transform = 'translateX(' + move + 'px) translateY(75px)'; // rotateZ('+rotate+'deg)'; 
+	// 	//divCard.style['transform-origin'] = (-move) + 'px';
+			
+	// 	divCard.addEventListener('click', selectCards);
+
+	// 	elem.appendChild(divCard);
+
+	// }
+
 	elem.innerHTML = ''; //On supprime les anciennes cartes
 
 	if(cards.length == 0) return;
 
-	var rotate_angle = (20 / cards.length); //calcules de l'angle
+	var center = elem.offsetWidth / 2;
 
-	var translateStart = -(cards.length * WIDTH / 2);
-	var rotateStart = -(cards.length / 2) * rotate_angle + (rotate_angle / 2);
+	var start = center - (cards.length / 2) * WIDTH;
+	if(cards.length % 2 != 0)
+	{
+		start -= WIDTH/2;
+	}
 
 	for(var i = 0; i < cards.length; i++){
 
@@ -28,23 +64,16 @@ function drawsCards(elem, cards){
 		if(card == null){
 			continue; //WORKAROUND because Kevin... 
 		}
+
 		var divCard = buildDOMCard(card);
 		divCard.dataset.card_index = i;
 
-		let move = translateStart;
-		translateStart += WIDTH;
-
-		let rotate = rotateStart;
-		rotateStart += rotate_angle;
-
-		divCard.style.transform = 'translateX(' + move + 'px) rotateZ('+rotate+'deg)'; 
-		divCard.style['transform-origin'] = (-move) + 'px';
-			
 		divCard.addEventListener('click', selectCards);
 
 		elem.appendChild(divCard);
-
 	}
+
+	elem.style.width = cards.length * WIDTH + "px";
 }
 
 function setSelfHand(hand){
@@ -82,13 +111,13 @@ function indexOfCardFromHand(card){
 /// Action click sur carte
 function selectCards(e){
 
-	var translateYN100 = 'translateY(-100px)';
+	var translateYN100 = 'translateY(10px)';
 
 	e.preventDefault();
 	
 	if(this.className.indexOf('selected') > -1){
 		this.className = this.className.replace('selected', '');
-		this.style.transform = this.style.transform.replace('translateY(-100px)', '');
+		this.style.transform = this.style.transform.replace(translateYN100, '');
 		card_selected = null;
 		return;
 	}	
@@ -127,7 +156,7 @@ function piocheCard(cardsElem, card, cb){
 	console.log("piocheCard", card);
 	
 	var divCard = buildDOMCard(card);
-	divCard.className = "card comming";
+	divCard.className = "carte comming";
 	cardsElem.appendChild(divCard);
 
 	if(timeoutIdPiocheRedraw != null){
@@ -181,7 +210,7 @@ function buildDOMCard(card){
     var moveSpan =  document.createElement('p');
     var iMove = document.createElement('i');
     iMove.className="fa fa-arrows";
-    iMove.textContent = card.move;
+    iMove.textContent = card.movement;
 
     moveSpan.appendChild(iMove);
 
@@ -201,7 +230,7 @@ function buildDOMCard(card){
 
     attackSpan.appendChild(iAttack);
 
-    divGrp2.appendChild(moveSpan);
+    divGrp2.appendChild(attackSpan);
 
     var defenceSpan =  document.createElement('p');
     var iDef = document.createElement('i');

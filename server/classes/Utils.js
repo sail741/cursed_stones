@@ -2,26 +2,6 @@ const Deck = require('./Deck');
 var shortid = require('shortid');
 const Constant = require('./Constant');
 
-exports.convertJSONToDeck = function(json) {
-    deck = new Deck();
-    id_generates = [];
-    for (var i = 0; i < json.json_deck.length; i++) {
-        card = json.json_deck[i];
-        uid = shortid.generate();
-        while (uid in id_generates) {
-            uid = shortid.generate();
-        }
-        id_generates.push(uid);
-        if (card.type_card == Constant.TYPE_CARD_CHARA) {
-            deck.add_card(new CardCharacter(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.attack, card.defence, card.life, card.movement));
-        } else {
-            deck.add_card(new CardMagic(uid, card.id_card, card.name, card.description, card.type_card, card.cost, card.img, card.type_spell, card.range_spell, card.power_spell));
-        }
-    }
-    return deck;
-};
-
-
 exports.containsInArray = function(array, elem){
     for(let i = 0; i < array.length;i++){
         if(exports.isEquivalent(array[i], elem)) return true;

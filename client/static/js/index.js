@@ -385,15 +385,18 @@ function Index(element)
            							<div class="number">0</div>\
 									<h3>'+card.name+'</h3>\
 									<img src="/static/img/cards/'+card.img+'"> \
-									<p><i class="fa fa-tint" aria-hidden="true">'+card.cost+'</i></p>\
 									<div class="groupe">\
-										<p><i class="fa fa-heart" aria-hidden="true">'+card.life+'</i></p>\
+									<p><i class="fa fa-tint" aria-hidden="true">'+card.cost+'</i></p>\
+									<p><i class="fa fa-heart" aria-hidden="true">'+card.life+'</i></p>\
+									</div>\
+									<div class="groupe">\
 										<p><i class="fa fa-arrows" aria-hidden="true">'+card.movement+'</i></p>\
-										<div class="clear"></div>\
+                <p><i class="fa fa-shield " aria-hidden="true">'+card.defence+'</i></p>\
+				<div class="clear"></div>\
 									</div>\
 									<div class="groupe">\
 										<p><i class="fa fa-bomb" aria-hidden="true">'+card.attack+'</i></p>\
-										<p><i class="fa fa-shield " aria-hidden="true">'+card.defence+'</i></p>\
+										<p><i class="fa fa-bullseye" aria-hidden="true">'+card.range+'</i></p>\
 										<div class="clear"></div>\
 									</div>			\
 									<div class="description">'+ card.description +'</div>\

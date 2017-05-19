@@ -495,11 +495,14 @@ section footer a
 .status {
     display: flex;
     justify-content: space-around;
-    padding: 10px;
     color: white;
     font-size: 16px; 
-}
 
+    margin-top: 3vh;
+}
+#board {
+	margin-top: 3vh;
+}
 #board table{
 	width: 900px;
     margin-left: auto;
@@ -538,7 +541,7 @@ section footer a
 #game .carte{
 	margin-left : 10px;
 	margin-right: 10px;
-	transform: translateY(100px);
+	transform: translateY(0px);
 }
 
 .carte.comming{
@@ -573,8 +576,7 @@ section footer a
 	width: 100%;
 	position: absolute;
 		left: 0px;
-		bottom: 0px;
-	overflow-x: auto;
+		bottom: -100px;
 }
 
 .entity .entityimg {
@@ -593,4 +595,28 @@ section footer a
 .entity{
     width: 50px;
     height: 50px;
+}
+
+#mana_user_left, #mana_user_right, #tourWho{
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px
+}
+
+.btn{
+	width: 100%;
+    text-align: center;
+    background-color: white;
+    color: black;
+    margin-top: 8px;
+    border-bottom: 3px solid #b9b9b9;
+}
+
+.btn:hover{
+	opacity: 0.9;
+	box-shadow: none;
+}
+
+.btn:active{
+	border-bottom: 3px solid white;
 }

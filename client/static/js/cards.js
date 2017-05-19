@@ -73,6 +73,8 @@ function drawsCards(elem, cards){
 		elem.appendChild(divCard);
 	}
 
+
+
 	elem.style.width = cards.length * WIDTH + "px";
 }
 
@@ -111,7 +113,7 @@ function indexOfCardFromHand(card){
 /// Action click sur carte
 function selectCards(e){
 
-	var translateYN100 = 'translateY(10px)';
+	var translateYN100 = 'translateY(-100px)';
 
 	e.preventDefault();
 	

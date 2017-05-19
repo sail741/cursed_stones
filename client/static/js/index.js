@@ -364,8 +364,25 @@ function Index(element)
 			number.innerHTML = 0;
 		}
 
+		this.updateCardCounter();
 		
-	}
+	};
+
+	this.updateCardCounter = function(){
+		var cartes = document.querySelectorAll(".carte");
+		var number = 0;
+
+		for(var i = 0; i < cartes.length; i++){
+            var numberCarte = cartes[i].querySelector(".number");
+            var numberInt = parseInt(numberCarte.innerHTML);
+
+            number += numberInt;
+		}
+
+
+		document.querySelector("#card_counter").textContent = number;
+
+	};
 
 	this.createDeck = function(){
 

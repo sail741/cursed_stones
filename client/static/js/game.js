@@ -57,12 +57,12 @@ function setTourData(isMine, numTour, mana){
 	if(isMine){
 		localTourWho = localPseudoActual;
 		localSelfMana = mana;
-		displayMessage("C'est a votre tour de jouer !", "", 2000);
+		displayMessage("C'est à votre tour de jouer !", "", 2000);
         btnFinTour.dataset.disabled = 0;
         manaMaxSelf = mana;
 	}else{
 		localAdvMana = mana;
-		displayMessage("C'est a votre adversaire...", "", 2000);
+		displayMessage("C'est à votre adversaire...", "", 2000);
         btnFinTour.dataset.disabled = 1;
         manaMaxAdv = mana;
 	}

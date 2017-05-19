@@ -60,7 +60,7 @@ function buildEntityDiv(entity) {
         var elemDefense = document.createElement('i');
         elemDefense.textContent = entity.defense;
         elemDefense.className = "fa fa-shield";
-        div.appendChild(elemDefense);
+        elemStatus.appendChild(elemDefense);
     }
 
 

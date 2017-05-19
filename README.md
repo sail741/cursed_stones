@@ -4,7 +4,7 @@
 ## Information
 
 Project by : 
-* Akil NAGATI
+* Mohamed Akil NAGATI
 * Leo MULLOT
 * Kévin JEAN
 * Mathieu HIREL

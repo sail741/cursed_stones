@@ -162,7 +162,8 @@ module.exports = class Entity {
             defenseMode: this.defense_mode,
             canDoAction: this.can_do_action,
             canMove: this.can_move,
-            life: this.life
+            life: this.life,
+            range: this.range
         }
     }
 
